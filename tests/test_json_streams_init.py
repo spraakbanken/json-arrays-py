@@ -1,9 +1,22 @@
 import io
+from unittest import mock
 
 import pytest
 
 import json_streams
 from .utils import compare_iters
+
+
+def test_dump_to_file():
+    with mock.patch(
+            "json_streams.json_iter.dump_to_file"
+            ) as json_iter_mock, mock.patch("json_streams.jsonl_iter") as jsonl_iter_mock:
+        in_iter = None
+        file_name = "test"
+        file_type = "json"
+        json_streams.dump_to_file(in_iter, file_name, file_type=file_type)
+        json_iter_mock.assert_called_once()
+        jsonl_iter_mock.assert_not_called()
 
 
 @pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
