@@ -1,0 +1,23 @@
+language: python
+dist: xenial
+python:
+  - "3.6"
+  - "3.7"
+  - "3.8"
+  - "3.9-dev"
+  - "nightly"
+matrix:
+  allow_failures:
+    - python: 3.9-dev
+    - python: nightly
+install:
+  - make install-dev
+  - pip install codecov
+script:
+  - make test-w-coverage
+after_success:
+  - codecov
+notifications:
+  email:
+    on_success: change
+    on_failure: always
