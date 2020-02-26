@@ -9,7 +9,7 @@ import io
 
 import ijson
 
-from sb_json_tools import jsonlib
+from json_streams import jsonlib
 
 
 def dump(data: Union[Dict, Iterable], fp: IO):

@@ -2,8 +2,7 @@ import io
 
 import pytest
 
-from sb_json_tools import jt_iter
-
+import json_streams
 from .utils import compare_iters
 
 
@@ -18,14 +17,14 @@ def test_dump_int_memoryio(out, data, facit, file_type):
     out = out()
     if isinstance(out, io.BytesIO):
         facit = facit.encode('utf-8')
-    jt_iter.dump(data, out, file_type=file_type)
+    json_streams.dump(data, out, file_type=file_type)
     assert out.getvalue() == facit
 
     out.seek(0)  # read it from the beginning
-    out_iter = jt_iter.load(out, file_type=file_type)
+    out_iter = json_streams.load(out, file_type=file_type)
     if isinstance(data, list):
         compare_iters(out_iter, data)
     else:
-        for i in jt_iter.load(out, file_type=file_type):
+        for i in json_streams.load(out, file_type=file_type):
             print("i = {i}".format(i=i))
             assert i == data

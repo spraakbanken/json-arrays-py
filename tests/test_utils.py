@@ -1,4 +1,4 @@
-from sb_json_tools.utils import is_jsonl
+from json_streams.utils import is_jsonl
 
 
 def test_jsonl():

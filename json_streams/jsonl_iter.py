@@ -6,7 +6,7 @@ from typing import Union
 import codecs
 import io
 
-from sb_json_tools import jsonlib
+from json_streams import jsonlib
 
 
 def dump(data: Union[Dict, Iterable], fp: IO):

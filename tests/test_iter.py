@@ -3,7 +3,7 @@ import json
 
 import pytest
 
-from sb_json_tools import json_iter, jsonl_iter
+from json_streams import json_iter, jsonl_iter
 from .utils import compare_iters
 
 
