@@ -4,9 +4,6 @@ from typing import BinaryIO
 from typing import Iterable
 from typing import Union
 
-import codecs
-import io
-
 import ijson
 
 from json_streams import jsonlib
