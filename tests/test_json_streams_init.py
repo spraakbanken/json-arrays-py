@@ -7,16 +7,28 @@ import json_streams
 from .utils import compare_iters
 
 
-def test_dump_to_file():
+@pytest.mark.parametrize("file_name,file_type, expected_iter", [
+    ("test", "json", "json_iter"),
+    ("test", None, "json_iter"),
+    ("test.json", None, "json_iter"),
+    ("test", "jsonl", "jsonl_iter"),
+    ("test.jsonl", None, "jsonl_iter"),
+])
+def test_dump_to_file_json(file_name, file_type, expected_iter):
     with mock.patch(
-            "json_streams.json_iter.dump_to_file"
-            ) as json_iter_mock, mock.patch("json_streams.jsonl_iter") as jsonl_iter_mock:
+        "json_streams.json_iter.dump_to_file"
+    ) as json_iter_mock, mock.patch(
+        "json_streams.jsonl_iter.dump_to_file"
+    ) as jsonl_iter_mock:
         in_iter = None
-        file_name = "test"
-        file_type = "json"
         json_streams.dump_to_file(in_iter, file_name, file_type=file_type)
-        json_iter_mock.assert_called_once()
-        jsonl_iter_mock.assert_not_called()
+        expected_call = [mock.call(in_iter, file_name, file_mode=None)]
+        if expected_iter == "json_iter":
+            assert json_iter_mock.mock_calls == expected_call
+            jsonl_iter_mock.assert_not_called()
+        else:
+            assert jsonl_iter_mock.mock_calls == expected_call
+            json_iter_mock.assert_not_called()
 
 
 @pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])

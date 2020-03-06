@@ -1,6 +1,13 @@
 """Util functions.
 """
 import os
+from typing import IO
+
+
+def get_name_of_file(fp: IO) -> str:
+    if hasattr(fp, "name"):
+        return fp.name
+    return ""
 
 
 def is_jsonl(name: str) -> bool:
