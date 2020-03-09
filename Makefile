@@ -47,3 +47,5 @@ lint: install-dev
 lint-no-fail: install-dev
 	${VENV_ACTIVATE}; pylint --rcfile=.pylintrc --exit-zero json_streams tests
 
+publish-major: install-dev
+	@
