@@ -91,3 +91,16 @@ def test_load_file_name(it, file_name: str, facit, file_mode):
     test_it = it.load_from_file(file_name, file_mode=file_mode)
     compare_iters(test_it, facit_it)
 
+
+@pytest.mark.parametrize("it", [{"a": "test"}, ["a",]])
+def test_json_iter_dumps():
+    it = {"a": "test"}
+    out = io.StringIO()
+    for x in json_iter.dumps(it):
+        print(f"x = {x}")
+        out.write(x)
+
+    result = json.loads(out.getvalue())
+
+    assert result == it
+

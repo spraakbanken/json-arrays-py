@@ -48,6 +48,10 @@ def dump(data: Union[Dict, Iterable], fp: IO):
     fp.write('\n]')
 
 
+def dumps(obj: str) -> Iterable:
+    yield jsonlib.dumps(obj)
+
+
 def load(fp: IO) -> Iterable:
     yield from ijson.items(fp, 'item')
 
