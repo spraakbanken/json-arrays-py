@@ -10,33 +10,29 @@ from json_streams import jsonlib
 
 
 def dump(data: Union[Dict, Iterable], fp: IO):
-    if isinstance(fp, io.BufferedIOBase):
-        fp = codecs.getwriter('utf-8')(fp)
 
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data))
-        fp.write('\n')
+        fp.write(b'\n')
         return
 
     try:
         for obj in data:
             fp.write(jsonlib.dumps(obj))
-            fp.write('\n')
+            fp.write(b'\n')
     except TypeError:
         fp.write(jsonlib.dumps(data))
-        fp.write('\n')
+        fp.write(b'\n')
 
 
 def load(fp: IO) -> Iterable:
-    if isinstance(fp.read(0), bytes):
-        fp = codecs.getreader('utf-8')(fp)
     for line in fp:
         yield jsonlib.loads(line)
 
 
 def load_from_file(file_name: str, *, file_mode: str = None):
     if not file_mode:
-        file_mode = "r"
+        file_mode = "br"
     with open(file_name, file_mode) as fp:
         yield from load(fp)
 

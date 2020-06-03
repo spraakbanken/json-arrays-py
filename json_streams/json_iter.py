@@ -22,8 +22,6 @@ def dump(data: Union[Dict, Iterable], fp: IO):
     data :
         Iterable object to write.
     """
-    if isinstance(fp, io.BufferedIOBase):
-        fp = codecs.getwriter('utf-8')(fp)
 
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data))
@@ -35,7 +33,7 @@ def dump(data: Union[Dict, Iterable], fp: IO):
         fp.write(jsonlib.dumps(data))
         return
 
-    fp.write('[\n')
+    fp.write(b'[\n')
     try:
         obj = next(it)
         fp.write(jsonlib.dumps(obj))
@@ -43,13 +41,38 @@ def dump(data: Union[Dict, Iterable], fp: IO):
         pass
     else:
         for v in it:
-            fp.write(',\n')
+            fp.write(b',\n')
             fp.write(jsonlib.dumps(v))
-    fp.write('\n]')
+    fp.write(b'\n]')
 
 
-def dumps(obj: str) -> Iterable:
-    yield jsonlib.dumps(obj)
+def dumps(obj) -> Iterable:
+    if isinstance(obj, str):
+        yield jsonlib.dumps(obj)
+        return
+    elif isinstance(obj, dict):
+        yield "{"
+        for i, (key, value) in enumerate(obj.items()):
+            if i > 0:
+                yield ","
+            yield f'"{key}":'
+            yield from dumps(value)
+        yield "}"
+        return
+    try:
+        it = iter(obj)
+    except TypeError:
+        yield jsonlib.dumps(obj)
+        return
+
+    yield "["
+    for i, o in enumerate(it):
+        if i > 0:
+            yield ","
+        yield jsonlib.dumps(o)
+
+    yield "]"
+
 
 
 def load(fp: IO) -> Iterable:
@@ -74,6 +97,6 @@ def load_from_file(file_name: str, *, file_mode: str = None):
 
 def dump_to_file(gen: Iterable, file_name: str, *, file_mode: str = None):
     if not file_mode:
-        file_mode = "w"
+        file_mode = "bw"
     with open(file_name, file_mode) as fp:
         return dump(gen, fp)

@@ -92,9 +92,32 @@ def test_load_file_name(it, file_name: str, facit, file_mode):
     compare_iters(test_it, facit_it)
 
 
-@pytest.mark.parametrize("it", [{"a": "test"}, ["a",]])
-def test_json_iter_dumps():
-    it = {"a": "test"}
+@pytest.fixture
+def strings():
+    return ["a", "b", "c"]
+
+
+@pytest.fixture
+def dicts():
+    return [{"a": "a1"}, {"b": ["b1", "b2"]}]
+
+
+def gen_values(lst):
+    for l in lst:
+        yield l
+
+
+@pytest.mark.parametrize("it", [
+    None,
+    "a",
+    1,
+    {},
+    {"a": "test"},
+    {"a": "test", "b": {"c": "c1"}},
+    {"1": 2},
+    ["a", "b"],
+])
+def test_json_iter_dumps(it):
     out = io.StringIO()
     for x in json_iter.dumps(it):
         print(f"x = {x}")
@@ -104,3 +127,43 @@ def test_json_iter_dumps():
 
     assert result == it
 
+
+def test_dumps_gen_strings(strings):
+    out = io.StringIO()
+    for x in json_iter.dumps(gen_values(strings)):
+        out.write(x)
+
+    result = json.loads(out.getvalue())
+
+    assert result == strings
+
+
+def test_dumps_gen_list(strings):
+    out = io.StringIO()
+    for x in json_iter.dumps(gen_values(strings)):
+        out.write(x)
+
+    result = json.loads(out.getvalue())
+
+    assert result == strings
+
+
+def test_dumps_gen_dict(strings):
+    data = {
+        "a": "a",
+        "b": gen_values(strings),
+        "c": "c"
+    }
+
+    out = io.StringIO()
+    for x in json_iter.dumps(data):
+        out.write(x)
+
+    result = json.loads(out.getvalue())
+
+    expected = {
+        "a": "a",
+        "b": strings,
+        "c": "c"
+    }
+    assert result == expected
