@@ -8,30 +8,25 @@ from .utils import compare_iters
 
 
 DATA = [
-    {'a': 1},
-    {'a': 2},
+    {"a": 1},
+    {"a": 2},
 ]
 
-JSON_FACIT = '[\n{"a": 1},\n{"a": 2}\n]'
-JSONL_FACIT = '{"a": 1}\n{"a": 2}\n'
+JSON_FACIT = b'[\n{"a":1},\n{"a":2}\n]'
+JSONL_FACIT = b'{"a":1}\n{"a":2}\n'
 
 
 def gen_data():
     for i in DATA:
         yield i
 
-@pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
+
 @pytest.mark.parametrize(
     "it,data,facit",
-    [
-        (json_iter, DATA[0], '{"a": 1}'),
-        (jsonl_iter, DATA[0], '{"a": 1}\n'),
-    ]
+    [(json_iter, DATA[0], b'{"a":1}'), (jsonl_iter, DATA[0], b'{"a":1}\n'),],
 )
-def test_dump_dict_memoryio(out, it, data, facit):
-    out = out()
-    if isinstance(out, io.BytesIO):
-        facit = facit.encode('utf-8')
+def test_dump_dict_memoryio(it, data, facit):
+    out = io.BytesIO()
     it.dump(data, out)
     assert out.getvalue() == facit
 
@@ -41,18 +36,11 @@ def test_dump_dict_memoryio(out, it, data, facit):
         assert i == data
 
 
-@pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
 @pytest.mark.parametrize(
-    "it,facit",
-    [
-        (json_iter, JSON_FACIT),
-        (jsonl_iter, JSONL_FACIT),
-    ]
+    "it,facit", [(json_iter, JSON_FACIT), (jsonl_iter, JSONL_FACIT),]
 )
-def test_dump_array_memoryio(out, it, facit):
-    out = out()
-    if isinstance(out, io.BytesIO):
-        facit = facit.encode('utf-8')
+def test_dump_array_memoryio(it, facit):
+    out = io.BytesIO()
     it.dump(DATA, out)
     assert facit == out.getvalue()
 
@@ -60,28 +48,19 @@ def test_dump_array_memoryio(out, it, facit):
     compare_iters(it.load(out), DATA)
 
 
-@pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
 @pytest.mark.parametrize(
-    "it,facit",
-    [
-        (json_iter, JSON_FACIT),
-        (jsonl_iter, JSONL_FACIT),
-    ]
+    "it,facit", [(json_iter, JSON_FACIT), (jsonl_iter, JSONL_FACIT),]
 )
-def test_dump_gen_memoryio(out, it, facit):
-    out = out()
-    if isinstance(out, io.BytesIO):
-        facit = facit.encode('utf-8')
+def test_dump_gen_memoryio(it, facit):
+    out = io.BytesIO()
+
     it.dump(gen_data(), out)
     assert facit == out.getvalue()
 
 
 @pytest.mark.parametrize("file_mode", ["rb", "r"])
 @pytest.mark.parametrize(
-    "it,file_name,facit",
-    [
-        (json_iter, "tests/data/array.json", None),
-    ]
+    "it,file_name,facit", [(json_iter, "tests/data/array.json", None),]
 )
 def test_load_file_name(it, file_name: str, facit, file_mode):
     if not facit:
@@ -107,18 +86,21 @@ def gen_values(lst):
         yield l
 
 
-@pytest.mark.parametrize("it", [
-    None,
-    "a",
-    1,
-    {},
-    {"a": "test"},
-    {"a": "test", "b": {"c": "c1"}},
-    {"1": 2},
-    ["a", "b"],
-])
+@pytest.mark.parametrize(
+    "it",
+    [
+        None,
+        "a",
+        1,
+        {},
+        {"a": "test"},
+        {"a": "test", "b": {"c": "c1"}},
+        {"1": 2},
+        ["a", "b"],
+    ],
+)
 def test_json_iter_dumps(it):
-    out = io.StringIO()
+    out = io.BytesIO()
     for x in json_iter.dumps(it):
         print(f"x = {x}")
         out.write(x)
@@ -129,7 +111,7 @@ def test_json_iter_dumps(it):
 
 
 def test_dumps_gen_strings(strings):
-    out = io.StringIO()
+    out = io.BytesIO()
     for x in json_iter.dumps(gen_values(strings)):
         out.write(x)
 
@@ -139,7 +121,7 @@ def test_dumps_gen_strings(strings):
 
 
 def test_dumps_gen_list(strings):
-    out = io.StringIO()
+    out = io.BytesIO()
     for x in json_iter.dumps(gen_values(strings)):
         out.write(x)
 
@@ -149,21 +131,13 @@ def test_dumps_gen_list(strings):
 
 
 def test_dumps_gen_dict(strings):
-    data = {
-        "a": "a",
-        "b": gen_values(strings),
-        "c": "c"
-    }
+    data = {"a": "a", "b": gen_values(strings), "c": "c"}
 
-    out = io.StringIO()
+    out = io.BytesIO()
     for x in json_iter.dumps(data):
         out.write(x)
 
     result = json.loads(out.getvalue())
 
-    expected = {
-        "a": "a",
-        "b": strings,
-        "c": "c"
-    }
+    expected = {"a": "a", "b": strings, "c": "c"}
     assert result == expected

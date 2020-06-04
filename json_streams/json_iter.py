@@ -33,7 +33,7 @@ def dump(data: Union[Dict, Iterable], fp: IO):
         fp.write(jsonlib.dumps(data))
         return
 
-    fp.write(b'[\n')
+    fp.write(b"[\n")
     try:
         obj = next(it)
         fp.write(jsonlib.dumps(obj))
@@ -41,9 +41,9 @@ def dump(data: Union[Dict, Iterable], fp: IO):
         pass
     else:
         for v in it:
-            fp.write(b',\n')
+            fp.write(b",\n")
             fp.write(jsonlib.dumps(v))
-    fp.write(b'\n]')
+    fp.write(b"\n]")
 
 
 def dumps(obj) -> Iterable:
@@ -51,13 +51,13 @@ def dumps(obj) -> Iterable:
         yield jsonlib.dumps(obj)
         return
     elif isinstance(obj, dict):
-        yield "{"
+        yield b"{"
         for i, (key, value) in enumerate(obj.items()):
             if i > 0:
-                yield ","
-            yield f'"{key}":'
+                yield b","
+            yield b'"%s":' % to_bytes(key)
             yield from dumps(value)
-        yield "}"
+        yield b"}"
         return
     try:
         it = iter(obj)
@@ -65,18 +65,17 @@ def dumps(obj) -> Iterable:
         yield jsonlib.dumps(obj)
         return
 
-    yield "["
+    yield b"["
     for i, o in enumerate(it):
         if i > 0:
-            yield ","
+            yield b","
         yield jsonlib.dumps(o)
 
-    yield "]"
-
+    yield b"]"
 
 
 def load(fp: IO) -> Iterable:
-    yield from ijson.items(fp, 'item')
+    yield from ijson.items(fp, "item")
 
 
 def load_eager(fp: IO):
@@ -100,3 +99,10 @@ def dump_to_file(gen: Iterable, file_name: str, *, file_mode: str = None):
         file_mode = "bw"
     with open(file_name, file_mode) as fp:
         return dump(gen, fp)
+
+
+def to_bytes(s: Union[str, bytes, bytearray]) -> Union[bytes, bytearray]:
+    if isinstance(s, (bytes, bytearray)):
+        return s
+    else:
+        return s.encode("utf-8")

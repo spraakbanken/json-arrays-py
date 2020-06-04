@@ -7,13 +7,16 @@ import json_streams
 from .utils import compare_iters
 
 
-@pytest.mark.parametrize("file_name,file_type, expected_iter", [
-    ("test", "json", "json_iter"),
-    ("test", None, "json_iter"),
-    ("test.json", None, "json_iter"),
-    ("test", "jsonl", "jsonl_iter"),
-    ("test.jsonl", None, "jsonl_iter"),
-])
+@pytest.mark.parametrize(
+    "file_name,file_type, expected_iter",
+    [
+        ("test", "json", "json_iter"),
+        ("test", None, "json_iter"),
+        ("test.json", None, "json_iter"),
+        ("test", "jsonl", "jsonl_iter"),
+        ("test.jsonl", None, "jsonl_iter"),
+    ],
+)
 def test_dump_to_file_json(file_name, file_type, expected_iter):
     with mock.patch(
         "json_streams.json_iter.dump_to_file"
@@ -31,17 +34,17 @@ def test_dump_to_file_json(file_name, file_type, expected_iter):
             json_iter_mock.assert_not_called()
 
 
-@pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
-@pytest.mark.parametrize("data,facit,file_type", [
-    (1, "1", "json"),
-    (1, "1\n", "jsonl"),
-    ([1, 2], "[\n1,\n2\n]", "json"),
-    ([1, 2], "1\n2\n", "jsonl"),
-])
-def test_dump_int_memoryio(out, data, facit, file_type):
-    out = out()
-    if isinstance(out, io.BytesIO):
-        facit = facit.encode('utf-8')
+@pytest.mark.parametrize(
+    "data,facit,file_type",
+    [
+        (1, b"1", "json"),
+        (1, b"1\n", "jsonl"),
+        ([1, 2], b"[\n1,\n2\n]", "json"),
+        ([1, 2], b"1\n2\n", "jsonl"),
+    ],
+)
+def test_dump_int_memoryio(data, facit, file_type):
+    out = io.BytesIO()
     json_streams.dump(data, out, file_type=file_type)
     assert out.getvalue() == facit
 
