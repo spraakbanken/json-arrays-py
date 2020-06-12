@@ -1,5 +1,5 @@
 from typing import Iterable
-from typing import IO
+from typing import BinaryIO
 
 from . import json_iter
 from . import jsonl_iter
@@ -12,45 +12,25 @@ def choose_iter(name, json_format):
     return json_iter
 
 
-def load(
-    fp: IO,
-    *,
-    file_type=None
-) -> Iterable:
+def load(fp: BinaryIO, *, file_type=None) -> Iterable:
     _iter = choose_iter(utils.get_name_of_file(fp), file_type)
 
     yield from _iter.load(fp)
 
 
-def load_from_file(
-        file_name: str,
-        *,
-        file_type: str = None,
-        file_mode: str = None
-        ):
+def load_from_file(file_name: str, *, file_type: str = None) -> Iterable:
     _iter = choose_iter(file_name, file_type)
 
-    yield from _iter.load_from_file(file_name, file_mode=file_mode)
+    yield from _iter.load_from_file(file_name)
 
 
-def dump(
-        in_iter_,
-        fp: IO,
-        *,
-        file_type: str = None
-        ):
+def dump(in_iter_, fp: BinaryIO, *, file_type: str = None):
     _iter = choose_iter(utils.get_name_of_file(fp), file_type)
 
     _iter.dump(in_iter_, fp)
 
 
-def dump_to_file(
-        in_iter_,
-        file_name: str,
-        *,
-        file_type=None,
-        file_mode: str = None
-):
+def dump_to_file(in_iter_, file_name: str, *, file_type=None):
     _iter = choose_iter(file_name, file_type)
 
-    _iter.dump_to_file(in_iter_, file_name, file_mode=file_mode)
+    _iter.dump_to_file(in_iter_, file_name)

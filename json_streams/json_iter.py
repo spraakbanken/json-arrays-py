@@ -1,6 +1,6 @@
 """ Handle JSON lazy. """
 from typing import Dict
-from typing import IO
+from typing import BinaryIO
 from typing import Iterable
 from typing import Union
 
@@ -10,9 +10,10 @@ import io
 import ijson
 
 from json_streams import jsonlib
+from json_streams.utils import to_bytes
 
 
-def dump(data: Union[Dict, Iterable], fp: IO):
+def dump(data: Union[Dict, Iterable], fp: BinaryIO):
     """ Dump array to a file object.
 
     Parameters
@@ -24,31 +25,31 @@ def dump(data: Union[Dict, Iterable], fp: IO):
     """
 
     if isinstance(data, dict):
-        fp.write(jsonlib.dumps(data))
+        fp.write(to_bytes(jsonlib.dumps(data)))
         return
 
     try:
         it = iter(data)
     except TypeError:
-        fp.write(jsonlib.dumps(data))
+        fp.write(to_bytes(jsonlib.dumps(data)))
         return
 
     fp.write(b"[\n")
     try:
         obj = next(it)
-        fp.write(jsonlib.dumps(obj))
+        fp.write(to_bytes(jsonlib.dumps(obj)))
     except StopIteration:
         pass
     else:
         for v in it:
             fp.write(b",\n")
-            fp.write(jsonlib.dumps(v))
+            fp.write(to_bytes(jsonlib.dumps(v)))
     fp.write(b"\n]")
 
 
-def dumps(obj) -> Iterable:
+def dumps(obj) -> Iterable[bytes]:
     if isinstance(obj, str):
-        yield jsonlib.dumps(obj)
+        yield to_bytes(jsonlib.dumps(obj))
         return
     elif isinstance(obj, dict):
         yield b"{"
@@ -62,27 +63,26 @@ def dumps(obj) -> Iterable:
     try:
         it = iter(obj)
     except TypeError:
-        yield jsonlib.dumps(obj)
+        yield to_bytes(jsonlib.dumps(obj))
         return
 
     yield b"["
     for i, o in enumerate(it):
         if i > 0:
             yield b","
-        yield jsonlib.dumps(o)
+        yield to_bytes(jsonlib.dumps(o))
 
     yield b"]"
 
 
-def load(fp: IO) -> Iterable:
+def load(fp: BinaryIO) -> Iterable:
     yield from ijson.items(fp, "item")
 
 
-def load_eager(fp: IO):
-    data = jsonlib.load(fp)
+def load_eager(fp: BinaryIO):
+    data = jsonlib.loads(fp.read())
     if isinstance(data, list):
-        for obj in data:
-            yield obj
+        yield from data
     else:
         return data
 
@@ -90,19 +90,12 @@ def load_eager(fp: IO):
 def load_from_file(file_name: str, *, file_mode: str = None):
     if not file_mode:
         file_mode = "br"
-    with open(file_name, file_mode) as fp:
+    with open(file_name, "br") as fp:
         yield from load(fp)
 
 
 def dump_to_file(gen: Iterable, file_name: str, *, file_mode: str = None):
     if not file_mode:
         file_mode = "bw"
-    with open(file_name, file_mode) as fp:
+    with open(file_name, "bw") as fp:
         return dump(gen, fp)
-
-
-def to_bytes(s: Union[str, bytes, bytearray]) -> Union[bytes, bytearray]:
-    if isinstance(s, (bytes, bytearray)):
-        return s
-    else:
-        return s.encode("utf-8")

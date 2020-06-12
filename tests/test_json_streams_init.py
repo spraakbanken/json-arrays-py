@@ -25,7 +25,7 @@ def test_dump_to_file_json(file_name, file_type, expected_iter):
     ) as jsonl_iter_mock:
         in_iter = None
         json_streams.dump_to_file(in_iter, file_name, file_type=file_type)
-        expected_call = [mock.call(in_iter, file_name, file_mode=None)]
+        expected_call = [mock.call(in_iter, file_name)]
         if expected_iter == "json_iter":
             assert json_iter_mock.mock_calls == expected_call
             jsonl_iter_mock.assert_not_called()
