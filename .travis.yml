@@ -18,8 +18,8 @@ matrix:
 install:
   - make install-dev
   - pip install codecov
-  - test "${JSONLIB}" = "orjson" && .venv/bin/pip install orjson || echo "skip"
-  - test "${JSONLIB}" = "ujson" && .venv/bin/pip install ujson || echo "skip"
+  - test "${JSONLIB}" = "orjson" && pip install orjson || echo "skip"
+  - test "${JSONLIB}" = "ujson" && pip install ujson || echo "skip"
 script: make test-w-coverage
 after_success:
   - codecov
