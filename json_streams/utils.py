@@ -1,6 +1,15 @@
 """Util functions.
 """
 import os
+from typing import IO
+
+from typing import Union
+
+
+def get_name_of_file(fp: IO) -> str:
+    if hasattr(fp, "name"):
+        return fp.name
+    return ""
 
 
 def is_jsonl(name: str) -> bool:
@@ -18,3 +27,18 @@ def is_jsonl(name: str) -> bool:
     _, suffix = os.path.splitext(name)
     # print('suffix = {suffix}'.format(suffix=suffix))
     return suffix in [".jsonl"]
+
+
+def to_bytes(s: Union[str, bytes, bytearray]) -> Union[bytes, bytearray]:
+    """Convert str to bytes, otherwise pass through s
+
+    Args:
+        s (Union[str, bytes, bytearray]): the argument to assure bytes
+
+    Returns:
+        Union[bytes, bytearray]: the possible converted argument
+    """
+    if isinstance(s, (bytes, bytearray)):
+        return s
+    else:
+        return s.encode("utf-8")
