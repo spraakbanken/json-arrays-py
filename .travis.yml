@@ -6,15 +6,26 @@ python:
   - "3.8"
   - "3.9-dev"
   - "nightly"
+env:
+  - JSONLIB=orjson
+  - JSONLIB=ujson
+  - JSONLIB=json
 matrix:
   allow_failures:
     - python: 3.9-dev
     - python: nightly
-install:
-  - make install-dev
-  - pip install codecov
-script:
-  - make test-w-coverage
+jobs:
+  include:
+    - stage: Install dependencies
+      script:
+        - make install-dev
+        - pip install codecov
+    - script: .venv/bin/pip install orjson
+      env: JSONLIB=orjson
+    - script: .venv/bin/pip install ujson
+      env: JSONLIB=ujson
+    - stage: Test
+      script: make test-w-coverage
 after_success:
   - codecov
 notifications:
