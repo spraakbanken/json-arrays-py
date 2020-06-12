@@ -7,41 +7,92 @@
 [![Build Status](https://github.com/spraakbanken/json-streams-py/workflows/Build/badge.svg)](https://github.com/spraakbanken/python-json-tools/actions)
 [![PyPI status](https://badge.fury.io/py/json-streams.svg)](https://pypi.org/project/json-streams/)
 
-Tools for working with json (especially) json-arrays.
+Read and write JSON lazy, especially json-arrays.
 
-Uses `ujson` if present, otherwise standard `json`.
+Handles both the JSON format:
+```json
+[
+    {
+        "a": 1
+    },
+    {
+        "a": 2
+    }
+]
+```
+As well as JSON LINES format:
+```json
+{"a":1}
+{"a": 2}
+```
+
+Uses `orjson` or `ujson` if present, otherwise standard `json`.
 
 ## Usage
 
 ### Installation
-```
+```bash
+# Using standard json
 pip install json-streams
+
+# Using orjson
+pip install json-streams[orjson]
+
+# Using ujson
+pip install json-streams[ujson]
 ```
-### json-iter (`lib: sb_json_tools.jt_iter`)
+
+### Note
+
+This library prefers files opened in binary mode.
+Therefore does all `dumps`-methods return `bytes`.
+
+All `loads` methods handles `str` argument.
+If you use the `orjson` library you can also pass `bytes` or `bytesarray` to `loads`.
+The goal is to have all `loads` handling `str`, `bytes` and `bytesarray`.
+
+### Examples
 
 Allows you to use `json.load` and `json.dump` with
 both json and json-lines files as well as dumping generators.
 
-```
-from sb_json_tools import jt_iter
+```python
+import json_streams
 
 # This command tries to guess format and opens the file
-data = jt_iter.load_from_file("data.json") # or data.jsonl
+data = json_streams.load_from_file("data.json") # or data.jsonl
 
 # Write to file, again guessing format
-jt_iter.dump_to_file(data, "data.jsonl")
+json_streams.dump_to_file(data, "data.jsonl")
 ```
 
-```
-from sb_json_tools import json_iter, jsonl_iter
+```python
+from json_streams import json_iter, jsonl_iter
 
-# Open and read the file
+# Open and read the file without guessing
 data = json_iter.load_from_file("data.json")
 
 # Process file
 
-# Write to file
+# Write to file without guessing
 jsonl_iter.dump_to_file(data, "data.jsonl")
+```
+
+```python
+import json_streams
+def process(data):
+    for entry in data:
+        # process
+        yield entry
+
+def read_process_and_write(filename_in, filename_out):
+
+    json_streams.dump_to_file(
+        process(
+            json_streams.load_from_file(filename_in)
+        ),
+        filename_out
+    )
 ```
 
 # Development
