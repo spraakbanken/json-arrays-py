@@ -29,8 +29,8 @@ jobs:
       - name: Install json library
         if: matrix.json-lib != 'json'
         run: .venv/bin/pip install ${{ matrix.json-lib }}
-      - name: Lint with flake8 for syntax errors
-        run: make lint-syntax-errors
+      - name: Lint with PyLint for syntax errors
+        run: make lint-no-fail
       - name: Test with pytest
         run: |
           make test-w-coverage
