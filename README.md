@@ -2,8 +2,8 @@
 
 
 
-[![Build Status](https://travis-ci.org/spraakbanken/json-streams-py.svg?branch=master)](https://travis-ci.org/spraakbanken/python-json-tools)
-[![codecov](https://codecov.io/gh/spraakbanken/json-streams-py/branch/master/graph/badge.svg)](https://codecov.io/gh/spraakbanken/python-json-tools)
+[![Build Status](https://travis-ci.org/spraakbanken/json-streams-py.svg?branch=master)](https://travis-ci.org/spraakbanken/json-streams-py)
+[![codecov](https://codecov.io/gh/spraakbanken/json-streams-py/branch/master/graph/badge.svg)](https://codecov.io/gh/spraakbanken/json-streams-py/)
 [![Build & Publish](https://github.com/spraakbanken/json-streams-py/workflows/Build%20&%20Publish/badge.svg)](https://github.com/spraakbanken/json-streams-py/actions)
 [![PyPI status](https://badge.fury.io/py/json-streams.svg)](https://pypi.org/project/json-streams/)
 
