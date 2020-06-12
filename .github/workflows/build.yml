@@ -5,7 +5,7 @@ on:
     branches-ignore:
       - master
     tags-ignore:
-      - v.*
+      - v*
   pull_request:
     branches:
       - "*"

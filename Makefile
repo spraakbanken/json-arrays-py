@@ -5,21 +5,33 @@
 help:
 	@echo "usage:"
 
+PLATFORM := ${shell uname -o}
+INVENV_PATH = ${shell which invenv}
 
 ifeq (${VIRTUAL_ENV},)
   VENV_NAME = .venv
-  VENV_BIN = ${VENV_NAME}/bin
-  ${info Using ${VENV_NAME}}
 else
   VENV_NAME = ${VIRTUAL_ENV}
-  VENV_BIN = ${VENV_NAME}/bin
-  ${info Using ${VENV_NAME}}
 endif
-ifeq (${VIRTUAL_ENV},)
-  VENV_ACTIVATE = . ${VENV_BIN}/activate
+
+${info Platform: ${PLATFORM}}
+${info Using ${VENV_NAME}}
+${info invenv: ${INVENV_PATH}}
+
+VENV_BIN = ${VENV_NAME}/bin
+
+ifeq (${INVENV_PATH},)
+  INVENV = export VIRTUAL_ENV="${VENV_NAME}"; export PATH="${VENV_BIN}:${PATH}"; unset PYTHON_HOME;
 else
-  VENV_ACTIVATE = true
+  INVENV = invenv -C ${VENV_NAME}
 endif
+
+ifeq (${PLATFORM}, Android)
+  FLAKE8_FLAGS = --jobs=1
+else
+  FLAKE8_FLAGS = --jobs=auto
+endif
+
 PYTHON = ${VENV_BIN}/python
 
 
@@ -30,22 +42,28 @@ ${VENV_NAME}/venv.created:
 	@touch $@
 
 ${VENV_NAME}/dev.installed: setup.py setup.cfg requirements.txt
-	${VENV_ACTIVATE}; python -m pip install -Ue .[dev]
+	${INVENV} python -m pip install -Ue .[dev]
 	@touch $@
 
 install-dev: venv ${VENV_NAME}/dev.installed
 
 test: install-dev
-	${VENV_ACTIVATE}; pytest -vv tests
+	${INVENV} pytest -vv tests
 
 test-w-coverage: install-dev
-	${VENV_ACTIVATE}; pytest -vv --cov=json_streams  --cov-report=term-missing tests
+	${INVENV} pytest -vv --cov=json_streams  --cov-report=term-missing tests
 
 lint: install-dev
-	${VENV_ACTIVATE}; pylint --rcfile=.pylintrc json_streams tests
+	${INVENV}  pylint --rcfile=.pylintrc json_streams tests
 
 lint-no-fail: install-dev
-	${VENV_ACTIVATE}; pylint --rcfile=.pylintrc --exit-zero json_streams tests
+	${INVENV}  pylint --rcfile=.pylintrc --exit-zero json_streams tests
 
-publish-major: install-dev
-	@
+bumpversion-major: install-dev
+	${INVENV} bump2version major
+
+bumpversion-minor: install-dev
+	${INVENV} bump2version minor
+
+bumpversion-patch: install-dev
+	${INVENV} bump2version patch
