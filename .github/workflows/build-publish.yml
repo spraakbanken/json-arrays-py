@@ -15,6 +15,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         python-version: [3.6, 3.7, 3.8]
+        json-lib: [orjson, ujson, json]
     steps:
       - uses: actions/checkout@v1
       - name: Set up Python ${{ matrix.python-version }}
@@ -25,6 +26,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           make install-dev
+      - name: Install json library
+        if: matrix.json-lib != 'json'
+        run: .venv/bin/pip install ${{ matrix.json-lib }}
       - name: Lint with flake8 for syntax errors
         run: make lint-syntax-errors
       - name: Test with pytest
