@@ -24,7 +24,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
         run: |
-          python -m pip install --upgrade pip
+          make upgrade-pip
           make install-dev
       - name: Install json library
         if: matrix.json-lib != 'json'
