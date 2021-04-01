@@ -1,4 +1,5 @@
 """ Handle JSON lazily. """
+from pathlib import Path
 from typing import Dict
 from typing import BinaryIO
 from typing import Iterable
@@ -84,14 +85,14 @@ def load_eager(fp: BinaryIO):
         return data
 
 
-def load_from_file(file_name: str, *, file_mode: str = None):
+def load_from_file(file_name: Path, *, file_mode: str = None):
     if not file_mode:
         file_mode = "br"
     with open(file_name, "br") as fp:
         yield from load(fp)
 
 
-def dump_to_file(gen: Iterable, file_name: str, *, file_mode: str = None):
+def dump_to_file(gen: Iterable, file_name: Path, *, file_mode: str = None):
     if not file_mode:
         file_mode = "bw"
     with open(file_name, "bw") as fp:

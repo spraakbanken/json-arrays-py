@@ -1,5 +1,6 @@
 """ Handle JSON-LINES lazily. """
-rom typing import Dict
+from pathlib import Path
+from typing import Dict
 from typing import BinaryIO
 from typing import Iterable
 from typing import Union
@@ -29,14 +30,14 @@ def load(fp: BinaryIO) -> Iterable:
         yield jsonlib.loads(line)
 
 
-def load_from_file(file_name: str, *, file_mode: str = None):
+def load_from_file(file_name: Path, *, file_mode: str = None):
     if not file_mode:
         file_mode = "br"
     with open(file_name, "br") as fp:
         yield from load(fp)
 
 
-def dump_to_file(obj, file_name, *, file_mode: str = None):
+def dump_to_file(obj, file_name: Path, *, file_mode: str = None):
     if not file_mode:
         file_mode = "bw"
     with open(file_name, "bw") as fp:

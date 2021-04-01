@@ -1,4 +1,5 @@
 """ Handle JSON or JSON_LINES lazily. """
+from pathlib import Path
 from typing import Iterable
 from typing import BinaryIO
 
@@ -19,7 +20,7 @@ def load(fp: BinaryIO, *, file_type=None) -> Iterable:
     yield from _iter.load(fp)
 
 
-def load_from_file(file_name: str, *, file_type: str = None) -> Iterable:
+def load_from_file(file_name: Path, *, file_type: str = None) -> Iterable:
     _iter = choose_iter(file_name, file_type)
 
     yield from _iter.load_from_file(file_name)
@@ -31,7 +32,7 @@ def dump(in_iter_, fp: BinaryIO, *, file_type: str = None):
     _iter.dump(in_iter_, fp)
 
 
-def dump_to_file(in_iter_, file_name: str, *, file_type=None):
+def dump_to_file(in_iter_, file_name: Path, *, file_type=None):
     _iter = choose_iter(file_name, file_type)
 
     _iter.dump_to_file(in_iter_, file_name)
