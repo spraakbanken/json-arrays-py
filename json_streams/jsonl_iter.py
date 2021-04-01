@@ -1,4 +1,5 @@
-from typing import Dict
+""" Handle JSON-LINES lazily. """
+rom typing import Dict
 from typing import BinaryIO
 from typing import Iterable
 from typing import Union

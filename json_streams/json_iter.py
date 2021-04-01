@@ -1,4 +1,4 @@
-""" Handle JSON lazy. """
+""" Handle JSON lazily. """
 from typing import Dict
 from typing import BinaryIO
 from typing import Iterable
@@ -11,7 +11,7 @@ from json_streams.utils import to_bytes
 
 
 def dump(data: Union[Dict, Iterable], fp: BinaryIO):
-    """ Dump array to a file object.
+    """Dump array to a file object.
 
     Parameters
     ----------

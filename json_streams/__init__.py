@@ -1,3 +1,4 @@
+""" Handle JSON or JSON_LINES lazily. """
 from typing import Iterable
 from typing import BinaryIO
 
