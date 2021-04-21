@@ -1,6 +1,6 @@
 """ Handle JSON lazily. """
 from pathlib import Path
-from typing import Dict
+from typing import Any, Dict, Generator
 from typing import BinaryIO
 from typing import Iterable
 from typing import Union
@@ -8,6 +8,7 @@ from typing import Union
 import ijson
 
 from json_streams import jsonlib
+from json_streams import utils
 from json_streams.utils import to_bytes
 
 
@@ -99,16 +100,16 @@ def dump_to_file(gen: Iterable, file_name: Path, *, file_mode: str = None):
         return dump(gen, fp)
 
 
-def sink(fp: BinaryIO):
-    return JsonSink(fp)
+def array_sink(fp: BinaryIO):
+    return utils.Sink(json_sink(fp))
 
 
-class JsonSink:
-    def __init__(self, fp):
-        self.fp = fp
-
-    def __enter__(self):
-        pass
-
-    def __exit__(self):
-        pass
+def json_sink(fp: BinaryIO):
+    fp.write(b"[")
+    try:
+        while True:
+            fp.write(b"\n")
+            value = yield
+            fp.write(to_bytes(jsonlib.dumps(value)))
+    except GeneratorExit:
+        fp.write(b"]")

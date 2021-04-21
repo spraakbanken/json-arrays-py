@@ -6,6 +6,7 @@ from typing import Iterable
 from typing import Union
 
 from json_streams import jsonlib
+from json_streams import utils
 from json_streams.utils import to_bytes
 
 
@@ -42,3 +43,17 @@ def dump_to_file(obj, file_name: Path, *, file_mode: str = None):
         file_mode = "bw"
     with open(file_name, "bw") as fp:
         dump(obj, fp)
+
+
+def array_sink(fp: BinaryIO):
+    return utils.Sink(jsonl_sink(fp))
+
+
+def jsonl_sink(fp: BinaryIO):
+    try:
+        while True:
+            value = yield
+            fp.write(to_bytes(jsonlib.dumps(value)))
+            fp.write(b"\n")
+    except GeneratorExit:
+        pass

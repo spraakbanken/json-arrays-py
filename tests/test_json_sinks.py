@@ -1,4 +1,3 @@
-
 import io
 import json
 
@@ -24,18 +23,20 @@ def gen_data():
 
 @pytest.mark.parametrize(
     "it,data,facit",
-    [(json_iter, DATA[0], b'{"a":1}'), (jsonl_iter, DATA[0], b'{"a":1}\n'),],
+    [
+        (json_iter, DATA[0], b'{"a":1}'),
+        (jsonl_iter, DATA[0], b'{"a":1}\n'),
+    ],
 )
 def test_dump_dict_memoryio(it, data, facit):
     out = io.BytesIO()
-    with it.sink(out) as sink:
+    with it.array_sink(out) as sink:
         sink.send(data)
 
     # assert out.getvalue() == facit
+    print(f"out = {out.getvalue()}")
 
     out.seek(0)
     for i in it.load(out):
         print("i = {i}".format(i=i))
         assert i == data
-
-

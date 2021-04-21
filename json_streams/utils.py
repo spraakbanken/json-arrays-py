@@ -1,9 +1,7 @@
 """Util functions.
 """
 import os
-from typing import IO
-
-from typing import Union
+from typing import Any, Generator, IO, Union
 
 
 def get_name_of_file(fp: IO) -> str:
@@ -42,3 +40,15 @@ def to_bytes(s: Union[str, bytes, bytearray]) -> Union[bytes, bytearray]:
         return s
     else:
         return s.encode("utf-8")
+
+
+class Sink:
+    def __init__(self, sink: Generator[None, Any, None]):
+        self.sink = sink
+
+    def __enter__(self):
+        next(self.sink)
+        return self.sink
+
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        self.sink.close()
