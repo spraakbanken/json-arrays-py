@@ -99,4 +99,16 @@ def dump_to_file(gen: Iterable, file_name: Path, *, file_mode: str = None):
         return dump(gen, fp)
 
 
-def sink(fp: BinaryIO)
+def sink(fp: BinaryIO):
+    return JsonSink(fp)
+
+
+class JsonSink:
+    def __init__(self, fp):
+        self.fp = fp
+
+    def __enter__(self):
+        pass
+
+    def __exit__(self):
+        pass
