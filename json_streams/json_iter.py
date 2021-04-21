@@ -1,6 +1,6 @@
 """ Handle JSON lazily. """
 from pathlib import Path
-from typing import Any, Dict, Generator
+from typing import Dict
 from typing import BinaryIO
 from typing import Iterable
 from typing import Union
@@ -100,16 +100,29 @@ def dump_to_file(gen: Iterable, file_name: Path, *, file_mode: str = None):
         return dump(gen, fp)
 
 
-def array_sink(fp: BinaryIO):
+def sink(fp: BinaryIO):
     return utils.Sink(json_sink(fp))
 
 
 def json_sink(fp: BinaryIO):
-    fp.write(b"[")
+    is_first_value = True
+    first_value = None
     try:
         while True:
-            fp.write(b"\n")
-            value = yield
-            fp.write(to_bytes(jsonlib.dumps(value)))
+            value = (yield)
+            if is_first_value and first_value:
+                fp.write(b"[\n")
+                fp.write(to_bytes(jsonlib.dumps(first_value)))
+                is_first_value = False
+                fp.write(b",\n")
+                fp.write(to_bytes(jsonlib.dumps(value)))
+            elif is_first_value:
+                first_value = value
+            else:
+                fp.write(b",\n")
+                fp.write(to_bytes(jsonlib.dumps(value)))
     except GeneratorExit:
-        fp.write(b"]")
+        if is_first_value and first_value:
+            fp.write(to_bytes(jsonlib.dumps(first_value)))
+        else:
+            fp.write(b"\n]")

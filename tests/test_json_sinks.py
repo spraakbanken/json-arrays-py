@@ -30,7 +30,7 @@ def gen_data():
 )
 def test_dump_dict_memoryio(it, data, facit):
     out = io.BytesIO()
-    with it.array_sink(out) as sink:
+    with it.sink(out) as sink:
         sink.send(data)
 
     # assert out.getvalue() == facit
@@ -40,3 +40,22 @@ def test_dump_dict_memoryio(it, data, facit):
     for i in it.load(out):
         print("i = {i}".format(i=i))
         assert i == data
+
+
+@pytest.mark.parametrize(
+    "it,facit", [
+        (json_iter, JSON_FACIT),
+        (jsonl_iter, JSONL_FACIT),
+    ]
+)
+def test_dump_array_memoryio(it, facit):
+    out = io.BytesIO()
+    with it.sink(out) as sink:
+        for data in DATA:
+            sink.send(data)
+    # assert facit == out.getvalue()
+
+    print(f"out = {out.getvalue()}")
+    out.seek(0)
+    compare_iters(it.load(out), DATA)
+

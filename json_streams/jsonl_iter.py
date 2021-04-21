@@ -45,7 +45,7 @@ def dump_to_file(obj, file_name: Path, *, file_mode: str = None):
         dump(obj, fp)
 
 
-def array_sink(fp: BinaryIO):
+def sink(fp: BinaryIO):
     return utils.Sink(jsonl_sink(fp))
 
 
