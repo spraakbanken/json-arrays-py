@@ -97,3 +97,6 @@ def dump_to_file(gen: Iterable, file_name: Path, *, file_mode: str = None):
         file_mode = "bw"
     with open(file_name, "bw") as fp:
         return dump(gen, fp)
+
+
+def sink(fp: BinaryIO)
