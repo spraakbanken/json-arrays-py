@@ -41,6 +41,7 @@ jobs:
             run: make check-mypy
           - name: Run tests
             run: make run-all-tests-w-coverage
+
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
