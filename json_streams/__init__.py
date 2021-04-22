@@ -36,3 +36,9 @@ def dump_to_file(in_iter_, file_name: Path, *, file_type=None):
     _iter = choose_iter(file_name, file_type)
 
     _iter.dump_to_file(in_iter_, file_name)
+
+
+def sink(fp: BinaryIO, *, file_type=None):
+    _iter = choose_iter(utils.get_name_of_file(fp), file_type)
+
+    return _iter.sink(fp)
