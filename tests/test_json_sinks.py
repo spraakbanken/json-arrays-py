@@ -22,13 +22,13 @@ def gen_data():
 
 
 @pytest.mark.parametrize(
-    "it,data,facit",
+    "it,data",
     [
-        (json_iter, DATA[0], b'{"a":1}'),
-        (jsonl_iter, DATA[0], b'{"a":1}\n'),
+        (json_iter, DATA[0]),
+        (jsonl_iter, DATA[0]),
     ],
 )
-def test_dump_dict_memoryio(it, data, facit):
+def test_dict_to_sink_memoryio(it, data):
     out = io.BytesIO()
     with it.sink(out) as sink:
         sink.send(data)
@@ -43,12 +43,13 @@ def test_dump_dict_memoryio(it, data, facit):
 
 
 @pytest.mark.parametrize(
-    "it,facit", [
-        (json_iter, JSON_FACIT),
-        (jsonl_iter, JSONL_FACIT),
-    ]
+    "it",
+    [
+        json_iter,
+        jsonl_iter,
+    ],
 )
-def test_dump_array_memoryio(it, facit):
+def test_array_to_sink_memoryio(it):
     out = io.BytesIO()
     with it.sink(out) as sink:
         for data in DATA:
@@ -58,4 +59,3 @@ def test_dump_array_memoryio(it, facit):
     print(f"out = {out.getvalue()}")
     out.seek(0)
     compare_iters(it.load(out), DATA)
-
