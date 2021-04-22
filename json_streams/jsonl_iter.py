@@ -13,16 +13,16 @@ from json_streams.utils import to_bytes
 def dump(data: Union[Dict, Iterable], fp: BinaryIO):
 
     if isinstance(data, dict):
-        fp.write(to_bytes(jsonlib.dumps(data)))
+        fp.write(jsonlib.dumps(data))
         fp.write(b"\n")
         return
 
     try:
         for obj in data:
-            fp.write(to_bytes(jsonlib.dumps(obj)))
+            fp.write(jsonlib.dumps(obj))
             fp.write(b"\n")
     except TypeError:
-        fp.write(to_bytes(jsonlib.dumps(data)))
+        fp.write(jsonlib.dumps(data))
         fp.write(b"\n")
 
 
@@ -63,7 +63,7 @@ def jsonl_sink(fp: BinaryIO, *, close_file: bool = False):
     try:
         while True:
             value = yield
-            fp.write(to_bytes(jsonlib.dumps(value)))
+            fp.write(jsonlib.dumps(value))
             fp.write(b"\n")
     except GeneratorExit:
         pass
