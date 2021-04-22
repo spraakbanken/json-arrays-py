@@ -1,6 +1,7 @@
-""" Exceptions for sb_json_tools. """
+""" Exceptions for json_streams. """
 
-class JsonToolsException(Exception):
+
+class JsonStremsException(Exception):
     """
-    Base exception for sb_json_tools
+    Base exception for json_streams
     """
