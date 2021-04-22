@@ -23,7 +23,10 @@ def gen_data():
 
 @pytest.mark.parametrize(
     "it,data,facit",
-    [(json_iter, DATA[0], b'{"a":1}'), (jsonl_iter, DATA[0], b'{"a":1}\n'),],
+    [
+        (json_iter, DATA[0], b'{"a":1}'),
+        (jsonl_iter, DATA[0], b'{"a":1}\n'),
+    ],
 )
 def test_dump_dict_memoryio(it, data, facit):
     out = io.BytesIO()
@@ -37,7 +40,11 @@ def test_dump_dict_memoryio(it, data, facit):
 
 
 @pytest.mark.parametrize(
-    "it,facit", [(json_iter, JSON_FACIT), (jsonl_iter, JSONL_FACIT),]
+    "it,facit",
+    [
+        (json_iter, JSON_FACIT),
+        (jsonl_iter, JSONL_FACIT),
+    ],
 )
 def test_dump_array_memoryio(it, facit):
     out = io.BytesIO()
@@ -49,7 +56,11 @@ def test_dump_array_memoryio(it, facit):
 
 
 @pytest.mark.parametrize(
-    "it,facit", [(json_iter, JSON_FACIT), (jsonl_iter, JSONL_FACIT),]
+    "it,facit",
+    [
+        (json_iter, JSON_FACIT),
+        (jsonl_iter, JSONL_FACIT),
+    ],
 )
 def test_dump_gen_memoryio(it, facit):
     out = io.BytesIO()
@@ -60,9 +71,11 @@ def test_dump_gen_memoryio(it, facit):
     compare_iters(it.load(out), gen_data())
 
 
-@pytest.mark.parametrize("file_mode", ["rb", "r"])
 @pytest.mark.parametrize(
-    "it,file_name,facit", [(json_iter, "tests/data/array.json", None),]
+    "it,file_name,facit,file_mode",
+    [
+        (json_iter, "tests/data/array.json", None, "rb"),
+    ],
 )
 def test_load_file_name(it, file_name: str, facit, file_mode):
     if not facit:

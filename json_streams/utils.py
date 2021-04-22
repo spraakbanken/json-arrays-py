@@ -1,5 +1,6 @@
 """Util functions.
 """
+from enum import Enum
 import os
 from typing import Any, Generator, IO, Union
 
@@ -52,3 +53,8 @@ class Sink:
 
     def __exit__(self, exc_type, exc_value, exc_traceback):
         self.sink.close()
+
+
+class JsonFormat(str, Enum):
+    JSON = "json"
+    JSON_LINES = "jsonl"

@@ -34,14 +34,16 @@ def load(fp: BinaryIO) -> Iterable:
 def load_from_file(file_name: Path, *, file_mode: str = None):
     if not file_mode:
         file_mode = "br"
-    with open(file_name, "br") as fp:
+    assert "b" in file_mode
+    with open(file_name, file_mode) as fp:
         yield from load(fp)
 
 
 def dump_to_file(obj, file_name: Path, *, file_mode: str = None):
     if not file_mode:
         file_mode = "bw"
-    with open(file_name, "bw") as fp:
+    assert "b" in file_mode
+    with open(file_name, file_mode) as fp:
         dump(obj, fp)
 
 
@@ -49,7 +51,15 @@ def sink(fp: BinaryIO):
     return utils.Sink(jsonl_sink(fp))
 
 
-def jsonl_sink(fp: BinaryIO):
+def sink_from_file(file_name: Path, *, file_mode: str = None):
+    if not file_mode:
+        file_mode = "bw"
+    assert "b" in file_mode
+    fp = open(file_name, file_mode)
+    return utils.Sink(jsonl_sink(fp, close_file=True))
+
+
+def jsonl_sink(fp: BinaryIO, *, close_file: bool = False):
     try:
         while True:
             value = yield
@@ -57,3 +67,5 @@ def jsonl_sink(fp: BinaryIO):
             fp.write(b"\n")
     except GeneratorExit:
         pass
+    if close_file:
+        fp.close()

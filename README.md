@@ -97,6 +97,18 @@ def read_process_and_write(filename_in, filename_out):
     )
 ```
 
+You can also use json_streams as a sink, that you can send data to.
+
+```python
+import json_streams
+
+with open("out.json", "bw") as fp:
+  # guessing format
+  with json_streams.sink(fp) as sink:
+    for data in data_source():
+      sink.send(data)
+```
+
 # Development
 
 After cloning the repo, just run
