@@ -26,17 +26,17 @@ def load_from_file(
     *,
     json_format: Optional[utils.JsonFormat] = None,
     file_mode: str = "br",
-    use_stdin_if_no_file_name: bool = False,
+    use_stdin_as_default: bool = False,
 ) -> Iterable:
     """Lazily load from given file_name.
 
-    Reads from stdin if `use_stdin_if_no_file_name` is set and file_name is falsy.
+    Reads from stdin if `use_stdin_as_default` is set and file_name is falsy.
 
     Args:
         file_name (Path): name of file to load from
         json_format (Optional[utils.JsonFormat], optional): Explicit set format of json file. Defaults to None.
         file_mode (str, optional): mode to open the file in. Defaults to "br".
-        use_stdin_if_no_file_name (bool, optional): reads from stdin if file_name is None. Defaults to False.
+        use_stdin_as_default (bool, optional): reads from stdin if file_name is None. Defaults to False.
 
     Returns:
         Iterable: [description]
@@ -44,8 +44,11 @@ def load_from_file(
     Yields:
         Iterator[Iterable]: [description]
     """
-    if use_stdin_if_no_file_name and not file_name:
-        yield from jsonl_iter.load(sys.stdin.buffer)
+    if not file_name:
+        if use_stdin_as_default:
+            yield from jsonl_iter.load(sys.stdin.buffer)
+        else:
+            raise ValueError("You can't read from a empty file")
     else:
         _iter = choose_iter(file_name, json_format)
 
@@ -64,7 +67,8 @@ def dump_to_file(
     *,
     json_format: Optional[utils.JsonFormat] = None,
     file_mode: str = "bw",
-    use_stdout_if_no_file_name: bool = False,
+    use_stdout_as_default: bool = False,
+    use_stderr_as_default: bool = False,
 ):
     """Open file and dump json to it.
 
@@ -73,10 +77,16 @@ def dump_to_file(
         file_name (Path): The path to write to
         json_format (Optional[utils.JsonFormat], optional): the json format to write in. Defaults to None.
         file_mode (str, optional): the mode to open the file in. Defaults to "bw".
-        use_stdout_if_no_file_name (bool, optional): use stdout if file_name is empty. Defaults to False.
+        use_stdout_as_default (bool, optional): use stdout if file_name is empty. Defaults to False.
+        use_stdout_as_default (bool, optional): use stdout if file_name is empty. Defaults to False.
     """
-    if use_stdout_if_no_file_name and not file_name:
-        jsonl_iter.dump(in_iter_, sys.stdout.buffer)
+    if not file_name:
+        if use_stdout_as_default:
+            jsonl_iter.dump(in_iter_, sys.stdout.buffer)
+        elif use_stderr_as_default:
+            jsonl_iter.dump(in_iter_, sys.stderr.buffer)
+        else:
+            raise ValueError(f"file_name can't be empty")
     else:
         _iter = choose_iter(file_name, json_format)
 
@@ -94,7 +104,8 @@ def sink_from_file(
     *,
     json_format: Optional[utils.JsonFormat] = None,
     file_mode: str = "bw",
-    use_stdout_if_no_file_name: bool = False,
+    use_stdout_as_default: bool = False,
+    use_stderr_as_default: bool = False,
 ):
     """Open file and use it as json sink.
 
@@ -103,10 +114,16 @@ def sink_from_file(
         file_name (Path): The path to write to
         json_format (Optional[utils.JsonFormat], optional): the json format to write in. Defaults to None.
         file_mode (str, optional): the mode to open the file in. Defaults to "bw".
-        use_stdout_if_no_file_name (bool, optional): use stdout if file_name is empty. Defaults to False.
+        use_stdout_as_default (bool, optional): use stdout if file_name is empty. Defaults to False.
+        use_stderr_as_default (bool, optional): use stderr if file_name is empty. Defaults to False.
     """
-    if use_stdout_if_no_file_name and not file_name:
-        return jsonl_iter.sink(sys.stdout.buffer)
+    if not file_name:
+        if use_stdout_as_default:
+            return jsonl_iter.sink(sys.stdout.buffer)
+        elif use_stderr_as_default:
+            return jsonl_iter.sink(sys.stderr.buffer)
+        else:
+            raise ValueError(f"file_name can't be empty")
 
     _iter = choose_iter(file_name, json_format)
 
