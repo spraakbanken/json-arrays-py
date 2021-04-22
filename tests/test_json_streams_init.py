@@ -78,13 +78,13 @@ def test_load_from_file_json(file_name, json_format, expected_iter):
     ) as jsonl_iter_mock:
         for _ in json_streams.load_from_file(file_name, json_format=json_format):
             pass
-        expected_call = [mock.call(file_name, file_mode="br"), mock.call().__iter__()]
+        expected_call = mock.call(file_name, file_mode="br")
         if expected_iter == "json_iter":
-            assert json_iter_mock.mock_calls == expected_call
+            assert expected_call in json_iter_mock.mock_calls
             jsonl_iter_mock.assert_not_called()
         else:
             json_iter_mock.assert_not_called()
-            assert jsonl_iter_mock.mock_calls == expected_call
+            assert expected_call in jsonl_iter_mock.mock_calls
 
 
 @pytest.mark.parametrize(
