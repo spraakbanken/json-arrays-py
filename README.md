@@ -1,7 +1,5 @@
 # json-streams
 
-
-
 [![Build Status](https://travis-ci.org/spraakbanken/json-streams-py.svg?branch=master)](https://travis-ci.org/spraakbanken/json-streams-py)
 [![codecov](https://codecov.io/gh/spraakbanken/json-streams-py/branch/master/graph/badge.svg)](https://codecov.io/gh/spraakbanken/json-streams-py/)
 [![Build & Publish](https://github.com/spraakbanken/json-streams-py/workflows/Build%20&%20Publish/badge.svg)](https://github.com/spraakbanken/json-streams-py/actions)
@@ -10,17 +8,20 @@
 Read and write JSON lazy, especially json-arrays.
 
 Handles both the JSON format:
+
 ```json
 [
-    {
-        "a": 1
-    },
-    {
-        "a": 2
-    }
+  {
+    "a": 1
+  },
+  {
+    "a": 2
+  }
 ]
 ```
+
 As well as JSON LINES format:
+
 ```json
 {"a":1}
 {"a": 2}
@@ -31,6 +32,7 @@ Uses `orjson` or `ujson` if present, otherwise standard `json`.
 ## Usage
 
 ### Installation
+
 ```bash
 # Using standard json
 pip install json-streams
@@ -98,13 +100,18 @@ def read_process_and_write(filename_in, filename_out):
 # Development
 
 After cloning the repo, just run
+
 ```
 $ make test
 ```
+
 to setup a virtual environment,
 install dev dependencies
 and run the unit tests.
 
-*Note:* If you run the command in a activated virtual environment,
+_Note:_ If you run the command in a activated virtual environment,
 that environment is used instead.
 
+# Deplovment
+
+Push a tag in the format `v\d+.\d+.\d+`to master, to build & publish package to PyPi.
