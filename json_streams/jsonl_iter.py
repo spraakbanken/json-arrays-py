@@ -9,6 +9,8 @@ from json_streams import jsonlib
 from json_streams import utils
 from json_streams.utils import to_bytes
 
+# pylint: disable=unsubscriptable-object
+
 
 def dump(data: Union[Dict, Iterable], fp: BinaryIO):
 

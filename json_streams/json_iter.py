@@ -11,6 +11,8 @@ from json_streams import jsonlib
 from json_streams import utils
 from json_streams.utils import to_bytes
 
+# pylint: disable=unsubscriptable-object
+
 
 def dump(data: Union[Dict, Iterable], fp: BinaryIO):
     """Dump array to a file object.
@@ -49,7 +51,6 @@ def dump(data: Union[Dict, Iterable], fp: BinaryIO):
 def dumps(obj) -> Iterable[bytes]:
     if isinstance(obj, str):
         yield to_bytes(jsonlib.dumps(obj))
-        return
     elif isinstance(obj, dict):
         yield b"{"
         for i, (key, value) in enumerate(obj.items()):
@@ -58,20 +59,19 @@ def dumps(obj) -> Iterable[bytes]:
             yield b'"%s":' % to_bytes(key)
             yield from dumps(value)
         yield b"}"
-        return
-    try:
-        it = iter(obj)
-    except TypeError:
-        yield to_bytes(jsonlib.dumps(obj))
-        return
+    else:
+        try:
+            it = iter(obj)
+        except TypeError:
+            yield to_bytes(jsonlib.dumps(obj))
+        else:
+            yield b"["
+            for i, o in enumerate(it):
+                if i > 0:
+                    yield b","
+                yield to_bytes(jsonlib.dumps(o))
 
-    yield b"["
-    for i, o in enumerate(it):
-        if i > 0:
-            yield b","
-        yield to_bytes(jsonlib.dumps(o))
-
-    yield b"]"
+            yield b"]"
 
 
 def load(fp: BinaryIO) -> Iterable:
@@ -83,7 +83,7 @@ def load_eager(fp: BinaryIO):
     if isinstance(data, list):
         yield from data
     else:
-        return data
+        yield data
 
 
 def load_from_file(file_name: Path, *, file_mode: Optional[str] = None):

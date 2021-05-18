@@ -4,6 +4,8 @@ from enum import Enum
 import os
 from typing import Any, Generator, IO, Union
 
+# pylint: disable=unsubscriptable-object
+
 
 def get_name_of_file(fp: IO) -> str:
     if hasattr(fp, "name"):
@@ -39,8 +41,7 @@ def to_bytes(s: Union[str, bytes, bytearray]) -> Union[bytes, bytearray]:
     """
     if isinstance(s, (bytes, bytearray)):
         return s
-    else:
-        return s.encode("utf-8")
+    return s.encode("utf-8")
 
 
 class Sink:

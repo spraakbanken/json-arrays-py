@@ -22,16 +22,15 @@ def gen_data():
 
 
 @pytest.mark.parametrize(
-    "it,data,facit",
+    "it,data",
     [
-        (json_iter, DATA[0], b'{"a":1}'),
-        (jsonl_iter, DATA[0], b'{"a":1}\n'),
+        (json_iter, DATA[0]),
+        (jsonl_iter, DATA[0]),
     ],
 )
-def test_dump_dict_memoryio(it, data, facit):
+def test_dump_dict_memoryio(it, data):
     out = io.BytesIO()
     it.dump(data, out)
-    # assert out.getvalue() == facit
 
     out.seek(0)
     for i in it.load(out):
@@ -40,33 +39,31 @@ def test_dump_dict_memoryio(it, data, facit):
 
 
 @pytest.mark.parametrize(
-    "it,facit",
+    "it",
     [
-        (json_iter, JSON_FACIT),
-        (jsonl_iter, JSONL_FACIT),
+        json_iter,
+        jsonl_iter,
     ],
 )
-def test_dump_array_memoryio(it, facit):
+def test_dump_array_memoryio(it):
     out = io.BytesIO()
     it.dump(DATA, out)
-    # assert facit == out.getvalue()
 
     out.seek(0)
     compare_iters(it.load(out), DATA)
 
 
 @pytest.mark.parametrize(
-    "it,facit",
+    "it",
     [
-        (json_iter, JSON_FACIT),
-        (jsonl_iter, JSONL_FACIT),
+        json_iter,
+        jsonl_iter,
     ],
 )
-def test_dump_gen_memoryio(it, facit):
+def test_dump_gen_memoryio(it):
     out = io.BytesIO()
 
     it.dump(gen_data(), out)
-    # assert facit == out.getvalue()
     out.seek(0)
     compare_iters(it.load(out), gen_data())
 
@@ -86,8 +83,8 @@ def test_load_file_name(it, file_name: str, facit, file_mode):
     compare_iters(test_it, facit_it)
 
 
-@pytest.fixture
-def strings():
+@pytest.fixture(name="strings")
+def fixture_strings():
     return ["a", "b", "c"]
 
 
@@ -97,8 +94,7 @@ def dicts():
 
 
 def gen_values(lst):
-    for l in lst:
-        yield l
+    yield from lst
 
 
 @pytest.mark.parametrize(
