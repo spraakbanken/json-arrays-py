@@ -6,16 +6,17 @@ the standard library.
 """
 
 
-def get_backend(backend: str):
+def get_backend(backend_name: str):
     """Import the backend named `backend`"""
     import importlib
-    return importlib.import_module(f"json_streams.backends.{backend}")
+
+    return importlib.import_module(f"json_streams.backends.{backend_name}")
 
 
 def _default_backend():
-    for backend in ("be_orjson", "be_ujson", "be_json"):
+    for backend_name in ("be_orjson", "be_ujson", "be_json"):
         try:
-            return get_backend(backend)
+            return get_backend(backend_name)
         except ImportError:
             continue
     raise ImportError("no backends available")
@@ -24,8 +25,8 @@ def _default_backend():
 backend = _default_backend()
 del _default_backend
 
-dumps = backend.dumps
-loads = backend.loads
+dumps = backend.dumps  # type: ignore
+loads = backend.loads  # type: ignore
 
 
 def load_from_file(file_name: str):

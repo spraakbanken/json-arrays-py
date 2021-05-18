@@ -92,7 +92,7 @@ def load_from_file(file_name: Path, *, file_mode: Optional[str] = None):
 
     assert "b" in file_mode
     with open(file_name, file_mode) as fp:
-        yield from load(fp)
+        yield from load(fp)  # type: ignore
 
 
 def dump_to_file(gen: Iterable, file_name: Path, *, file_mode: str = None):
@@ -100,7 +100,7 @@ def dump_to_file(gen: Iterable, file_name: Path, *, file_mode: str = None):
         file_mode = "bw"
     assert "b" in file_mode
     with open(file_name, file_mode) as fp:
-        return dump(gen, fp)
+        return dump(gen, fp)  # type: ignore
 
 
 def sink(fp: BinaryIO):
@@ -112,7 +112,7 @@ def sink_from_file(file_name: Path, *, file_mode: str = None):
         file_mode = "bw"
     assert "b" in file_mode
     fp = open(file_name, file_mode)
-    return utils.Sink(json_sink(fp, close_file=True))
+    return utils.Sink(json_sink(fp, close_file=True))  # type: ignore
 
 
 def json_sink(fp: BinaryIO, *, close_file: bool = False):

@@ -7,7 +7,6 @@ from typing import Union
 
 from json_streams import jsonlib
 from json_streams import utils
-from json_streams.utils import to_bytes
 
 # pylint: disable=unsubscriptable-object
 
@@ -38,7 +37,7 @@ def load_from_file(file_name: Path, *, file_mode: str = None):
         file_mode = "br"
     assert "b" in file_mode
     with open(file_name, file_mode) as fp:
-        yield from load(fp)
+        yield from load(fp)  # type: ignore
 
 
 def dump_to_file(obj, file_name: Path, *, file_mode: str = None):
@@ -46,7 +45,7 @@ def dump_to_file(obj, file_name: Path, *, file_mode: str = None):
         file_mode = "bw"
     assert "b" in file_mode
     with open(file_name, file_mode) as fp:
-        dump(obj, fp)
+        dump(obj, fp)  # type: ignore
 
 
 def sink(fp: BinaryIO):
@@ -58,7 +57,7 @@ def sink_from_file(file_name: Path, *, file_mode: str = None):
         file_mode = "bw"
     assert "b" in file_mode
     fp = open(file_name, file_mode)
-    return utils.Sink(jsonl_sink(fp, close_file=True))
+    return utils.Sink(jsonl_sink(fp, close_file=True))  # type: ignore
 
 
 def jsonl_sink(fp: BinaryIO, *, close_file: bool = False):
