@@ -8,41 +8,59 @@ on:
       - v*
 
 jobs:
+  lint:
+    runs-on: ${{ matrix.os }}
+    name: Lint with pylint (${{ matrix.os }})
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.6]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Lint with pylint
+        run: make check-pylint
+        continue-on-error: true
+
   build:
     runs-on: ${{ matrix.os }}
+    name: ${{ matrix.task.name }} py-${{ matrix.python-version }} ${{ matrix.json-lib }} (${{ matrix.os }})
     strategy:
       max-parallel: 4
       matrix:
         os: [ubuntu-latest]
         python-version: [3.6, 3.7, 3.8, 3.9]
         json-lib: [orjson, ujson, json]
+        tasks:
+          - name: Check mypy
+            run: make check-mypy
+          - name: Run tests
+            run: make run-all-tests-w-coverage
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python-version }}
       - name: Install dependencies
-        run: |
-          make upgrade-pip
-          make install-dev
+        run: make install-dev
       - name: Install json library
         if: matrix.json-lib != 'json'
-        run: .venv/bin/pip install ${{ matrix.json-lib }}
-      - name: Lint with PyLint for syntax errors
-        run: make lint-no-fail
-      - name: Test with pytest
-        run: |
-          make test-w-coverage
+        run: make install-${{ matrix.json-lib }}
+      - name: ${{ matrix.task.name }}
+        run: ${{ matrix.task.run }}
       # - name: Coveralls
       #   uses: coverallsapp/github-action@master
       #   with:
       #     github-token: ${{ secrets.github_token }}
   publish:
-    needs: build
+    needs: [lint, build]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v2
       - name: Set up Python 3.6
         uses: actions/setup-python@v1
         with:
