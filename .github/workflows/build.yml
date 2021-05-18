@@ -36,7 +36,7 @@ jobs:
         os: [ubuntu-latest]
         python-version: [3.6, 3.7, 3.8, 3.9]
         json-lib: [orjson, ujson, json]
-        tasks:
+        task:
           - name: Check mypy
             run: make check-mypy
           - name: Run tests
