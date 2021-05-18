@@ -68,6 +68,9 @@ check-mypy: install-dev
 check-pylint: install-dev
 	${INVENV}  pylint --rcfile=.pylintrc json_streams tests
 
+check-pylint-refactorings: install-dev
+	${INVENV} pylint --disable=C,W,E --enable=R json_streams tests
+
 bumpversion-major: install-dev
 	${INVENV} bump2version major
 
