@@ -8,7 +8,7 @@ from . import json_iter
 from . import jsonl_iter
 from . import utils
 
-
+# pylint: disable=unsubscriptable-object
 def choose_iter(name, json_format: Optional[utils.JsonFormat]):
     if json_format == utils.JsonFormat.JSON_LINES or utils.is_jsonl(name):
         return jsonl_iter
@@ -86,7 +86,7 @@ def dump_to_file(
         elif use_stderr_as_default:
             jsonl_iter.dump(in_iter_, sys.stderr.buffer)
         else:
-            raise ValueError(f"file_name can't be empty")
+            raise ValueError("file_name can't be empty")
     else:
         _iter = choose_iter(file_name, json_format)
 
@@ -120,10 +120,9 @@ def sink_from_file(
     if not file_name:
         if use_stdout_as_default:
             return jsonl_iter.sink(sys.stdout.buffer)
-        elif use_stderr_as_default:
+        if use_stderr_as_default:
             return jsonl_iter.sink(sys.stderr.buffer)
-        else:
-            raise ValueError(f"file_name can't be empty")
+        raise ValueError("file_name can't be empty")
 
     _iter = choose_iter(file_name, json_format)
 
