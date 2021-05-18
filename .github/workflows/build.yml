@@ -26,7 +26,6 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - name: Lint with pylint
         run: make check-pylint
-        continue-on-error: true
 
   build:
     runs-on: ${{ matrix.os }}
