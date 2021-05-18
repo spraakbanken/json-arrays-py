@@ -1,4 +1,4 @@
-.PHONY: venv help test test-w-coverage lint lint-no-fail
+.PHONY: venv help test run-all-tests run-all-tests-w-coverage check-pylint check-mypy
 
 .default: help
 
@@ -45,22 +45,28 @@ ${VENV_NAME}/dev.installed: setup.py setup.cfg requirements.txt
 	${INVENV} python -m pip install -Ue .[dev]
 	@touch $@
 
-install-dev: venv ${VENV_NAME}/dev.installed
+install-dev: venv upgrade-pip ${VENV_NAME}/dev.installed
+install-orjson: venv
+	${INVENV} pip install -U orjson
+
+install-ujson: venv
+	${INVENV} pip install -U ujson
 
 upgrade-pip: venv
 	${INVENV} pip install --upgrade pip
 
-test: install-dev
+test: run-all-tests
+run-all-tests: install-dev
 	${INVENV} pytest -vv tests
 
-test-w-coverage: install-dev
+run-all-tests-w-coverage: install-dev
 	${INVENV} pytest -vv --cov=json_streams  --cov-report=term-missing tests
 
-lint: install-dev
-	${INVENV}  pylint --rcfile=.pylintrc json_streams tests
+check-mypy: install-dev
+	${INVENV} mypy json_streams tests
 
-lint-no-fail: install-dev
-	${INVENV}  pylint --rcfile=.pylintrc --exit-zero json_streams tests
+check-pylint: install-dev
+	${INVENV}  pylint --rcfile=.pylintrc json_streams tests
 
 bumpversion-major: install-dev
 	${INVENV} bump2version major
@@ -68,5 +74,5 @@ bumpversion-major: install-dev
 bumpversion-minor: install-dev
 	${INVENV} bump2version minor
 
-bumpversion-patch: install-dev
+bumpversion: install-dev
 	${INVENV} bump2version patch
