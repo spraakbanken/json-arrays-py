@@ -1,7 +1,7 @@
 import io
 import json
 
-import pytest
+import pytest  # type: ignore
 
 from json_streams import json_iter, jsonl_iter
 from .utils import compare_iters

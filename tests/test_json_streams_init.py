@@ -1,7 +1,7 @@
 import io
 from unittest import mock
 
-import pytest
+import pytest  # type: ignore
 
 import json_streams
 from .utils import compare_iters

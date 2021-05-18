@@ -1,4 +1,4 @@
-import pytest
+import pytest  # type: ignore
 
 from json_streams.utils import is_jsonl, get_name_of_file
 
