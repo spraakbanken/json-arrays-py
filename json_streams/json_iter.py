@@ -24,28 +24,30 @@ def dump(data: Union[Dict, Iterable], fp: BinaryIO):
     data :
         Iterable object to write.
     """
+    for chunk in dumps(data):
+        fp.write(chunk)
 
-    if isinstance(data, dict):
-        fp.write(jsonlib.dumps(data))
-        return
-
-    try:
-        it = iter(data)
-    except TypeError:
-        fp.write(jsonlib.dumps(data))
-        return
-
-    fp.write(b"[\n")
-    try:
-        obj = next(it)
-        fp.write(jsonlib.dumps(obj))
-    except StopIteration:
-        pass
-    else:
-        for v in it:
-            fp.write(b",\n")
-            fp.write(jsonlib.dumps(v))
-    fp.write(b"\n]")
+#     if isinstance(data, dict):
+#         fp.write(jsonlib.dumps(data))
+#         return
+#
+#     try:
+#         it = iter(data)
+#     except TypeError:
+#         fp.write(jsonlib.dumps(data))
+#         return
+#
+#     fp.write(b"[\n")
+#     try:
+#         obj = next(it)
+#         fp.write(jsonlib.dumps(obj))
+#     except StopIteration:
+#         pass
+#     else:
+#         for v in it:
+#             fp.write(b",\n")
+#             fp.write(jsonlib.dumps(v))
+#     fp.write(b"\n]")
 
 
 def dumps(obj) -> Iterable[bytes]:

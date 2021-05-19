@@ -10,8 +10,6 @@ from json_streams import utils
 
 # pylint: disable=unsubscriptable-object
 
-# pylint: disable=unsubscriptable-object
-
 
 def dump(data: Union[Dict, Iterable], fp: BinaryIO):
 
