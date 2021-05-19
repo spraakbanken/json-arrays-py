@@ -5,7 +5,7 @@ from typing import BinaryIO
 from typing import Iterable
 from typing import Optional, Union
 
-import ijson
+import ijson  # type: ignore
 
 from json_streams import jsonlib
 from json_streams import utils
