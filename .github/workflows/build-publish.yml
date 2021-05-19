@@ -29,10 +29,11 @@ jobs:
     name: ${{ matrix.task.name }} py-${{ matrix.python-version }} ${{ matrix.json-lib }} (${{ matrix.os }})
     strategy:
       max-parallel: 4
+      fail-fast: false
       matrix:
         os: [ubuntu-latest]
         python-version: [3.6, 3.7, 3.8, 3.9]
-        json-lib: [orjson, ujson, json]
+        json-lib: [orjson, json]
         task:
           - name: Check mypy
             run: make check-mypy
