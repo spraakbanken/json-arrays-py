@@ -1,6 +1,5 @@
 # json-streams
 
-[![Build Status](https://travis-ci.org/spraakbanken/json-streams-py.svg?branch=master)](https://travis-ci.org/spraakbanken/json-streams-py)
 [![codecov](https://codecov.io/gh/spraakbanken/json-streams-py/branch/master/graph/badge.svg)](https://codecov.io/gh/spraakbanken/json-streams-py/)
 [![Build & Publish](https://github.com/spraakbanken/json-streams-py/workflows/Build%20&%20Publish/badge.svg)](https://github.com/spraakbanken/json-streams-py/actions)
 [![PyPI status](https://badge.fury.io/py/json-streams.svg)](https://pypi.org/project/json-streams/)
@@ -27,7 +26,7 @@ As well as JSON LINES format:
 {"a": 2}
 ```
 
-Uses `orjson` or `ujson` if present, otherwise standard `json`.
+Uses `orjson` if present, otherwise standard `json`.
 
 ## Usage
 
