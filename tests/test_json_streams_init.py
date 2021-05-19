@@ -92,7 +92,7 @@ def test_load_from_file_json(file_name, json_format, expected_iter):
     [
         (1, b"1", "json"),
         (1, b"1\n", "jsonl"),
-        ([1, 2], b"[\n1,\n2\n]", "json"),
+        ([1, 2], b"[1,2]", "json"),
         ([1, 2], b"1\n2\n", "jsonl"),
     ],
 )
