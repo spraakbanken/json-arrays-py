@@ -6,7 +6,7 @@ from typing import Iterable
 from typing import Union
 
 from json_streams import jsonlib
-from json_streams import utils
+from json_streams import utility
 
 # pylint: disable=unsubscriptable-object
 
@@ -49,7 +49,7 @@ def dump_to_file(obj, file_name: Path, *, file_mode: str = None):
 
 
 def sink(fp: BinaryIO):
-    return utils.Sink(jsonl_sink(fp))
+    return utility.Sink(jsonl_sink(fp))
 
 
 def sink_from_file(file_name: Path, *, file_mode: str = None):
@@ -57,7 +57,7 @@ def sink_from_file(file_name: Path, *, file_mode: str = None):
         file_mode = "bw"
     assert "b" in file_mode
     fp = open(file_name, file_mode)
-    return utils.Sink(jsonl_sink(fp, close_file=True))  # type: ignore
+    return utility.Sink(jsonl_sink(fp, close_file=True))  # type: ignore
 
 
 def jsonl_sink(fp: BinaryIO, *, close_file: bool = False):

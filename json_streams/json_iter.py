@@ -8,8 +8,8 @@ from typing import Optional, Union
 import ijson
 
 from json_streams import jsonlib
-from json_streams import utils
-from json_streams.utils import to_bytes
+from json_streams import utility
+from json_streams.utility import to_bytes
 
 # pylint: disable=unsubscriptable-object
 
@@ -26,6 +26,7 @@ def dump(data: Union[Dict, Iterable], fp: BinaryIO):
     """
     for chunk in dumps(data):
         fp.write(chunk)
+
 
 #     if isinstance(data, dict):
 #         fp.write(jsonlib.dumps(data))
@@ -106,7 +107,7 @@ def dump_to_file(gen: Iterable, file_name: Path, *, file_mode: str = None):
 
 
 def sink(fp: BinaryIO):
-    return utils.Sink(json_sink(fp))
+    return utility.Sink(json_sink(fp))
 
 
 def sink_from_file(file_name: Path, *, file_mode: str = None):
@@ -114,7 +115,7 @@ def sink_from_file(file_name: Path, *, file_mode: str = None):
         file_mode = "bw"
     assert "b" in file_mode
     fp = open(file_name, file_mode)
-    return utils.Sink(json_sink(fp, close_file=True))  # type: ignore
+    return utility.Sink(json_sink(fp, close_file=True))  # type: ignore
 
 
 def json_sink(fp: BinaryIO, *, close_file: bool = False):
