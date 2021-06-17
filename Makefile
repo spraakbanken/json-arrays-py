@@ -49,9 +49,6 @@ install-dev: venv upgrade-pip ${VENV_NAME}/dev.installed
 install-orjson: venv
 	${INVENV} pip install -U orjson
 
-install-ujson: venv
-	${INVENV} pip install -U ujson
-
 upgrade-pip: venv
 	${INVENV} pip install --upgrade pip
 

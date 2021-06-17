@@ -15,7 +15,7 @@ def get_backend(backend_name: str):
 
 
 def _default_backend():
-    for backend_name in ("be_orjson", "be_ujson", "be_json"):
+    for backend_name in ("be_orjson", "be_json"):
         try:
             return get_backend(backend_name)
         except ImportError:
