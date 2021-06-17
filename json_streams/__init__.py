@@ -3,10 +3,12 @@ from pathlib import Path
 from typing import Iterable, Optional
 from typing import BinaryIO
 import sys
+import typing
 
 from . import json_iter
 from . import jsonl_iter
 from json_streams import utility
+from json_streams.utility import types
 
 # pylint: disable=unsubscriptable-object
 def choose_iter(name, json_format: Optional[utility.JsonFormat]):
@@ -22,7 +24,7 @@ def load(fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None) -> I
 
 
 def load_from_file(
-    file_name: Path,
+    file_name: typing.Optional[types.Pathlike],
     *,
     json_format: Optional[utility.JsonFormat] = None,
     file_mode: str = "br",
@@ -44,15 +46,15 @@ def load_from_file(
     Yields:
         Iterator[Iterable]: [description]
     """
-    if not file_name:
-        if use_stdin_as_default:
-            yield from jsonl_iter.load(sys.stdin.buffer)
-        else:
-            raise ValueError("You can't read from a empty file")
-    else:
+    if file_name is not None:
         _iter = choose_iter(file_name, json_format)
 
         yield from _iter.load_from_file(file_name, file_mode=file_mode)
+
+    elif use_stdin_as_default:
+        yield from jsonl_iter.load(sys.stdin.buffer)
+    else:
+        raise ValueError("You can't read from a empty file")
 
 
 def dump(in_iter_, fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None):
@@ -63,7 +65,7 @@ def dump(in_iter_, fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = 
 
 def dump_to_file(
     in_iter_,
-    file_name: Path,
+    file_name: typing.Optional[types.Pathlike],
     *,
     json_format: Optional[utility.JsonFormat] = None,
     file_mode: str = "bw",
@@ -80,17 +82,17 @@ def dump_to_file(
         use_stdout_as_default (bool, optional): use stdout if file_name is empty. Defaults to False.
         use_stdout_as_default (bool, optional): use stdout if file_name is empty. Defaults to False.
     """
-    if not file_name:
-        if use_stdout_as_default:
-            jsonl_iter.dump(in_iter_, sys.stdout.buffer)
-        elif use_stderr_as_default:
-            jsonl_iter.dump(in_iter_, sys.stderr.buffer)
-        else:
-            raise ValueError("file_name can't be empty")
-    else:
+    if file_name is not None:
         _iter = choose_iter(file_name, json_format)
 
         _iter.dump_to_file(in_iter_, file_name, file_mode=file_mode)
+
+    elif use_stdout_as_default:
+        jsonl_iter.dump(in_iter_, sys.stdout.buffer)
+    elif use_stderr_as_default:
+        jsonl_iter.dump(in_iter_, sys.stderr.buffer)
+    else:
+        raise ValueError("file_name can't be empty")
 
 
 def sink(fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None):
@@ -100,7 +102,7 @@ def sink(fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None):
 
 
 def sink_from_file(
-    file_name: Path,
+    file_name: typing.Optional[types.Pathlike],
     *,
     json_format: Optional[utility.JsonFormat] = None,
     file_mode: str = "bw",
