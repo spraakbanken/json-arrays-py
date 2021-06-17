@@ -1,5 +1,4 @@
 """ Handle JSON lazily. """
-from pathlib import Path
 from typing import Dict
 from typing import BinaryIO
 from typing import Iterable
@@ -9,7 +8,7 @@ import ijson  # type: ignore
 
 from json_streams import jsonlib
 from json_streams import utility
-from json_streams.utility import to_bytes
+from json_streams.utility import types
 
 # pylint: disable=unsubscriptable-object
 
@@ -59,7 +58,7 @@ def dumps(obj) -> Iterable[bytes]:
         for i, (key, value) in enumerate(obj.items()):
             if i > 0:
                 yield b","
-            yield b'"%s":' % to_bytes(key)
+            yield b'"%s":' % utility.to_bytes(key)
             yield from dumps(value)
         yield b"}"
     else:
@@ -89,7 +88,7 @@ def load_eager(fp: BinaryIO):
         yield data
 
 
-def load_from_file(file_name: Path, *, file_mode: Optional[str] = None):
+def load_from_file(file_name: types.Pathlike, *, file_mode: Optional[str] = None):
     if not file_mode:
         file_mode = "br"
 
@@ -98,7 +97,7 @@ def load_from_file(file_name: Path, *, file_mode: Optional[str] = None):
         yield from load(fp)  # type: ignore
 
 
-def dump_to_file(gen: Iterable, file_name: Path, *, file_mode: str = None):
+def dump_to_file(gen: Iterable, file_name: types.Pathlike, *, file_mode: str = None):
     if not file_mode:
         file_mode = "bw"
     assert "b" in file_mode
@@ -110,7 +109,7 @@ def sink(fp: BinaryIO):
     return utility.Sink(json_sink(fp))
 
 
-def sink_from_file(file_name: Path, *, file_mode: str = None):
+def sink_from_file(file_name: types.Pathlike, *, file_mode: str = None):
     if not file_mode:
         file_mode = "bw"
     assert "b" in file_mode

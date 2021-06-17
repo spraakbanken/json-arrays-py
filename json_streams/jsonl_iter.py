@@ -1,5 +1,4 @@
 """ Handle JSON-LINES lazily. """
-from pathlib import Path
 from typing import Dict
 from typing import BinaryIO
 from typing import Iterable
@@ -7,6 +6,7 @@ from typing import Union
 
 from json_streams import jsonlib
 from json_streams import utility
+from json_streams.utility import types
 
 # pylint: disable=unsubscriptable-object
 
@@ -32,7 +32,7 @@ def load(fp: BinaryIO) -> Iterable:
         yield jsonlib.loads(line)
 
 
-def load_from_file(file_name: Path, *, file_mode: str = None):
+def load_from_file(file_name: types.Pathlike, *, file_mode: str = None):
     if not file_mode:
         file_mode = "br"
     assert "b" in file_mode
@@ -40,7 +40,7 @@ def load_from_file(file_name: Path, *, file_mode: str = None):
         yield from load(fp)  # type: ignore
 
 
-def dump_to_file(obj, file_name: Path, *, file_mode: str = None):
+def dump_to_file(obj, file_name: types.Pathlike, *, file_mode: str = None):
     if not file_mode:
         file_mode = "bw"
     assert "b" in file_mode
@@ -52,7 +52,7 @@ def sink(fp: BinaryIO):
     return utility.Sink(jsonl_sink(fp))
 
 
-def sink_from_file(file_name: Path, *, file_mode: str = None):
+def sink_from_file(file_name: types.Pathlike, *, file_mode: str = None):
     if not file_mode:
         file_mode = "bw"
     assert "b" in file_mode
