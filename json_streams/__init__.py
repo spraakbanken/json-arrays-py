@@ -6,17 +6,17 @@ import sys
 
 from . import json_iter
 from . import jsonl_iter
-from . import utils
+from json_streams import utility
 
 # pylint: disable=unsubscriptable-object
-def choose_iter(name, json_format: Optional[utils.JsonFormat]):
-    if json_format == utils.JsonFormat.JSON_LINES or utils.is_jsonl(name):
+def choose_iter(name, json_format: Optional[utility.JsonFormat]):
+    if json_format == utility.JsonFormat.JSON_LINES or utility.is_jsonl(name):
         return jsonl_iter
     return json_iter
 
 
-def load(fp: BinaryIO, *, json_format: Optional[utils.JsonFormat] = None) -> Iterable:
-    _iter = choose_iter(utils.get_name_of_file(fp), json_format)
+def load(fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None) -> Iterable:
+    _iter = choose_iter(utility.get_name_of_file(fp), json_format)
 
     yield from _iter.load(fp)
 
@@ -24,7 +24,7 @@ def load(fp: BinaryIO, *, json_format: Optional[utils.JsonFormat] = None) -> Ite
 def load_from_file(
     file_name: Path,
     *,
-    json_format: Optional[utils.JsonFormat] = None,
+    json_format: Optional[utility.JsonFormat] = None,
     file_mode: str = "br",
     use_stdin_as_default: bool = False,
 ) -> Iterable:
@@ -34,7 +34,7 @@ def load_from_file(
 
     Args:
         file_name (Path): name of file to load from
-        json_format (Optional[utils.JsonFormat], optional): Explicit set format of json file. Defaults to None.
+        json_format (Optional[utility.JsonFormat], optional): Explicit set format of json file. Defaults to None.
         file_mode (str, optional): mode to open the file in. Defaults to "br".
         use_stdin_as_default (bool, optional): reads from stdin if file_name is None. Defaults to False.
 
@@ -55,8 +55,8 @@ def load_from_file(
         yield from _iter.load_from_file(file_name, file_mode=file_mode)
 
 
-def dump(in_iter_, fp: BinaryIO, *, json_format: Optional[utils.JsonFormat] = None):
-    _iter = choose_iter(utils.get_name_of_file(fp), json_format)
+def dump(in_iter_, fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None):
+    _iter = choose_iter(utility.get_name_of_file(fp), json_format)
 
     _iter.dump(in_iter_, fp)
 
@@ -65,7 +65,7 @@ def dump_to_file(
     in_iter_,
     file_name: Path,
     *,
-    json_format: Optional[utils.JsonFormat] = None,
+    json_format: Optional[utility.JsonFormat] = None,
     file_mode: str = "bw",
     use_stdout_as_default: bool = False,
     use_stderr_as_default: bool = False,
@@ -75,7 +75,7 @@ def dump_to_file(
     Args:
         in_iter_ (Any): The data to dump.
         file_name (Path): The path to write to
-        json_format (Optional[utils.JsonFormat], optional): the json format to write in. Defaults to None.
+        json_format (Optional[utility.JsonFormat], optional): the json format to write in. Defaults to None.
         file_mode (str, optional): the mode to open the file in. Defaults to "bw".
         use_stdout_as_default (bool, optional): use stdout if file_name is empty. Defaults to False.
         use_stdout_as_default (bool, optional): use stdout if file_name is empty. Defaults to False.
@@ -93,8 +93,8 @@ def dump_to_file(
         _iter.dump_to_file(in_iter_, file_name, file_mode=file_mode)
 
 
-def sink(fp: BinaryIO, *, json_format: Optional[utils.JsonFormat] = None):
-    _iter = choose_iter(utils.get_name_of_file(fp), json_format)
+def sink(fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None):
+    _iter = choose_iter(utility.get_name_of_file(fp), json_format)
 
     return _iter.sink(fp)
 
@@ -102,7 +102,7 @@ def sink(fp: BinaryIO, *, json_format: Optional[utils.JsonFormat] = None):
 def sink_from_file(
     file_name: Path,
     *,
-    json_format: Optional[utils.JsonFormat] = None,
+    json_format: Optional[utility.JsonFormat] = None,
     file_mode: str = "bw",
     use_stdout_as_default: bool = False,
     use_stderr_as_default: bool = False,
@@ -112,7 +112,7 @@ def sink_from_file(
     Args:
         in_iter_ (Any): The data to dump.
         file_name (Path): The path to write to
-        json_format (Optional[utils.JsonFormat], optional): the json format to write in. Defaults to None.
+        json_format (Optional[utility.JsonFormat], optional): the json format to write in. Defaults to None.
         file_mode (str, optional): the mode to open the file in. Defaults to "bw".
         use_stdout_as_default (bool, optional): use stdout if file_name is empty. Defaults to False.
         use_stderr_as_default (bool, optional): use stderr if file_name is empty. Defaults to False.
