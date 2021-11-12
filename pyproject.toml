@@ -1,0 +1,41 @@
+[tool.poetry]
+name = "json-streams"
+version = "0.10.1"
+description = "Stream JSON and JSON-Lines lazily."
+authors = ["Språkbanken at Göteborgs universitet <sb-info@svenska.gu.se>"]
+license = "MIT"
+homepage = "https://github.com/spraakbanken/json-streams-py"
+readme = "README.md"
+classifiers = [
+	"Development Status :: 4 - Beta",
+    # "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: Unix",
+    "Operating System :: POSIX",
+    # "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: Implementation :: CPython",
+    # "uncomment if you test on these interpreters:",
+    # "Programming Language :: Python :: Implementation :: IronPython",
+    # "Programming Language :: Python :: Implementation :: Jython",
+    # "Programming Language :: Python :: Implementation :: Stackless",
+    "Topic :: Utilities",
+]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/spraakbanken/json-streams-py/issues"
+
+[tool.poetry.dependencies]
+python = ">=3.6.2,<4"
+ijson = "^3.1.4"
+orjson = { version = "^3.6", optional = true }
+
+[tool.poetry.extras]
+orjson = ["orjson"]
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2.5"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
