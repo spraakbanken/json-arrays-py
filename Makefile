@@ -37,7 +37,7 @@ PYTHON = ${VENV_BIN}/python
 
 dev: install-dev
 install-dev: 
-	poetry install --no-dev
+	poetry install
 
 install-orjson:
 	poetry install --extras orjson
