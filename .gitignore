@@ -105,5 +105,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# generated test data
+tests/data/gen/
+
 # VS Code settings
 /.vscode
