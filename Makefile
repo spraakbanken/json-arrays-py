@@ -40,7 +40,7 @@ install-dev:
 	poetry install --no-dev
 
 install-orjson:
-	poerry install --extras orjson
+	poetry install --extras orjson
 
 upgrade-pip: venv
 	${INVENV} pip install --upgrade pip
@@ -50,16 +50,16 @@ run-all-tests:
 	poetry run pytest -vv tests
 
 run-all-tests-w-coverage:
-	poerry run pytest -vv --cov=json_streams  --cov-report=term-missing tests
+	poetry run pytest -vv --cov=json_streams  --cov-report=term-missing tests
 
 check-mypy: install-dev
-	${INVENV} mypy json_streams tests
+	poetry run mypy json_streams tests
 
 check-pylint: install-dev
-	${INVENV}  pylint --rcfile=.pylintrc json_streams tests
+	poetry run  pylint --rcfile=.pylintrc json_streams tests
 
 check-pylint-refactorings: install-dev
-	${INVENV} pylint --disable=C,W,E --enable=R json_streams tests
+	poetry run pylint --disable=C,W,E --enable=R json_streams tests
 
 bumpversion-major: install-dev
 	poetry run bump2version major
