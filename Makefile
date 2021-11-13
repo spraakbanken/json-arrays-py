@@ -35,29 +35,22 @@ endif
 PYTHON = ${VENV_BIN}/python
 
 
-venv: ${VENV_NAME}/venv.created
+dev: install-dev
+install-dev: 
+	poetry install --no-dev
 
-${VENV_NAME}/venv.created:
-	test -d ${VENV_NAME} || python -m venv ${VENV_NAME}
-	@touch $@
-
-${VENV_NAME}/dev.installed: setup.py setup.cfg requirements.txt
-	${INVENV} python -m pip install -Ue .[dev]
-	@touch $@
-
-install-dev: venv upgrade-pip ${VENV_NAME}/dev.installed
-install-orjson: venv
-	${INVENV} pip install -U orjson
+install-orjson:
+	poerry install --extras orjson
 
 upgrade-pip: venv
 	${INVENV} pip install --upgrade pip
 
 test: run-all-tests
-run-all-tests: install-dev
-	${INVENV} pytest -vv tests
+run-all-tests:
+	poetry run pytest -vv tests
 
-run-all-tests-w-coverage: install-dev
-	${INVENV} pytest -vv --cov=json_streams  --cov-report=term-missing tests
+run-all-tests-w-coverage:
+	poerry run pytest -vv --cov=json_streams  --cov-report=term-missing tests
 
 check-mypy: install-dev
 	${INVENV} mypy json_streams tests
@@ -69,10 +62,10 @@ check-pylint-refactorings: install-dev
 	${INVENV} pylint --disable=C,W,E --enable=R json_streams tests
 
 bumpversion-major: install-dev
-	${INVENV} bump2version major
+	poetry run bump2version major
 
 bumpversion-minor: install-dev
-	${INVENV} bump2version minor
+	poetry run bump2version minor
 
 bumpversion: install-dev
-	${INVENV} bump2version patch
+	poetry run bump2version patch
