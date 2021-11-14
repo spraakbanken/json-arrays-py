@@ -93,7 +93,7 @@ def load_from_file(file_name: types.Pathlike, *, file_mode: Optional[str] = None
         file_mode = "br"
 
     assert "b" in file_mode
-    with open(file_name, file_mode, encoding='utf-8') as fp:
+    with open(file_name, file_mode) as fp:
         yield from load(fp)  # type: ignore
 
 
@@ -101,7 +101,7 @@ def dump_to_file(gen: Iterable, file_name: types.Pathlike, *, file_mode: str = N
     if not file_mode:
         file_mode = "bw"
     assert "b" in file_mode
-    with open(file_name, file_mode, encoding='utf-8') as fp:
+    with open(file_name, file_mode) as fp:
         return dump(gen, fp)  # type: ignore
 
 
@@ -113,7 +113,7 @@ def sink_from_file(file_name: types.Pathlike, *, file_mode: str = None):
     if not file_mode:
         file_mode = "bw"
     assert "b" in file_mode
-    fp = open(file_name, file_mode, encoding='utf-8')
+    fp = open(file_name, file_mode)
     return utility.Sink(json_sink(fp, close_file=True))  # type: ignore
 
 
