@@ -117,6 +117,7 @@ with open("out.json", "bw") as fp:
 After cloning the repo, just run
 
 ```
+$ make dev
 $ make test
 ```
 
@@ -127,6 +128,6 @@ and run the unit tests.
 _Note:_ If you run the command in a activated virtual environment,
 that environment is used instead.
 
-# Deplovment
+# Deployment
 
 Push a tag in the format `v\d+.\d+.\d+`to master, to build & publish package to PyPi.
