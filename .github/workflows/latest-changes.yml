@@ -22,4 +22,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           latest_changes_file: CHANGELOG.md
-          latest_changes_header: '## \[Unreleased\}\n\n'
+          latest_changes_header: '## \[Unreleased\]\n\n'
