@@ -30,6 +30,7 @@ def load_from_file(
     json_format: Optional[utility.JsonFormat] = None,
     file_mode: str = "br",
     use_stdin_as_default: bool = False,
+    **kwargs,
 ) -> Iterable:
     """Lazily load from given file_name.
 
@@ -50,10 +51,10 @@ def load_from_file(
     if file_name is not None:
         _iter = choose_iter(file_name, json_format)
 
-        yield from _iter.load_from_file(file_name, file_mode=file_mode)
+        yield from _iter.load_from_file(file_name, file_mode=file_mode, **kwargs)
 
     elif use_stdin_as_default:
-        yield from jsonl_iter.load(sys.stdin.buffer)
+        yield from jsonl_iter.load(sys.stdin.buffer, **kwargs)
     else:
         raise ValueError("You can't read from a empty file")
 
@@ -90,9 +91,9 @@ def dump_to_file(
         _iter.dump_to_file(in_iter_, file_name, file_mode=file_mode, **kwargs)
 
     elif use_stdout_as_default:
-        jsonl_iter.dump(in_iter_, sys.stdout.buffer)
+        jsonl_iter.dump(in_iter_, sys.stdout.buffer, **kwargs)
     elif use_stderr_as_default:
-        jsonl_iter.dump(in_iter_, sys.stderr.buffer)
+        jsonl_iter.dump(in_iter_, sys.stderr.buffer, **kwargs)
     else:
         raise ValueError("file_name can't be empty")
 

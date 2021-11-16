@@ -27,17 +27,17 @@ def dump(data: Union[Dict, Iterable], fp: BinaryIO, **kwargs):
         fp.write(b"\n")
 
 
-def load(fp: BinaryIO) -> Iterable:
+def load(fp: BinaryIO, **kwargs) -> Iterable:
     for line in fp:
-        yield jsonlib.loads(line)
+        yield jsonlib.loads(line, **kwargs)
 
 
-def load_from_file(file_name: types.Pathlike, *, file_mode: str = None):
+def load_from_file(file_name: types.Pathlike, *, file_mode: str = None, **kwargs):
     if not file_mode:
         file_mode = "br"
     assert "b" in file_mode
     with open(file_name, file_mode) as fp:
-        yield from load(fp)  # type: ignore
+        yield from load(fp, **kwargs)  # type: ignore
 
 
 def dump_to_file(obj, file_name: types.Pathlike, *, file_mode: str = None, **kwargs):

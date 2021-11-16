@@ -76,8 +76,8 @@ def dumps(obj, **kwargs) -> Iterable[bytes]:
             yield b"]"
 
 
-def load(fp: BinaryIO) -> Iterable:
-    yield from ijson.items(fp, "item")
+def load(fp: BinaryIO, **kwargs) -> Iterable:
+    yield from ijson.items(fp, "item", **kwargs)
 
 
 def load_eager(fp: BinaryIO):
@@ -88,13 +88,13 @@ def load_eager(fp: BinaryIO):
         yield data
 
 
-def load_from_file(file_name: types.Pathlike, *, file_mode: Optional[str] = None):
+def load_from_file(file_name: types.Pathlike, *, file_mode: Optional[str] = None, **kwargs):
     if not file_mode:
         file_mode = "br"
 
     assert "b" in file_mode
     with open(file_name, file_mode) as fp:
-        yield from load(fp)  # type: ignore
+        yield from load(fp, **kwargs)  # type: ignore
 
 
 def dump_to_file(gen: Iterable, file_name: types.Pathlike, *, file_mode: str = None, **kwargs):
