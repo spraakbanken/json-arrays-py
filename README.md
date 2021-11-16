@@ -104,9 +104,14 @@ with open("out.json", "bw") as fp:
       sink.send(data)
 ```
 
-# Changelog
+# Release Notes
 
-[Read Changelog here.](./CHANGELOG.md)
+## Latest Changes
+
+## 0.11.0
+
+- Allow kwargs to dump\* methods. PR [#3](https://github.com/spraakbanken/json-streams-py/pull/3) by [@kod-kristoff](https://github.com/kod-kristoff).
+
 
 # Development
 
