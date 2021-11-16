@@ -126,4 +126,4 @@ that environment is used instead.
 
 # Deployment
 
-Push a tag in the format `v\d+.\d+.\d+`to master, to build & publish package to PyPi.
+Push a tag in the format `v\d+.\d+.\d+`to `main`-branch, to build & publish package to PyPi.
