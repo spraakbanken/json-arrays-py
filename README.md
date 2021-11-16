@@ -39,8 +39,6 @@ pip install json-streams
 # Using orjson
 pip install json-streams[orjson]
 
-# Using ujson
-pip install json-streams[ujson]
 ```
 
 ### Note
@@ -48,9 +46,7 @@ pip install json-streams[ujson]
 This library prefers files opened in binary mode.
 Therefore does all `dumps`-methods return `bytes`.
 
-All `loads` methods handles `str` argument.
-If you use the `orjson` library you can also pass `bytes` or `bytesarray` to `loads`.
-The goal is to have all `loads` handling `str`, `bytes` and `bytesarray`.
+All `loads` methods handles `str`, `bytes` and `bytesarray` arguments.
 
 ### Examples
 
