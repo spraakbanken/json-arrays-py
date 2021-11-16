@@ -72,6 +72,7 @@ def dump_to_file(
     file_mode: str = "bw",
     use_stdout_as_default: bool = False,
     use_stderr_as_default: bool = False,
+    **kwargs,
 ):
     """Open file and dump json to it.
 
@@ -86,7 +87,7 @@ def dump_to_file(
     if file_name is not None:
         _iter = choose_iter(file_name, json_format)
 
-        _iter.dump_to_file(in_iter_, file_name, file_mode=file_mode)
+        _iter.dump_to_file(in_iter_, file_name, file_mode=file_mode, **kwargs)
 
     elif use_stdout_as_default:
         jsonl_iter.dump(in_iter_, sys.stdout.buffer)

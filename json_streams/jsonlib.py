@@ -30,7 +30,7 @@ dumps = backend.dumps  # type: ignore
 loads = backend.loads  # type: ignore
 
 
-def load_from_file(file_name: types.Pathlike):
+def load_from_file(file_name: types.Pathlike, **kwargs):
     """
     Load the JSON file with the given file_name.
 
@@ -38,10 +38,10 @@ def load_from_file(file_name: types.Pathlike):
     :return: the loaded JSON file.
     """
     with open(file_name, "br") as fp:
-        return loads(fp.read())
+        return loads(fp.read(), **kwargs)
 
 
-def dump_to_file(obj, file_name: types.Pathlike):
+def dump_to_file(obj, file_name: types.Pathlike, **kwargs):
     """
     Dump to a JSON file with the given file name.
 
@@ -50,4 +50,4 @@ def dump_to_file(obj, file_name: types.Pathlike):
     :return: anything returned from the backend.
     """
     with open(file_name, "bw") as fp:
-        return fp.write(dumps(obj))
+        return fp.write(dumps(obj, **kwargs))
