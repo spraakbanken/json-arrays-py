@@ -108,6 +108,10 @@ with open("out.json", "bw") as fp:
       sink.send(data)
 ```
 
+# Changelog
+
+[Read Changelog here.](./CHANGELOG.md)
+
 # Development
 
 After cloning the repo, just run
