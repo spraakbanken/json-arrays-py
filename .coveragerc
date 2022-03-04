@@ -1,0 +1,5 @@
+[run]
+source = json_streams
+omit =
+    benches/*
+    tests/*
