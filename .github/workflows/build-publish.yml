@@ -39,8 +39,10 @@ jobs:
         task:
           - name: Typecheck
             run: make check-mypy
+            report_coverage: false
           - name: Run tests
             run: make run-all-tests-w-coverage
+            report_coverage: true
     steps:
       - uses: actions/checkout@v2
       - name: Set up Python ${{ matrix.python-version }}
@@ -56,6 +58,17 @@ jobs:
         run: make install-${{ matrix.json-lib }}
       - name: ${{ matrix.task.name }}
         run: ${{ matrix.task.run }}
+      - name: Upload coverage to Codecov
+        if: matrix.task.report_coverage
+        uses: codecov/codecov-action@v2
+        with:
+          # directory: ./coverage/reports/
+          # env_vars: OS,PYTHON
+          fail_ci_if_error: true
+          # files: ./coverage1.xml,./coverage2.xml
+          # flags: unittests
+          # name: codecov-umbrella
+          verbose: true
       # - name: Coveralls
       #   uses: coverallsapp/github-action@master
       #   with:

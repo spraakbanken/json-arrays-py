@@ -36,7 +36,7 @@ PYTHON = ${VENV_BIN}/python
 
 
 dev: install-dev
-install-dev: 
+install-dev:
 	poetry install
 
 install-orjson:
@@ -50,7 +50,7 @@ run-all-tests:
 	poetry run pytest -vv tests
 
 run-all-tests-w-coverage:
-	poetry run pytest -vv --cov=json_streams  --cov-report=term-missing tests
+	poetry run pytest -vv --cov=json_streams  --cov-report=xml tests
 
 check-mypy: install-dev
 	poetry run mypy json_streams tests
