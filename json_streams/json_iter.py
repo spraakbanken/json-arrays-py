@@ -1,4 +1,5 @@
 """ Handle JSON lazily. """
+import gzip
 from typing import Dict
 from typing import BinaryIO
 from typing import Iterable
@@ -90,19 +91,27 @@ def load_eager(fp: BinaryIO):
 
 def load_from_file(file_name: types.Pathlike, *, file_mode: Optional[str] = None, **kwargs):
     if not file_mode:
-        file_mode = "br"
+        file_mode = "rb"
 
     assert "b" in file_mode
-    with open(file_name, file_mode) as fp:
-        yield from load(fp, **kwargs)  # type: ignore
+    if file_name.suffix == ".gz":
+        with gzip.open(file_name, file_mode) as fp_gz:
+            yield from load(fp_gz, **kwargs)
+    else:
+        with open(file_name, file_mode) as fp:
+            yield from load(fp, **kwargs)  # type: ignore
 
 
 def dump_to_file(gen: Iterable, file_name: types.Pathlike, *, file_mode: str = None, **kwargs):
     if not file_mode:
-        file_mode = "bw"
+        file_mode = "wb"
     assert "b" in file_mode
-    with open(file_name, file_mode) as fp:
-        return dump(gen, fp, **kwargs)  # type: ignore
+    if file_name.suffix == ".gz":
+        with gzip.open(file_name, file_mode) as fp_gz:
+            return dump(gen, fp_gz, **kwargs)
+    else:
+        with open(file_name, file_mode) as fp:
+            return dump(gen, fp, **kwargs)  # type: ignore
 
 
 def sink(fp: BinaryIO):
@@ -111,9 +120,12 @@ def sink(fp: BinaryIO):
 
 def sink_from_file(file_name: types.Pathlike, *, file_mode: str = None):
     if not file_mode:
-        file_mode = "bw"
+        file_mode = "wb"
     assert "b" in file_mode
-    fp = open(file_name, file_mode)
+    if file_name.suffix == ".gz":
+        fp = gzip.open(file_name, file_mode)
+    else:
+        fp = open(file_name, file_mode)
     return utility.Sink(json_sink(fp, close_file=True))  # type: ignore
 
 
