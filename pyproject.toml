@@ -26,7 +26,7 @@ classifiers = [
 "Bug Tracker" = "https://github.com/spraakbanken/json-streams-py/issues"
 
 [tool.poetry.dependencies]
-python = ">=3.7,<4"
+python = "^3.9"
 ijson = "^3.1.4"
 orjson = { version = "^3.6", optional = true }
 
@@ -34,7 +34,7 @@ orjson = { version = "^3.6", optional = true }
 orjson = ["orjson"]
 
 [tool.poetry.dev-dependencies]
-pytest = "^6.2.5"
+pytest = "^7"
 bump2version = "^1.0.1"
 mypy = "^0.910"
 pylint = "^2.11.1"
