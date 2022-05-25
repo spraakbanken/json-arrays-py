@@ -7,9 +7,9 @@ from typing import Optional, Union
 
 import ijson  # type: ignore
 
-from json_streams import jsonlib
+from json_streams import file, jsonlib
 from json_streams import utility
-from json_streams.utility import types
+from json_streams import types
 
 # pylint: disable=unsubscriptable-object
 
@@ -94,24 +94,16 @@ def load_from_file(file_name: types.Pathlike, *, file_mode: Optional[str] = None
         file_mode = "rb"
 
     assert "b" in file_mode
-    if utility.is_gzip(file_name):
-        with gzip.open(file_name, file_mode) as fp_gz:
-            yield from load(fp_gz, **kwargs)
-    else:
-        with open(file_name, file_mode) as fp:
-            yield from load(fp, **kwargs)  # type: ignore
+    with file.open(file_name, file_mode) as fp:
+        yield from load(fp, **kwargs)  # type: ignore
 
 
 def dump_to_file(gen: Iterable, file_name: types.Pathlike, *, file_mode: str = None, **kwargs):
     if not file_mode:
         file_mode = "wb"
     assert "b" in file_mode
-    if utility.is_gzip(file_name):
-        with gzip.open(file_name, file_mode) as fp_gz:
-            return dump(gen, fp_gz, **kwargs)
-    else:
-        with open(file_name, file_mode) as fp:
-            return dump(gen, fp, **kwargs)  # type: ignore
+    with file.open(file_name, file_mode) as fp:
+        return dump(gen, fp, **kwargs)  # type: ignore
 
 
 def sink(fp: BinaryIO):
@@ -122,10 +114,7 @@ def sink_from_file(file_name: types.Pathlike, *, file_mode: str = None):
     if not file_mode:
         file_mode = "wb"
     assert "b" in file_mode
-    if utility.is_gzip(file_name):
-        fp = gzip.open(file_name, file_mode)
-    else:
-        fp = open(file_name, file_mode)
+    fp = file.open(file_name, file_mode)
     return utility.Sink(json_sink(fp, close_file=True))  # type: ignore
 
 

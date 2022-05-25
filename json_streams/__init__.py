@@ -9,7 +9,7 @@ from . import json_iter
 from . import jsonl_iter
 from . import encoders
 from json_streams import utility
-from json_streams.utility import types
+from json_streams import types
 
 # pylint: disable=unsubscriptable-object
 def choose_iter(name, json_format: Optional[utility.JsonFormat]):

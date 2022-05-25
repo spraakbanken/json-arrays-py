@@ -5,14 +5,14 @@ from typing import BinaryIO
 from typing import Iterable
 from typing import Union
 
-from json_streams import jsonlib
+from json_streams import file, jsonlib
 from json_streams import utility
-from json_streams.utility import types
+from json_streams import types
 
 # pylint: disable=unsubscriptable-object
 
 
-def dump(data: Union[Dict, Iterable], fp: BinaryIO, **kwargs):
+def dump(data: Union[Dict, Iterable], fp: types.File, **kwargs):
 
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data, **kwargs))
@@ -28,52 +28,35 @@ def dump(data: Union[Dict, Iterable], fp: BinaryIO, **kwargs):
         fp.write(b"\n")
 
 
-def load(fp: BinaryIO, **kwargs) -> Iterable:
+def load(fp: types.File, **kwargs) -> Iterable:
     for line in fp:
         yield jsonlib.loads(line, **kwargs)
 
 
-def load_from_file(file_name: types.Pathlike, *, file_mode: str = None, **kwargs):
-    if not file_mode:
-        file_mode = "br"
+def load_from_file(file_name: types.Pathlike, *, file_mode: str = "rb", **kwargs):
     assert "b" in file_mode
-    if utility.is_gzip(file_name):
-        with gzip.open(file_name) as fp_gz:
-            yield from load(fp_gz, **kwargs)
-    else:
-        with open(file_name, file_mode) as fp:
-            yield from load(fp, **kwargs)  # type: ignore
+    with file.open(file_name, file_mode) as fp:
+        yield from load(fp, **kwargs)  # type: ignore
 
 
-def dump_to_file(obj, file_name: types.Pathlike, *, file_mode: str = None, **kwargs):
-    if not file_mode:
-        file_mode = "wb"
+def dump_to_file(obj, file_name: types.Pathlike, *, file_mode: str = "wb", **kwargs):
     assert "b" in file_mode
-    if utility.is_gzip(file_name):
-        with gzip.open(file_name, file_mode) as fp_gz:
-            dump(obj, fp_gz, **kwargs)
-    else:
-        with open(file_name, file_mode) as fp:
-            dump(obj, fp, **kwargs)  # type: ignore
+    with file.open(file_name, file_mode) as fp:
+        dump(obj, fp, **kwargs)  # type: ignore
 
 
-def sink(fp: BinaryIO):
+def sink(fp: types.File):
     return utility.Sink(jsonl_sink(fp))
 
 
-def sink_from_file(file_name: types.Pathlike, *, file_mode: str = None):
-    if not file_mode:
-        file_mode = "wb"
+def sink_from_file(file_name: types.Pathlike, *, file_mode: str = "wb"):
     assert "b" in file_mode
-    if utility.is_gzip(file_name):
-        fp = gzip.GzipFile(file_name, mode=file_mode)
-    else:
-        fp = open(file_name, file_mode)
+    fp = file.open(file_name, file_mode)
 
     return utility.Sink(jsonl_sink(fp, close_file=True))  # type: ignore
 
 
-def jsonl_sink(fp: BinaryIO, *, close_file: bool = False):
+def jsonl_sink(fp: types.File, *, close_file: bool = False):
     try:
         while True:
             value = yield
