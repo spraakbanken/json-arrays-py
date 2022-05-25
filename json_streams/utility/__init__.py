@@ -4,6 +4,7 @@ from enum import Enum
 import os
 from typing import Any, Generator, IO, Union
 
+from json_streams.utility import types
 # pylint: disable=unsubscriptable-object
 
 
@@ -13,7 +14,7 @@ def get_name_of_file(fp: IO) -> str:
     return ""
 
 
-def is_jsonl(name: str) -> bool:
+def is_jsonl(name: types.Pathlike) -> bool:
     """Test if a filename is json lines.
     Also returns True for '<stdin>' and '<stdout>'.
 
@@ -25,9 +26,11 @@ def is_jsonl(name: str) -> bool:
     """
     if name in ["<stdin>", "<stdout>"]:
         return True
-    _, suffix = os.path.splitext(name)
+    base, suffix = os.path.splitext(name)
+    if suffix == ".gz":
+        _, suffix = os.path.splitext(base)
     # print('suffix = {suffix}'.format(suffix=suffix))
-    return suffix in [".jsonl"]
+    return suffix in [".jsonl", ".jl"]
 
 
 def to_bytes(s: Union[str, bytes, bytearray]) -> Union[bytes, bytearray]:

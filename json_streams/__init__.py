@@ -28,7 +28,7 @@ def load_from_file(
     file_name: typing.Optional[types.Pathlike],
     *,
     json_format: Optional[utility.JsonFormat] = None,
-    file_mode: str = "br",
+    file_mode: str = "rb",
     use_stdin_as_default: bool = False,
     **kwargs,
 ) -> Iterable:
@@ -70,7 +70,7 @@ def dump_to_file(
     file_name: typing.Optional[types.Pathlike],
     *,
     json_format: Optional[utility.JsonFormat] = None,
-    file_mode: str = "bw",
+    file_mode: str = "wb",
     use_stdout_as_default: bool = False,
     use_stderr_as_default: bool = False,
     **kwargs,
@@ -108,7 +108,7 @@ def sink_from_file(
     file_name: typing.Optional[types.Pathlike],
     *,
     json_format: Optional[utility.JsonFormat] = None,
-    file_mode: str = "bw",
+    file_mode: str = "wb",
     use_stdout_as_default: bool = False,
     use_stderr_as_default: bool = False,
 ):
