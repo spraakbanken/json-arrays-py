@@ -33,6 +33,12 @@ def is_jsonl(name: types.Pathlike) -> bool:
     return suffix in [".jsonl", ".jl"]
 
 
+def is_gzip(name: types.Pathlike) -> bool:
+    """Test if a filename is gzip."""
+    _, suffix = os.path.splitext(name)
+    return suffix == ".gz"
+
+
 def to_bytes(s: Union[str, bytes, bytearray]) -> Union[bytes, bytearray]:
     """Convert str to bytes, otherwise pass through s
 

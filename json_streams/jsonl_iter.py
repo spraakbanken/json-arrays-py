@@ -37,7 +37,7 @@ def load_from_file(file_name: types.Pathlike, *, file_mode: str = None, **kwargs
     if not file_mode:
         file_mode = "br"
     assert "b" in file_mode
-    if file_name.suffix == ".gz":
+    if utility.is_gzip(file_name):
         with gzip.open(file_name) as fp_gz:
             yield from load(fp_gz, **kwargs)
     else:
@@ -49,7 +49,7 @@ def dump_to_file(obj, file_name: types.Pathlike, *, file_mode: str = None, **kwa
     if not file_mode:
         file_mode = "wb"
     assert "b" in file_mode
-    if file_name.suffix == ".gz":
+    if utility.is_gzip(file_name):
         with gzip.open(file_name, file_mode) as fp_gz:
             dump(obj, fp_gz, **kwargs)
     else:
@@ -65,7 +65,7 @@ def sink_from_file(file_name: types.Pathlike, *, file_mode: str = None):
     if not file_mode:
         file_mode = "wb"
     assert "b" in file_mode
-    if file_name.suffix == ".gz":
+    if utility.is_gzip(file_name):
         fp = gzip.GzipFile(file_name, mode=file_mode)
     else:
         fp = open(file_name, file_mode)

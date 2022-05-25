@@ -10,7 +10,7 @@ from json_streams import jsonl_iter
 def test_jsonl_gzip():
     file = Path("tests/data/objs.jsonl.gz")
 
-    for num, obj in enumerate(jsonl_streams.load_from_file(file)):
+    for num, obj in enumerate(json_streams.load_from_file(file)):
         assert isinstance(obj, dict)
     assert num == 2
 
