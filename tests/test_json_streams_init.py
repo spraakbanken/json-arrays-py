@@ -15,6 +15,13 @@ from .utils import compare_iters
         ("test.json", None, "json_iter"),
         ("test", "jsonl", "jsonl_iter"),
         ("test.jsonl", None, "jsonl_iter"),
+        ("test.jl", None, "jsonl_iter"),
+        ("test.gz", "json", "json_iter"),
+        ("test.gz", None, "json_iter"),
+        ("test.json.gz", None, "json_iter"),
+        ("test.gz", "jsonl", "jsonl_iter"),
+        ("test.jl.gz", None, "jsonl_iter"),
+        ("test.jsonl.gz", None, "jsonl_iter"),
     ],
 )
 def test_dump_to_file_json(file_name, json_format, expected_iter):
@@ -42,6 +49,13 @@ def test_dump_to_file_json(file_name, json_format, expected_iter):
         ("test.json", None, "json_iter"),
         ("test", "jsonl", "jsonl_iter"),
         ("test.jsonl", None, "jsonl_iter"),
+        ("test.jl", None, "jsonl_iter"),
+        ("test.gz", "json", "json_iter"),
+        ("test.gz", None, "json_iter"),
+        ("test.json.gz", None, "json_iter"),
+        ("test.gz", "jsonl", "jsonl_iter"),
+        ("test.jl.gz", None, "jsonl_iter"),
+        ("test.jsonl.gz", None, "jsonl_iter"),
     ],
 )
 def test_sink_from_file_json(file_name, json_format, expected_iter):
@@ -68,6 +82,13 @@ def test_sink_from_file_json(file_name, json_format, expected_iter):
         ("test.json", None, "json_iter"),
         ("test", "jsonl", "jsonl_iter"),
         ("test.jsonl", None, "jsonl_iter"),
+        ("test.jl", None, "jsonl_iter"),
+        ("test.gz", "json", "json_iter"),
+        ("test.gz", None, "json_iter"),
+        ("test.json.gz", None, "json_iter"),
+        ("test.gz", "jsonl", "jsonl_iter"),
+        ("test.jl.gz", None, "jsonl_iter"),
+        ("test.jsonl.gz", None, "jsonl_iter"),
     ],
 )
 def test_load_from_file_json(file_name, json_format, expected_iter):
