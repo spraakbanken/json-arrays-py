@@ -4,7 +4,7 @@ Utility library to load the underlying json library.
 Imports `orjson` or `ujson` if either is present, otherwise it imports `json` from
 the standard library.
 """
-from json_streams import file, types, utility
+from json_streams import file, types
 
 
 def get_backend(backend_name: str):

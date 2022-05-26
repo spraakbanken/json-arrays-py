@@ -1,6 +1,5 @@
 """ Handle JSON lazily. """
-from typing import Iterable
-from typing import Optional, Union
+from typing import Iterable, Union
 
 import ijson  # type: ignore
 
