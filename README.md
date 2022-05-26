@@ -26,6 +26,8 @@ As well as JSON LINES format:
 {"a": 2}
 ```
 
+Also supports streaming from gzipped files.
+
 Uses `orjson` if present, otherwise standard `json`.
 
 ## Usage
@@ -108,7 +110,16 @@ with open("out.json", "bw") as fp:
 
 ## Latest Changes
 
-* Add support for reading and writing gzipped files. PR [#5](https://github.com/spraakbanken/json-streams-py/pull/5) by [@kod-kristoff](https://github.com/kod-kristoff).
+## 0.12.0
+
+### Added
+
+- Add support for reading and writing gzipped files. PR [#5](https://github.com/spraakbanken/json-streams-py/pull/5) by [@kod-kristoff](https://github.com/kod-kristoff).
+
+### Changed
+
+- Dropped support for Python 3.6, 3.7 and 3.8.
+
 ## 0.11.0
 
 - Allow kwargs to dump\* methods. PR [#3](https://github.com/spraakbanken/json-streams-py/pull/3) by [@kod-kristoff](https://github.com/kod-kristoff).
