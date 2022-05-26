@@ -3,7 +3,7 @@ import gzip
 
 from json_streams import types, utility
 
-# pylint: disable=redefining-builtins
+# pylint: disable=redefined-builtin
 
 def open(file_name: types.Pathlike, mode = "rb") -> types.File:
     assert "b" in mode
