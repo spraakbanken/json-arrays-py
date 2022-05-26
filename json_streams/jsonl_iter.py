@@ -1,17 +1,15 @@
 """ Handle JSON-LINES lazily. """
-from typing import Dict
-from typing import BinaryIO
 from typing import Iterable
 from typing import Union
 
-from json_streams import jsonlib
+from json_streams import file, jsonlib
 from json_streams import utility
-from json_streams.utility import types
+from json_streams import types
 
 # pylint: disable=unsubscriptable-object
 
 
-def dump(data: Union[Dict, Iterable], fp: BinaryIO, **kwargs):
+def dump(data: Union[dict, Iterable], fp: types.File, **kwargs):
 
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data, **kwargs))
@@ -27,40 +25,32 @@ def dump(data: Union[Dict, Iterable], fp: BinaryIO, **kwargs):
         fp.write(b"\n")
 
 
-def load(fp: BinaryIO, **kwargs) -> Iterable:
+def load(fp: types.File, **kwargs) -> Iterable:
     for line in fp:
         yield jsonlib.loads(line, **kwargs)
 
 
-def load_from_file(file_name: types.Pathlike, *, file_mode: str = None, **kwargs):
-    if not file_mode:
-        file_mode = "br"
-    assert "b" in file_mode
-    with open(file_name, file_mode) as fp:
+def load_from_file(file_name: types.Pathlike, *, file_mode: str = "rb", **kwargs):
+    with file.open(file_name, file_mode) as fp:
         yield from load(fp, **kwargs)  # type: ignore
 
 
-def dump_to_file(obj, file_name: types.Pathlike, *, file_mode: str = None, **kwargs):
-    if not file_mode:
-        file_mode = "bw"
-    assert "b" in file_mode
-    with open(file_name, file_mode) as fp:
+def dump_to_file(obj, file_name: types.Pathlike, *, file_mode: str = "wb", **kwargs):
+    with file.open(file_name, file_mode) as fp:
         dump(obj, fp, **kwargs)  # type: ignore
 
 
-def sink(fp: BinaryIO):
+def sink(fp: types.File):
     return utility.Sink(jsonl_sink(fp))
 
 
-def sink_from_file(file_name: types.Pathlike, *, file_mode: str = None):
-    if not file_mode:
-        file_mode = "bw"
-    assert "b" in file_mode
-    fp = open(file_name, file_mode)
+def sink_from_file(file_name: types.Pathlike, *, file_mode: str = "wb"):
+    fp = file.open(file_name, file_mode)
+
     return utility.Sink(jsonl_sink(fp, close_file=True))  # type: ignore
 
 
-def jsonl_sink(fp: BinaryIO, *, close_file: bool = False):
+def jsonl_sink(fp: types.File, *, close_file: bool = False):
     try:
         while True:
             value = yield

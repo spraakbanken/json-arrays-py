@@ -1,19 +1,16 @@
 """ Handle JSON lazily. """
-from typing import Dict
-from typing import BinaryIO
-from typing import Iterable
-from typing import Optional, Union
+from typing import Iterable, Union
 
 import ijson  # type: ignore
 
-from json_streams import jsonlib
+from json_streams import file, jsonlib
 from json_streams import utility
-from json_streams.utility import types
+from json_streams import types
 
 # pylint: disable=unsubscriptable-object
 
 
-def dump(data: Union[Dict, Iterable], fp: BinaryIO, **kwargs):
+def dump(data: Union[dict, Iterable], fp: types.File, **kwargs):
     """Dump array to a file object.
 
     Parameters
@@ -76,11 +73,11 @@ def dumps(obj, **kwargs) -> Iterable[bytes]:
             yield b"]"
 
 
-def load(fp: BinaryIO, **kwargs) -> Iterable:
+def load(fp: types.File, **kwargs) -> Iterable:
     yield from ijson.items(fp, "item", **kwargs)
 
 
-def load_eager(fp: BinaryIO):
+def load_eager(fp: types.File):
     data = jsonlib.loads(fp.read())
     if isinstance(data, list):
         yield from data
@@ -88,36 +85,26 @@ def load_eager(fp: BinaryIO):
         yield data
 
 
-def load_from_file(file_name: types.Pathlike, *, file_mode: Optional[str] = None, **kwargs):
-    if not file_mode:
-        file_mode = "br"
-
-    assert "b" in file_mode
-    with open(file_name, file_mode) as fp:
+def load_from_file(file_name: types.Pathlike, *, file_mode: str = "rb", **kwargs):
+    with file.open(file_name, file_mode) as fp:
         yield from load(fp, **kwargs)  # type: ignore
 
 
-def dump_to_file(gen: Iterable, file_name: types.Pathlike, *, file_mode: str = None, **kwargs):
-    if not file_mode:
-        file_mode = "bw"
-    assert "b" in file_mode
-    with open(file_name, file_mode) as fp:
+def dump_to_file(gen: Iterable, file_name: types.Pathlike, *, file_mode: str = "wb", **kwargs):
+    with file.open(file_name, file_mode) as fp:
         return dump(gen, fp, **kwargs)  # type: ignore
 
 
-def sink(fp: BinaryIO):
+def sink(fp: types.File):
     return utility.Sink(json_sink(fp))
 
 
-def sink_from_file(file_name: types.Pathlike, *, file_mode: str = None):
-    if not file_mode:
-        file_mode = "bw"
-    assert "b" in file_mode
-    fp = open(file_name, file_mode)
+def sink_from_file(file_name: types.Pathlike, *, file_mode: str = "wb"):
+    fp = file.open(file_name, file_mode)
     return utility.Sink(json_sink(fp, close_file=True))  # type: ignore
 
 
-def json_sink(fp: BinaryIO, *, close_file: bool = False):
+def json_sink(fp: types.File, *, close_file: bool = False):
     is_first_value = True
     first_value = None
     try:

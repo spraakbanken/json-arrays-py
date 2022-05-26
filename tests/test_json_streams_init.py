@@ -15,6 +15,13 @@ from .utils import compare_iters
         ("test.json", None, "json_iter"),
         ("test", "jsonl", "jsonl_iter"),
         ("test.jsonl", None, "jsonl_iter"),
+        ("test.jl", None, "jsonl_iter"),
+        ("test.gz", "json", "json_iter"),
+        ("test.gz", None, "json_iter"),
+        ("test.json.gz", None, "json_iter"),
+        ("test.gz", "jsonl", "jsonl_iter"),
+        ("test.jl.gz", None, "jsonl_iter"),
+        ("test.jsonl.gz", None, "jsonl_iter"),
     ],
 )
 def test_dump_to_file_json(file_name, json_format, expected_iter):
@@ -25,7 +32,7 @@ def test_dump_to_file_json(file_name, json_format, expected_iter):
     ) as jsonl_iter_mock:
         in_iter = None
         json_streams.dump_to_file(in_iter, file_name, json_format=json_format)
-        expected_call = [mock.call(in_iter, file_name, file_mode="bw")]
+        expected_call = [mock.call(in_iter, file_name, file_mode="wb")]
         if expected_iter == "json_iter":
             assert json_iter_mock.mock_calls == expected_call
             jsonl_iter_mock.assert_not_called()
@@ -42,6 +49,13 @@ def test_dump_to_file_json(file_name, json_format, expected_iter):
         ("test.json", None, "json_iter"),
         ("test", "jsonl", "jsonl_iter"),
         ("test.jsonl", None, "jsonl_iter"),
+        ("test.jl", None, "jsonl_iter"),
+        ("test.gz", "json", "json_iter"),
+        ("test.gz", None, "json_iter"),
+        ("test.json.gz", None, "json_iter"),
+        ("test.gz", "jsonl", "jsonl_iter"),
+        ("test.jl.gz", None, "jsonl_iter"),
+        ("test.jsonl.gz", None, "jsonl_iter"),
     ],
 )
 def test_sink_from_file_json(file_name, json_format, expected_iter):
@@ -51,7 +65,7 @@ def test_sink_from_file_json(file_name, json_format, expected_iter):
         "json_streams.jsonl_iter.sink_from_file"
     ) as jsonl_iter_mock:
         json_streams.sink_from_file(file_name, json_format=json_format)
-        expected_call = [mock.call(file_name, file_mode="bw")]
+        expected_call = [mock.call(file_name, file_mode="wb")]
         if expected_iter == "json_iter":
             assert json_iter_mock.mock_calls == expected_call
             jsonl_iter_mock.assert_not_called()
@@ -68,6 +82,13 @@ def test_sink_from_file_json(file_name, json_format, expected_iter):
         ("test.json", None, "json_iter"),
         ("test", "jsonl", "jsonl_iter"),
         ("test.jsonl", None, "jsonl_iter"),
+        ("test.jl", None, "jsonl_iter"),
+        ("test.gz", "json", "json_iter"),
+        ("test.gz", None, "json_iter"),
+        ("test.json.gz", None, "json_iter"),
+        ("test.gz", "jsonl", "jsonl_iter"),
+        ("test.jl.gz", None, "jsonl_iter"),
+        ("test.jsonl.gz", None, "jsonl_iter"),
     ],
 )
 def test_load_from_file_json(file_name, json_format, expected_iter):
@@ -78,7 +99,7 @@ def test_load_from_file_json(file_name, json_format, expected_iter):
     ) as jsonl_iter_mock:
         for _ in json_streams.load_from_file(file_name, json_format=json_format):
             pass
-        expected_call = mock.call(file_name, file_mode="br")
+        expected_call = mock.call(file_name, file_mode="rb")
         if expected_iter == "json_iter":
             assert expected_call in json_iter_mock.mock_calls
             jsonl_iter_mock.assert_not_called()
