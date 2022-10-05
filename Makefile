@@ -1,9 +1,21 @@
-.PHONY: venv help test run-all-tests run-all-tests-w-coverage check-pylint check-mypy
 
 .default: help
 
+.PHONY: help
 help:
 	@echo "usage:"
+	@echo "dev | install-dev"
+	@echo "   setup development environment"
+	@echo ""
+	@echo "install-orjson"
+	@echo "   install orjson also"
+	@echo ""
+	@echo "test | run-all-tests"
+	@echo "   run all tests"
+	@echo ""
+	@echo "run-all-tests-w-coverage"
+	@echo "   run all tests with coverage collection"
+	@echo ""
 
 PLATFORM := ${shell uname -o}
 
@@ -40,20 +52,26 @@ install-orjson:
 upgrade-pip: venv
 	${INVENV} pip install --upgrade pip
 
+.PHONY: test
 test: run-all-tests
+.PHONY: run-all-tests
 run-all-tests:
 	${INVENV} pytest -vv tests
 
+.PHONY: run-all-tests-w-coverage
 run-all-tests-w-coverage:
 	${INVENV} pytest -vv --cov=json_streams  --cov-report=xml tests
 
-check-mypy: install-dev
+.PHONY: type-check
+type-check:
 	${INVENV} mypy json_streams tests
 
-check-pylint: install-dev
+.PHONY: lint
+lint:
 	${INVENV}  pylint --rcfile=.pylintrc json_streams tests
 
-check-pylint-refactorings: install-dev
+.PHONY: lint-refactorings
+lint-refactorings:
 	${INVENV} pylint --disable=C,W,E --enable=R json_streams tests
 
 bumpversion-major: install-dev
