@@ -9,8 +9,8 @@ from json_streams import types
 # pylint: disable=unsubscriptable-object
 
 
-def dump(data: Union[dict, Iterable], fp: types.File, **kwargs):
-
+def dump(data: Union[dict, Iterable], fileobj: types.File, **kwargs):
+    fp = files.BinaryFileWrite(fileobj=fileobj)
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data, **kwargs))
         fp.write(b"\n")
@@ -25,8 +25,9 @@ def dump(data: Union[dict, Iterable], fp: types.File, **kwargs):
         fp.write(b"\n")
 
 
-def load(fp: types.File, **kwargs) -> Iterable:
-    for line in fp:
+def load(fileobj: types.File, **kwargs) -> Iterable:
+    fp = files.BinaryFileRead(fileobj=fileobj)
+    for line in fp.file:
         yield jsonlib.loads(line, **kwargs)
 
 
