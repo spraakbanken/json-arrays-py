@@ -16,6 +16,12 @@ help:
 	@echo "run-all-tests-w-coverage"
 	@echo "   run all tests with coverage collection"
 	@echo ""
+	@echo "lint"
+	@echo "   lint the code"
+	@echo ""
+	@echo "type-check"
+	@echo "   check types"
+	@echo ""
 
 PLATFORM := ${shell uname -o}
 
@@ -64,7 +70,7 @@ run-all-tests-w-coverage:
 
 .PHONY: type-check
 type-check:
-	${INVENV} mypy json_streams tests
+	${INVENV} mypy json_streams
 
 .PHONY: lint
 lint:
