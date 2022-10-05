@@ -38,7 +38,7 @@ def test_json_gzip_dump_and_load(entries: list[dict]):
 def test_json_gzip_dump_fp(entries: list[dict]):
     filename = Path("tests/data/gen/json_gzip_dump_and_load_fp.json.gz")
 
-    with open(filename "wb") as fp:
+    with open(filename, "wb") as fp:
         json_iter.dump(entries, fp)
 
     with gzip.open(filename) as fp:
