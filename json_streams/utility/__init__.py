@@ -5,13 +5,12 @@ import os
 from typing import Any, Generator, IO, Union
 
 from json_streams import types
+
 # pylint: disable=unsubscriptable-object
 
 
-def get_name_of_file(fp: IO) -> str:
-    if hasattr(fp, "name"):
-        return fp.name
-    return ""
+def get_name_of_file(fp: types.File) -> str:
+    return fp.name if hasattr(fp, "name") else ""
 
 
 def is_jsonl(name: types.Pathlike) -> bool:

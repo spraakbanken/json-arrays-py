@@ -31,12 +31,12 @@ def load(fp: types.File, **kwargs) -> Iterable:
 
 
 def load_from_file(file_name: types.Pathlike, *, file_mode: str = "rb", **kwargs):
-    with files.open(file_name, file_mode) as fp:
+    with files.open_file(file_name, file_mode) as fp:
         yield from load(fp, **kwargs)  # type: ignore
 
 
 def dump_to_file(obj, file_name: types.Pathlike, *, file_mode: str = "wb", **kwargs):
-    with files.open(file_name, file_mode) as fp:
+    with files.open_file(file_name, file_mode) as fp:
         dump(obj, fp, **kwargs)  # type: ignore
 
 
@@ -45,7 +45,7 @@ def sink(fp: types.File):
 
 
 def sink_from_file(file_name: types.Pathlike, *, file_mode: str = "wb"):
-    fp = files.open(file_name, file_mode)
+    fp = files.open_file(file_name, file_mode)
 
     return utility.Sink(jsonl_sink(fp, close_file=True))  # type: ignore
 

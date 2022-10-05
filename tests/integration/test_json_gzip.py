@@ -36,13 +36,25 @@ def test_json_gzip_dump_and_load(entries: list[dict]):
 
 
 def test_json_gzip_dump_fp(entries: list[dict]):
-    filename = Path("tests/data/gen/json_gzip_dump_and_load_fp.json.gz")
+    filename = Path("tests/data/gen/json_gzip_dump_fp.json.gz")
 
     with open(filename, "wb") as fp:
         json_iter.dump(entries, fp)
 
     with gzip.open(filename) as fp:
         loaded_entries = json.load(fp)
+
+    assert loaded_entries == entries
+
+
+def test_json_gzip_load_fp(entries: list[dict]):
+    filename = Path("tests/data/gen/json_gzip_load_fp.json.gz")
+
+    with gzip.open(filename, "wt") as fp:
+        json.dump(entries, fp)
+
+    with open(filename, "rb") as fp:
+        loaded_entries = list(json_iter.load(fp))
 
     assert loaded_entries == entries
 
