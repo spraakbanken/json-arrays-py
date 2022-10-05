@@ -1,4 +1,6 @@
 """ Handle JSON-LINES lazily. """
+
+import contextlib
 from typing import Iterable
 from typing import Union
 
@@ -41,8 +43,9 @@ def dump_to_file(obj, file_name: types.Pathlike, *, file_mode: str = "wb", **kwa
         dump(obj, fp, **kwargs)  # type: ignore
 
 
-def sink(fp: types.File):
-    return utility.Sink(jsonl_sink(fp))
+def sink(fileobj: types.File):
+    fp = files.BinaryFileWrite(fileobj=fileobj)
+    return utility.Sink(jsonl_sink(fp))  # type: ignore
 
 
 def sink_from_file(file_name: types.Pathlike, *, file_mode: str = "wb"):
@@ -52,12 +55,10 @@ def sink_from_file(file_name: types.Pathlike, *, file_mode: str = "wb"):
 
 
 def jsonl_sink(fp: types.File, *, close_file: bool = False):
-    try:
+    with contextlib.suppress(GeneratorExit):
         while True:
             value = yield
             fp.write(jsonlib.dumps(value))
             fp.write(b"\n")
-    except GeneratorExit:
-        pass
     if close_file:
         fp.close()

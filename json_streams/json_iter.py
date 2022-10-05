@@ -99,8 +99,9 @@ def dump_to_file(
         return dump(gen, fp, **kwargs)  # type: ignore
 
 
-def sink(fp: types.File):
-    return utility.Sink(json_sink(fp))
+def sink(fileobj: types.File):
+    fp = files.BinaryFileWrite(fileobj=fileobj)
+    return utility.Sink(json_sink(fp))  # type: ignore
 
 
 def sink_from_file(file_name: types.Pathlike, *, file_mode: str = "wb"):
