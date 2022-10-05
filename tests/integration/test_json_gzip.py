@@ -12,6 +12,7 @@ from json_streams import json_iter
 def test_json_gzip():
     filename = Path("tests/data/objs.json.gz")
 
+    num = 0
     for num, obj in enumerate(json_iter.load_from_file(filename)):
         assert isinstance(obj, dict)
     assert num == 2
