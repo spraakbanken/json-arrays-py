@@ -1,3 +1,5 @@
+import gzip
+import json
 from pathlib import Path
 
 import pytest
@@ -29,6 +31,18 @@ def test_json_gzip_dump_and_load(entries: list[dict]):
     json_iter.dump_to_file(entries, file)
 
     loaded_entries = list(json_iter.load_from_file(file))
+
+    assert loaded_entries == entries
+
+
+def test_json_gzip_dump_fp(entries: list[dict]):
+    filename = Path("tests/data/gen/json_gzip_dump_and_load_fp.json.gz")
+
+    with open(filename "wb") as fp:
+        json_iter.dump(entries, fp)
+
+    with gzip.open(filename) as fp:
+        loaded_entries = json.load(fp)
 
     assert loaded_entries == entries
 
