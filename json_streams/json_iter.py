@@ -3,7 +3,7 @@ from typing import Iterable, Union
 
 import ijson  # type: ignore
 
-from json_streams import file, jsonlib
+from json_streams import files, jsonlib
 from json_streams import utility
 from json_streams import types
 
@@ -86,12 +86,14 @@ def load_eager(fp: types.File):
 
 
 def load_from_file(file_name: types.Pathlike, *, file_mode: str = "rb", **kwargs):
-    with file.open(file_name, file_mode) as fp:
+    with files.open(file_name, file_mode) as fp:
         yield from load(fp, **kwargs)  # type: ignore
 
 
-def dump_to_file(gen: Iterable, file_name: types.Pathlike, *, file_mode: str = "wb", **kwargs):
-    with file.open(file_name, file_mode) as fp:
+def dump_to_file(
+    gen: Iterable, file_name: types.Pathlike, *, file_mode: str = "wb", **kwargs
+):
+    with files.open(file_name, file_mode) as fp:
         return dump(gen, fp, **kwargs)  # type: ignore
 
 
@@ -100,7 +102,7 @@ def sink(fp: types.File):
 
 
 def sink_from_file(file_name: types.Pathlike, *, file_mode: str = "wb"):
-    fp = file.open(file_name, file_mode)
+    fp = files.open(file_name, file_mode)
     return utility.Sink(json_sink(fp, close_file=True))  # type: ignore
 
 
