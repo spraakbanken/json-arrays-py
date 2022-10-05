@@ -9,25 +9,56 @@ on:
   pull_request:
     branches:
       - "*"
-
+env:
+  POETRY_VERSION: "1.1.13"
 jobs:
   lint:
     runs-on: ${{ matrix.os }}
-    name: Lint with pylint (${{ matrix.os }})
+    name: Lint for python ${{ matirx.python-version }} (${{ matrix.os }})
     strategy:
       matrix:
-        os: [ubuntu-latest]
-        python-version: ["3.9"]
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.9", "3.10"]
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      #----------------------------------------------
+      #       check-out repo and set-up python
+      #----------------------------------------------
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Set up python ${{ matrix.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: install poetry
-        run: pip install poetry
+      #----------------------------------------------
+      #  -----  install & configure poetry  -----
+      #----------------------------------------------
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: ${{ env.POETRY_VERSION }}
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+      #----------------------------------------------
+      #       load cached venv if cache exists
+      #----------------------------------------------
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/pyproject.toml') }}
+      #----------------------------------------------
+      # install dependencies if cache does not exist
+      #----------------------------------------------
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+      #----------------------------------------------
+      # Lint
+      #----------------------------------------------
       - name: Lint with pylint
-        run: make check-pylint
+        run: make lint
 
   build:
     runs-on: ${{ matrix.os }}
@@ -36,26 +67,59 @@ jobs:
       max-parallel: 4
       fail-fast: false
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
         python-version: ["3.9", "3.10", "3.11-dev"]
         json-lib: [orjson, json]
         task:
           - name: Check mypy
-            run: make check-mypy
+            run: make type-check
             report_coverage: false
           - name: Run tests
             run: make run-all-tests-w-coverage
             report_coverage: true
     steps:
-      - uses: actions/checkout@v2
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+      #----------------------------------------------
+      #       check-out repo and set-up python
+      #----------------------------------------------
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Set up python ${{ matrix.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
-      - name: install poetry
-        run: pip install poetry
+      #----------------------------------------------
+      #  -----  install & configure poetry  -----
+      #----------------------------------------------
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: ${{ env.POETRY_VERSION }}
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+      #----------------------------------------------
+      #       load cached venv if cache exists
+      #----------------------------------------------
+      - name: Load cached venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/pyproject.toml') }}
+      #----------------------------------------------
+      # install dependencies if cache does not exist
+      #----------------------------------------------
       - name: Install dependencies
-        run: make install-dev
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+      #----------------------------------------------
+      # install your root project, if required
+      #----------------------------------------------
+      - name: Install library
+        run: poetry install --no-interaction
+      #----------------------------------------------
+      # Run matrix task and optionally upload coverage
+      #----------------------------------------------
       - name: Install json library
         if: matrix.json-lib != 'json'
         run: make install-${{ matrix.json-lib }}
@@ -63,7 +127,7 @@ jobs:
         run: ${{ matrix.task.run }}
       - name: Upload coverage to Codecov
         if: matrix.task.report_coverage
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
           # directory: ./coverage/reports/
           # env_vars: OS,PYTHON
