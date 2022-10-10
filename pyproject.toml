@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "json-streams"
-version = "0.12.0"
+version = "0.12.1"
 description = "Stream JSON and JSON-Lines lazily."
 authors = ["Språkbanken at Göteborgs universitet <sb-info@svenska.gu.se>"]
 license = "MIT"
