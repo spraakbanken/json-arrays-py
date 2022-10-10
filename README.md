@@ -124,7 +124,6 @@ with open("out.json", "bw") as fp:
 
 - Allow kwargs to dump\* methods. PR [#3](https://github.com/spraakbanken/json-streams-py/pull/3) by [@kod-kristoff](https://github.com/kod-kristoff).
 
-
 # Development
 
 After cloning the repo, just run
