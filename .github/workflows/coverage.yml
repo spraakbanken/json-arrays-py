@@ -1,4 +1,4 @@
-name: Coverade
+name: Coverage
 
 on:
   push:
@@ -15,18 +15,14 @@ jobs:
   coverage:
     name: Test coverage py-${{ matrix.python-version }} on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
-    continue-on-error: ${{ matrix.allow_failure }}
     strategy:
       max-parallel: 4
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.9", "3.10", "3.11-dev"]
+        os: [ubuntu-latest]
+        python-version: ["3.10"]
         json-lib: [orjson, json]
-        include:
-          - allow_failure: false
-          - allow_failure: true
-            python-version: "3.11-dev"
+
     steps:
       #----------------------------------------------
       #       check-out repo and set-up python
