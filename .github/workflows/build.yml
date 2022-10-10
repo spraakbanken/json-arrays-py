@@ -63,6 +63,7 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.task.name }} py-${{ matrix.python-version }} ${{ matrix.json-lib }} (${{ matrix.os }})
+    continue-on-error: ${{ matrix.allow_failure }}
     strategy:
       max-parallel: 4
       fail-fast: false
@@ -77,6 +78,10 @@ jobs:
           - name: Run tests
             run: make run-all-tests-w-coverage
             report_coverage: true
+        include:
+          - allow_failure: false
+          - allow_failure: true
+            python-version: "3.11-dev"
     steps:
       #----------------------------------------------
       #       check-out repo and set-up python
@@ -118,11 +123,14 @@ jobs:
       - name: Install library
         run: poetry install --no-interaction
       #----------------------------------------------
-      # Run matrix task and optionally upload coverage
+      # Install json library, if not using stock
       #----------------------------------------------
       - name: Install json library
         if: matrix.json-lib != 'json'
         run: make install-${{ matrix.json-lib }}
+      #----------------------------------------------
+      # Run matrix task and optionally upload coverage
+      #----------------------------------------------
       - name: ${{ matrix.task.name }}
         run: ${{ matrix.task.run }}
       - name: Upload coverage to Codecov
