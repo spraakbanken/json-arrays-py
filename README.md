@@ -110,6 +110,7 @@ with open("out.json", "bw") as fp:
 
 ## Latest Changes
 
+* Fix gzip for files. PR [#6](https://github.com/spraakbanken/json-streams-py/pull/6) by [@kod-kristoff](https://github.com/kod-kristoff).
 ## 0.12.0
 
 ### Added
