@@ -16,7 +16,6 @@ jobs:
   ci:
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.task.name }} py-${{ matrix.python-version }} ${{ matrix.json-lib }} (${{ matrix.os }})
-    continue-on-error: ${{ matrix.allow_failure }}
     strategy:
       max-parallel: 4
       fail-fast: false
