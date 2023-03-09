@@ -1,11 +1,10 @@
 import io
 import json
 
-import pytest  # type: ignore
+import pytest
 
 from json_streams import json_iter, jsonl_iter
-from .utils import compare_iters
-
+from tests.utils import compare_iters
 
 DATA = [
     {"a": 1},
@@ -73,7 +72,7 @@ def test_dump_gen_memoryio(it):
 def test_load_file_name(it, file_name: str, facit, file_mode):
     if not facit:
         facit = file_name
-    with open(facit, encoding='utf-8') as fp:
+    with open(facit, encoding="utf-8") as fp:
         facit_it = json.load(fp)
     test_it = it.load_from_file(file_name, file_mode=file_mode)
     compare_iters(test_it, facit_it)

@@ -3,9 +3,7 @@ from typing import Iterable, Union
 
 import ijson  # type: ignore
 
-from json_streams import files, jsonlib
-from json_streams import utility
-from json_streams import types
+from json_streams import files, jsonlib, types, utility
 
 # pylint: disable=unsubscriptable-object
 
@@ -15,10 +13,11 @@ def dump(data: Union[dict, Iterable], fileobj: types.File, **kwargs):
 
     Parameters
     ----------
-    fileobj :
-        File object to write to. Must be writable.
-    data :
+    data : dict | Iterable
         Iterable object to write.
+    fileobj : types.File
+        File object to write to. Must be writable.
+
     """
     fp = files.BinaryFileWrite(fileobj=fileobj)
     for chunk in dumps(data, **kwargs):

@@ -1,8 +1,8 @@
 """Util functions.
 """
-from enum import Enum
 import os
-from typing import Any, Generator, IO, Union
+from enum import Enum
+from typing import Any, Generator, Union
 
 from json_streams import types
 
@@ -25,7 +25,7 @@ def is_jsonl(name: types.Pathlike) -> bool:
     """
     if name in ["<stdin>", "<stdout>"]:
         return True
-    base, suffix = os.path.splitext(name)
+    base, suffix = os.path.splitext(str(name))
     if suffix == ".gz":
         _, suffix = os.path.splitext(base)
     # print('suffix = {suffix}'.format(suffix=suffix))
@@ -34,7 +34,7 @@ def is_jsonl(name: types.Pathlike) -> bool:
 
 def is_gzip(name: types.Pathlike) -> bool:
     """Test if a filename is gzip."""
-    _, suffix = os.path.splitext(name)
+    _, suffix = os.path.splitext(str(name))
     return suffix == ".gz"
 
 
@@ -47,9 +47,7 @@ def to_bytes(s: Union[str, bytes, bytearray]) -> Union[bytes, bytearray]:
     Returns:
         Union[bytes, bytearray]: the possible converted argument
     """
-    if isinstance(s, (bytes, bytearray)):
-        return s
-    return s.encode("utf-8")
+    return s if isinstance(s, (bytes, bytearray)) else s.encode("utf-8")
 
 
 class Sink:

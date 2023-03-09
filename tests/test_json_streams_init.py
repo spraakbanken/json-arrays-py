@@ -1,10 +1,10 @@
 import io
 from unittest import mock
 
-import pytest  # type: ignore
+import pytest
 
 import json_streams
-from .utils import compare_iters
+from tests.utils import compare_iters
 
 
 @pytest.mark.parametrize(

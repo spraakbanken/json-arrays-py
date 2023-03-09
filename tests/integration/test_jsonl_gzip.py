@@ -2,14 +2,14 @@ import gzip
 import json
 from pathlib import Path
 
-
 from json_streams import jsonl_iter
 
 
 def test_jsonl_gzip():
     filename = Path("tests/data/objs.jsonl.gz")
 
-    for num, obj in enumerate(jsonl_iter.load_from_file(filename)):
+    num = 0
+    for num, obj in enumerate(jsonl_iter.load_from_file(filename)):  # noqa: B007
         assert isinstance(obj, dict)
     assert num == 2
 
@@ -30,7 +30,7 @@ def test_jsonl_gzip_dump_fp(entries: list[dict]):
     with open(filename, "wb") as fp:
         jsonl_iter.dump(entries, fp)
 
-    with gzip.open(filename, mode="rt") as fp:
+    with gzip.open(filename, mode="rt") as fp:  # type: ignore
         loaded_entries = [json.loads(line) for line in fp]
 
     assert loaded_entries == entries
@@ -44,8 +44,8 @@ def test_json_gzip_load_fp(entries: list[dict]):
             json.dump(entry, fp)
             fp.write("\n")
 
-    with open(filename, "rb") as fp:
-        loaded_entries = list(jsonl_iter.load(fp))
+    with open(filename, "rb") as fp:  # type: ignore
+        loaded_entries = list(jsonl_iter.load(fp))  # type: ignore
 
     assert loaded_entries == entries
 
