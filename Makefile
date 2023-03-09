@@ -52,6 +52,9 @@ dev: install-dev
 install-dev:
 	poetry install
 
+install-ci: install-dev
+	poetry install --only ci
+
 install-orjson:
 	poetry install --extras orjson
 
