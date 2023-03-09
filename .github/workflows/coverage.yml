@@ -74,7 +74,7 @@ jobs:
       #----------------------------------------------
       - name: Run tests for coverage
         run: make cov_report=xml run-all-tests-w-coverage
-        continue-on-error: matrix.python-version == "3.12-dev"
+        continue-on-error: ${{ matrix.python-version }} == "3.12-dev"
 
       - name: Upload coverage to Codecov
         if: matrix.task.report_coverage
