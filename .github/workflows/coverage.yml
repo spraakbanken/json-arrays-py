@@ -9,7 +9,7 @@ on:
       - "*"
 
 env:
-  POETRY_VERSION: 1.2.0
+  POETRY_VERSION: 1.3.1
 
 jobs:
   coverage:
@@ -20,7 +20,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.10"]
+        python-version: ["3.9","3.10", "3.11", "3.12-dev"]
         json-lib: [orjson, json]
 
     steps:
@@ -51,7 +51,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/pyproject.toml') }}
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/pyproject.toml') }}-${{ hashFiles('.github/workflows/coverage.yml') }}
       #----------------------------------------------
       # install dependencies if cache does not exist
       #----------------------------------------------
@@ -73,7 +73,9 @@ jobs:
       # Run tests and upload coverage
       #----------------------------------------------
       - name: Run tests for coverage
-        run: make run-all-tests-w-coverage
+        run: make cov_report=xml run-all-tests-w-coverage
+        continue-on-error: matrix.python-version == "3.12-dev"
+
       - name: Upload coverage to Codecov
         if: matrix.task.report_coverage
         uses: codecov/codecov-action@v3
