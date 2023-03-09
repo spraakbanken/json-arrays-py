@@ -20,12 +20,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        python-version: ["3.9","3.10", "3.11", "3.12-dev"]
+        python-version: ["3.9", "3.10", "3.11"]
         json-lib: [orjson, json]
-        include:
-          - allow_failure: false
-          - allow_failure: true
-            python-version: "3.12-dev"
 
     steps:
       #----------------------------------------------
@@ -80,7 +76,6 @@ jobs:
       #----------------------------------------------
       - name: Run tests for coverage
         run: make cov_report=xml run-all-tests-w-coverage
-        continue-on-error: ${{ matrix.allow_failure }}
 
       - name: Upload coverage to Codecov
         if: matrix.task.report_coverage

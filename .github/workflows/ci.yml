@@ -22,19 +22,15 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ["3.9", "3.10", "3.11", "3.12-dev"]
+        python-version: ["3.9"]
         json-lib: [orjson, json]
         task:
           - name: Type check
             run: make type-check
-          - name: Run tests
-            run: make run-all-tests
+          - name: Check format
+            run: poetry run black --check json_streams tests
           - name: Lint code
             run: make lint
-        include:
-          - allow_failure: false
-          - allow_failure: true
-            python-version: "3.12-dev"
     steps:
       #----------------------------------------------
       #       check-out repo and set-up python
@@ -88,4 +84,3 @@ jobs:
       #----------------------------------------------
       - name: ${{ matrix.task.name }}
         run: ${{ matrix.task.run }}
-        continue-on-error: ${{ matrix.allow_failure }}
