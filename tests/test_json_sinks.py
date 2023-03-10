@@ -1,10 +1,9 @@
 import io
 
-import pytest  # type: ignore
+import pytest
 
 from json_streams import json_iter, jsonl_iter
-from .utils import compare_iters
-
+from tests.utils import compare_iters
 
 DATA = [
     {"a": 1},

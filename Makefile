@@ -52,6 +52,9 @@ dev: install-dev
 install-dev:
 	poetry install
 
+install-ci: install-dev
+	poetry install --only ci
+
 install-orjson:
 	poetry install --extras orjson
 
@@ -74,13 +77,9 @@ type-check:
 
 .PHONY: lint
 lint:
-	${INVENV}  pylint --rcfile=.pylintrc json_streams tests
+	${INVENV}  ruff json_streams tests
 
-.PHONY: lint-refactorings
-lint-refactorings:
-	${INVENV} pylint --disable=C,W,E --enable=R json_streams tests
-
-bumpversion-major: install-dev
+makebumpversion-major: install-dev
 	${INVENV} bump2version major
 
 bumpversion-minor: install-dev
@@ -88,3 +87,12 @@ bumpversion-minor: install-dev
 
 bumpversion: install-dev
 	${INVENV} bump2version patch
+
+.PHONY: fmt
+fmt:
+	${INVENV} black json_streams tests
+
+.PHONY: fmt-check check-fmt
+fmt-check: check-fmt
+check-fmt:
+	${INVENV} black --check json_streams tests

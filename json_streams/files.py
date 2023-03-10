@@ -4,11 +4,9 @@ from typing import Any, Optional
 
 from json_streams import types, utility
 
-# pylint: disable=redefined-builtin
-
 
 def open_file(file_name: types.Pathlike, mode="rb") -> types.File:
-    assert "b" in mode
+    assert "b" in mode  # noqa: S101
     if utility.is_gzip(file_name):
         return gzip.GzipFile(file_name, mode)  # type: ignore
     else:
@@ -29,7 +27,6 @@ class BinaryFile:
             raise ValueError("Only binary modes supported")
         elif "b" not in mode:
             mode = f"{mode}b"
-
         if fileobj is None:
             self._file = open_file(filename, mode)  # type: ignore
 
@@ -39,7 +36,9 @@ class BinaryFile:
                 if isinstance(fileobj, gzip.GzipFile):
                     self._file = fileobj  # type: ignore
                 else:
-                    self._file = gzip.GzipFile(filename=filename, fileobj=fileobj, mode=mode)  # type: ignore
+                    self._file = gzip.GzipFile(  # type: ignore
+                        filename=filename, fileobj=fileobj, mode=mode
+                    )
             else:
                 self._file = fileobj  # type: ignore
 

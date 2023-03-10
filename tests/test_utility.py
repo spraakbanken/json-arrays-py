@@ -1,22 +1,28 @@
-import pytest  # type: ignore
+import pytest
 
-from json_streams.utility import is_jsonl, get_name_of_file
+from json_streams.utility import get_name_of_file, is_jsonl
 
 
-@pytest.mark.parametrize("filename", [
-    "test.jsonl",
-    "test.jl",
-    "test.jsonl.gz",
-    "test.jl.gz",
-])
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "test.jsonl",
+        "test.jl",
+        "test.jsonl.gz",
+        "test.jl.gz",
+    ],
+)
 def test_filename_is_jsonl(filename: str):
     assert is_jsonl(filename)
 
 
-@pytest.mark.parametrize("filename", [
-    "test.json",
-    "test.json.gz",
-])
+@pytest.mark.parametrize(
+    "filename",
+    [
+        "test.json",
+        "test.json.gz",
+    ],
+)
 def test_filename_is_not_jsonl(filename: str):
     assert not is_jsonl(filename)
 

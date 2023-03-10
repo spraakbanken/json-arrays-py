@@ -1,15 +1,11 @@
-""" Handle JSON or JSON_LINES lazily. """
-from pathlib import Path
-from typing import Iterable, Optional
-from typing import BinaryIO
+"""Handle JSON or JSON_LINES lazily."""
 import sys
 import typing
+from typing import BinaryIO, Iterable, Optional
 
-from . import json_iter
-from . import jsonl_iter
-from . import encoders
-from json_streams import utility
-from json_streams import types
+from json_streams import encoders, json_iter, jsonl_iter, types, utility
+
+__all__ = ["encoders", "json_iter", "jsonl_iter", "types", "utility"]
 
 # pylint: disable=unsubscriptable-object
 def choose_iter(name, json_format: Optional[utility.JsonFormat]):
@@ -36,17 +32,19 @@ def load_from_file(
 
     Reads from stdin if `use_stdin_as_default` is set and file_name is falsy.
 
-    Args:
-        file_name (Path): name of file to load from
-        json_format (Optional[utility.JsonFormat], optional): Explicit set format of json file. Defaults to None.
-        file_mode (str, optional): mode to open the file in. Defaults to "br".
-        use_stdin_as_default (bool, optional): reads from stdin if file_name is None. Defaults to False.
-
-    Returns:
-        Iterable: [description]
+    Parameters:
+        file_name : Path
+            name of file to load from
+        json_format : utility.JsonFormat, optional, default=None
+            Explicit set format of json file
+        file_mode : str, optional, default="rb"
+            mode to open the file in.
+        use_stdin_as_default : bool, optional, default=False
+            reads from stdin if file_name is None
 
     Yields:
-        Iterator[Iterable]: [description]
+        JSON value
+            lazily loaded from file
     """
     if file_name is not None:
         _iter = choose_iter(file_name, json_format)
@@ -77,13 +75,19 @@ def dump_to_file(
 ):
     """Open file and dump json to it.
 
-    Args:
-        in_iter_ (Any): The data to dump.
-        file_name (Path): The path to write to
-        json_format (Optional[utility.JsonFormat], optional): the json format to write in. Defaults to None.
-        file_mode (str, optional): the mode to open the file in. Defaults to "bw".
-        use_stdout_as_default (bool, optional): use stdout if file_name is empty. Defaults to False.
-        use_stdout_as_default (bool, optional): use stdout if file_name is empty. Defaults to False.
+    Parameters:
+        in_iter_ : Iterable
+            The data to dump.
+        file_name : Path
+            The path to write to
+        json_format : utility.JsonFormat, optional, default=None
+            the json format to write in.
+        file_mode : str, optional, default="wb"
+            the mode to open the file in.
+        use_stdout_as_default : bool, optional, default=False
+            use stdout if file_name is empty.
+        use_stderr_as_default : bool, optional, default=False
+            use stderr if file_name is empty.
     """
     if file_name is not None:
         _iter = choose_iter(file_name, json_format)
@@ -115,12 +119,16 @@ def sink_from_file(
     """Open file and use it as json sink.
 
     Args:
-        in_iter_ (Any): The data to dump.
-        file_name (Path): The path to write to
-        json_format (Optional[utility.JsonFormat], optional): the json format to write in. Defaults to None.
-        file_mode (str, optional): the mode to open the file in. Defaults to "bw".
-        use_stdout_as_default (bool, optional): use stdout if file_name is empty. Defaults to False.
-        use_stderr_as_default (bool, optional): use stderr if file_name is empty. Defaults to False.
+        file_name : Path
+            the path to write to
+        json_format : utility.JsonFormat, optional, default=None
+            the json format to write in.
+        file_mode : str, optional, default="wb"
+            the mode to open the file in.
+        use_stdout_as_default : bool, optional, default=False
+            use stdout if file_name is empty.
+        use_stderr_as_default : bool, optional, default=False
+            use stderr if file_name is empty.
     """
     if not file_name:
         if use_stdout_as_default:

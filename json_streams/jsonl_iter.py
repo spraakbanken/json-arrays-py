@@ -1,14 +1,9 @@
 """ Handle JSON-LINES lazily. """
 
 import contextlib
-from typing import Iterable
-from typing import Union
+from typing import Iterable, Union
 
-from json_streams import files, jsonlib
-from json_streams import utility
-from json_streams import types
-
-# pylint: disable=unsubscriptable-object
+from json_streams import files, jsonlib, types, utility
 
 
 def dump(data: Union[dict, Iterable], fileobj: types.File, **kwargs):

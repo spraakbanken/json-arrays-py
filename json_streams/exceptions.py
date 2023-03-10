@@ -1,7 +1,7 @@
-""" Exceptions for json_streams. """
+"""Exceptions for json_streams."""
 
 
-class JsonStremsException(Exception):
+class JsonStreamsException(Exception):
     """
     Base exception for json_streams
     """
