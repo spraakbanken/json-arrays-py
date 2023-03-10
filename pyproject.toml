@@ -28,7 +28,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.9"
 ijson = "^3.2.0.post0"
-orjson = {version = "^3.8.7", optional = true}
+orjson = {version = "^3.7", optional = true}
 
 [tool.poetry.extras]
 orjson = ["orjson"]
@@ -41,11 +41,11 @@ ruff = "^0.0.254"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7"
-bump2version = "^1.0.1"
-mypy = "^0.910"
-pytest-cov = "^3.0.0"
+bump2version = "^1"
+mypy = "^1.1.1"
+pytest-cov = "^4"
 types-orjson = "^3.6.2"
-black = "^22.10.0"
+black = "^23.1.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
