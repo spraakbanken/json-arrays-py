@@ -75,8 +75,9 @@ def dumps(obj, **kwargs) -> Iterable[bytes]:
 
 def load(fileobj: types.File, *, use_float: bool = True, **kwargs) -> Iterable:
     fp = files.BinaryFileRead(fileobj=fileobj)
-    kwargs = {"use_float": use_float} | kwargs
-    yield from ijson.items(fp.file, "item", **kwargs)
+    ijson_kwargs = {"use_float": use_float}
+    ijson_kwargs.update(kwargs)
+    yield from ijson.items(fp.file, "item", **ijson_kwargs)
 
 
 def load_eager(fp: types.File):
