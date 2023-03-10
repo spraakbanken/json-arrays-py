@@ -17,7 +17,7 @@ env:
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
-    name: ${{ matrix.task.name }} py-${{ env.MINIMUM_PYTHON_VERSION }} ${{ matrix.json-lib }} (${{ matrix.os }})
+    name: ${{ matrix.task.name }} ${{ matrix.json-lib }} (${{ matrix.os }})
     strategy:
       max-parallel: 4
       fail-fast: false
