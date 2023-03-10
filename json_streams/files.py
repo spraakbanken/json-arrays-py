@@ -53,7 +53,6 @@ class BinaryFileRead(BinaryFile):
         filename: Optional[types.Pathlike] = None,
         fileobj: Optional[types.File] = None,
     ) -> None:
-
         super().__init__("rb", filename=filename, fileobj=fileobj)
 
 
@@ -64,7 +63,6 @@ class BinaryFileWrite(BinaryFile):
         fileobj: Optional[types.File] = None,
         mode: Optional[str] = None,
     ) -> None:
-
         super().__init__(mode=mode or "wb", filename=filename, fileobj=fileobj)
 
     def write(self, data: Any) -> int:

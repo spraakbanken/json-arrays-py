@@ -7,7 +7,7 @@ from json_streams import encoders, json_iter, jsonl_iter, types, utility
 
 __all__ = ["encoders", "json_iter", "jsonl_iter", "types", "utility"]
 
-# pylint: disable=unsubscriptable-object
+
 def choose_iter(name, json_format: Optional[utility.JsonFormat]):
     if json_format == utility.JsonFormat.JSON_LINES or utility.is_jsonl(name):
         return jsonl_iter
