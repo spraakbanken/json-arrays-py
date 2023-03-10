@@ -3,6 +3,7 @@
 [![codecov](https://codecov.io/gh/spraakbanken/json-streams-py/branch/master/graph/badge.svg)](https://codecov.io/gh/spraakbanken/json-streams-py/)
 [![Build & Publish](https://github.com/spraakbanken/json-streams-py/workflows/Build%20&%20Publish/badge.svg)](https://github.com/spraakbanken/json-streams-py/actions)
 [![PyPI status](https://badge.fury.io/py/json-streams.svg)](https://pypi.org/project/json-streams/)
+[![image](https://img.shields.io/pypi/pyversions/json-streams.svg)](https://pypi.python.org/pypi/json-streams)
 
 Read and write JSON lazy, especially json-arrays.
 
