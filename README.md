@@ -111,6 +111,7 @@ with open("out.json", "bw") as fp:
 
 ## Latest Changes
 
+* set minimum supported python version to 3.9. PR [#10](https://github.com/spraakbanken/json-streams-py/pull/10) by [@kod-kristoff](https://github.com/kod-kristoff).
 * fix: error when parsing json with floats. PR [#8](https://github.com/spraakbanken/json-streams-py/pull/8) by [@kod-kristoff](https://github.com/kod-kristoff).
 * Fix gzip for files. PR [#6](https://github.com/spraakbanken/json-streams-py/pull/6) by [@kod-kristoff](https://github.com/kod-kristoff).
 ## 0.12.0
