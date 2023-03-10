@@ -12,18 +12,18 @@ on:
 
 env:
   POETRY_VERSION: "1.3.1"
+  MINIMUM_PYTHON_VERSION: "3.8"
+
 jobs:
   ci:
     runs-on: ${{ matrix.os }}
-    name: ${{ matrix.task.name }} py-${{ matrix.python-version }} ${{ matrix.json-lib }} (${{ matrix.os }})
+    name: ${{ matrix.task.name }} py-${{ env.MINIMUM_PYTHON_VERSION }} ${{ matrix.json-lib }} (${{ matrix.os }})
     strategy:
       max-parallel: 4
       fail-fast: false
       matrix:
         # Only run checks for ubuntu
         os: [ubuntu-latest]
-        # And minimum supported python version
-        python-version: ["3.9"]
         json-lib: [orjson, json]
         task:
           - name: Type check
@@ -38,11 +38,11 @@ jobs:
       #----------------------------------------------
       - name: Check out repository
         uses: actions/checkout@v3
-      - name: Set up python ${{ matrix.python-version }}
+      - name: Set up python ${{ env.MINIMUM_PYTHON_VERSION }}
         id: setup-python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
       #----------------------------------------------
       #  -----  install & configure poetry  -----
       #----------------------------------------------
