@@ -111,7 +111,7 @@ with open("out.json", "bw") as fp:
 
 ## Latest Changes
 
-## 0.12.4 - 2023-09-11
+## 0.12.4 - 2023-03-10
 
 ### Changed
 
