@@ -12,6 +12,59 @@ env:
   MINIMUM_PYTHON_VERSION: "3.9"
 
 jobs:
+  checks:
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.task.name }} ${{ matrix.json-lib }} (${{ matrix.os }})
+    strategy:
+      max-parallel: 4
+      fail-fast: true
+      matrix:
+        # Only run checks on ubuntu for MINIMUM_PYTHON_VERSION
+        os: [ubuntu-latest]
+        json-lib: [orjson, json]
+        task:
+          - name: Type check
+            run: make type-check
+          - name: Lint code
+            run: make lint
+    steps:
+      #----------------------------------------------
+      #       check-out repo and set-up python
+      #----------------------------------------------
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Set up python ${{ env.MINIMUM_PYTHON_VERSION }}
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
+      #----------------------------------------------
+      #  -----  install & configure poetry  -----
+      #----------------------------------------------
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: ${{ env.POETRY_VERSION }}
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+       #----------------------------------------------
+      # install your root project, if required
+      #----------------------------------------------
+      - name: Install library
+        run: make install-ci
+      #----------------------------------------------
+      # Install json library, if not using stock
+      #----------------------------------------------
+      - name: Install json library
+        if: matrix.json-lib != 'json'
+        run: make install-${{ matrix.json-lib }}
+      #----------------------------------------------
+      # Run matrix task
+      #----------------------------------------------
+      - name: ${{ matrix.task.name }}
+        run: ${{ matrix.task.run }}
+
   tests:
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.task.name }} py-${{ matrix.python-version }} ${{ matrix.json-lib }} (${{ matrix.os }})
@@ -23,12 +76,9 @@ jobs:
         python-version: ["3.9", "3.10", "3.11"]
         json-lib: [orjson, json]
         task:
-          - name: Type check
-            run: make type-check
           - name: Run tests
             run: make run-all-tests
-          - name: Lint code
-            run: make lint
+
     steps:
       #----------------------------------------------
       #       check-out repo and set-up python
@@ -62,13 +112,13 @@ jobs:
         if: matrix.json-lib != 'json'
         run: make install-${{ matrix.json-lib }}
       #----------------------------------------------
-      # Run matrix task and optionally upload coverage
+      # Run matrix task
       #----------------------------------------------
       - name: ${{ matrix.task.name }}
         run: ${{ matrix.task.run }}
 
   publish:
-    needs: [tests]
+    needs: [checks, tests]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
