@@ -20,14 +20,16 @@ jobs:
       max-parallel: 4
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        # Only run checks for ubuntu
+        os: [ubuntu-latest]
+        # And minimum supported python version
         python-version: ["3.9"]
         json-lib: [orjson, json]
         task:
           - name: Type check
             run: make type-check
-          - name: Check format
-            run: poetry run black --check json_streams tests
+          - name: Check formatting
+            run: make check-fmt
           - name: Lint code
             run: make lint
     steps:

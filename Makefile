@@ -87,3 +87,12 @@ bumpversion-minor: install-dev
 
 bumpversion: install-dev
 	${INVENV} bump2version patch
+
+.PHONY: fmt
+fmt:
+	${INVENV} black json_streams tests
+
+.PHONY: fmt-check check-fmt
+fmt-check: check-fmt
+check-fmt:
+	${INVENV} black --check json_streams tests
