@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches-ignore:
-      - "main"
-    tags-ignore:
+    branches:
+      - main
+    tags:
       - v*
   pull_request: {}
 
