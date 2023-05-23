@@ -73,20 +73,15 @@ run-all-tests-w-coverage:
 
 .PHONY: type-check
 type-check:
-	${INVENV} mypy json_streams
+	${INVENV} mypy --config-file mypy.ini json_streams
 
 .PHONY: lint
 lint:
-	${INVENV}  ruff json_streams tests
+	${INVENV} ruff json_streams tests
 
-makebumpversion-major: install-dev
-	${INVENV} bump2version major
-
-bumpversion-minor: install-dev
-	${INVENV} bump2version minor
-
+part := "patch"
 bumpversion: install-dev
-	${INVENV} bump2version patch
+	${INVENV} bump2version ${part}
 
 .PHONY: fmt
 fmt:
@@ -96,3 +91,7 @@ fmt:
 fmt-check: check-fmt
 check-fmt:
 	${INVENV} black --check json_streams tests
+
+.PHONY: tests/requirements.txt
+tests/requirements.txt: pyproject.toml
+	poetry export --with=dev --without-hashes -E orjson --output=$@
