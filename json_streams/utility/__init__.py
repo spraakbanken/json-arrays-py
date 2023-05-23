@@ -4,16 +4,16 @@ import os
 from enum import Enum
 from typing import Any, Generator, Union
 
-from json_streams import types
+from json_streams import _types
 
 # pylint: disable=unsubscriptable-object
 
 
-def get_name_of_file(fp: types.File) -> str:
+def get_name_of_file(fp: _types.File) -> str:
     return fp.name if hasattr(fp, "name") else ""
 
 
-def is_jsonl(name: types.Pathlike) -> bool:
+def is_jsonl(name: _types.Pathlike) -> bool:
     """Test if a filename is json lines.
     Also returns True for '<stdin>' and '<stdout>'.
 
@@ -32,7 +32,7 @@ def is_jsonl(name: types.Pathlike) -> bool:
     return suffix in [".jsonl", ".jl"]
 
 
-def is_gzip(name: types.Pathlike) -> bool:
+def is_gzip(name: _types.Pathlike) -> bool:
     """Test if a filename is gzip."""
     _, suffix = os.path.splitext(str(name))
     return suffix == ".gz"

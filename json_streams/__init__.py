@@ -3,9 +3,9 @@ import sys
 import typing
 from typing import BinaryIO, Iterable, Optional
 
-from json_streams import encoders, json_iter, jsonl_iter, types, utility
+from json_streams import _types, encoders, json_iter, jsonl_iter, utility
 
-__all__ = ["encoders", "json_iter", "jsonl_iter", "types", "utility"]
+__all__ = ["encoders", "json_iter", "jsonl_iter", "utility"]
 
 
 # pylint: disable=unsubscriptable-object
@@ -22,7 +22,7 @@ def load(fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None) -> I
 
 
 def load_from_file(
-    file_name: typing.Optional[types.Pathlike],
+    file_name: typing.Optional[_types.Pathlike],
     *,
     json_format: Optional[utility.JsonFormat] = None,
     file_mode: str = "rb",
@@ -66,7 +66,7 @@ def dump(in_iter_, fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = 
 
 def dump_to_file(
     in_iter_,
-    file_name: typing.Optional[types.Pathlike],
+    file_name: typing.Optional[_types.Pathlike],
     *,
     json_format: Optional[utility.JsonFormat] = None,
     file_mode: str = "wb",
@@ -110,7 +110,7 @@ def sink(fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None):
 
 
 def sink_from_file(
-    file_name: typing.Optional[types.Pathlike],
+    file_name: typing.Optional[_types.Pathlike],
     *,
     json_format: Optional[utility.JsonFormat] = None,
     file_mode: str = "wb",

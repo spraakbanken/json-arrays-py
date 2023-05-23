@@ -2,10 +2,10 @@ import builtins
 import gzip
 from typing import Any, Optional
 
-from json_streams import types, utility
+from json_streams import _types, utility
 
 
-def open_file(file_name: types.Pathlike, mode="rb") -> types.File:
+def open_file(file_name: _types.Pathlike, mode="rb") -> _types.File:
     assert "b" in mode  # noqa: S101
     if utility.is_gzip(file_name):
         return gzip.GzipFile(file_name, mode)  # type: ignore
@@ -17,8 +17,8 @@ class BinaryFile:
     def __init__(
         self,
         mode: str,
-        filename: Optional[types.Pathlike] = None,
-        fileobj: Optional[types.File] = None,
+        filename: Optional[_types.Pathlike] = None,
+        fileobj: Optional[_types.File] = None,
     ) -> None:
         if fileobj is None and filename is None:
             raise ValueError("Must give at least one of 'filename' and 'fileobj'")
@@ -50,8 +50,8 @@ class BinaryFile:
 class BinaryFileRead(BinaryFile):
     def __init__(
         self,
-        filename: Optional[types.Pathlike] = None,
-        fileobj: Optional[types.File] = None,
+        filename: Optional[_types.Pathlike] = None,
+        fileobj: Optional[_types.File] = None,
     ) -> None:
         super().__init__("rb", filename=filename, fileobj=fileobj)
 
@@ -59,8 +59,8 @@ class BinaryFileRead(BinaryFile):
 class BinaryFileWrite(BinaryFile):
     def __init__(
         self,
-        filename: Optional[types.Pathlike] = None,
-        fileobj: Optional[types.File] = None,
+        filename: Optional[_types.Pathlike] = None,
+        fileobj: Optional[_types.File] = None,
         mode: Optional[str] = None,
     ) -> None:
         super().__init__(mode=mode or "wb", filename=filename, fileobj=fileobj)

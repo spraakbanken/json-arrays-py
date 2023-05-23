@@ -4,7 +4,7 @@ Utility library to load the underlying json library.
 Imports `orjson` or `ujson` if either is present, otherwise it imports `json` from
 the standard library.
 """
-from json_streams import files, types
+from json_streams import _types, files
 
 
 def get_backend(backend_name: str):
@@ -30,7 +30,7 @@ dumps = backend.dumps  # type: ignore
 loads = backend.loads  # type: ignore
 
 
-def load_from_file(file_name: types.Pathlike, file_mode: str = "rb", **kwargs):
+def load_from_file(file_name: _types.Pathlike, file_mode: str = "rb", **kwargs):
     """
     Load the JSON file with the given file_name.
 
@@ -41,7 +41,7 @@ def load_from_file(file_name: types.Pathlike, file_mode: str = "rb", **kwargs):
         return loads(fp.read(), **kwargs)
 
 
-def dump_to_file(obj, file_name: types.Pathlike, file_mode: str = "wb", **kwargs):
+def dump_to_file(obj, file_name: _types.Pathlike, file_mode: str = "wb", **kwargs):
     """
     Dump to a JSON file with the given file name.
 
