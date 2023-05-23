@@ -160,7 +160,6 @@ jobs:
         run: make cov_report=xml run-all-tests-w-coverage
 
       - name: Upload coverage to Codecov
-        if: matrix.task.report_coverage
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
