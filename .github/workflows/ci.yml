@@ -204,6 +204,7 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
     steps:
       - name: Monitor actions permissions
+        if: matrix.os != 'windows'
         uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
         with:
           config: ${{ vars.PERMISSIONS_CONFIG }}
