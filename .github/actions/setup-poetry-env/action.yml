@@ -1,0 +1,63 @@
+name: "setup-poetry-env"
+description: "Composite action to setup the Python and poetry environment."
+
+inputs:
+  cache-extra-key:
+    required: false
+    description: "Extra cache key to use"
+    default: ""
+  python-version:
+    required: false
+    description: "The python version to use"
+    default: "3.11"
+  poetry-version:
+    required: false
+    description: "The version of poetry to use"
+    default: "latest"
+outputs:
+  python-version:
+    description: "Python version used"
+    value: ${{ steps.set-python-version.outputs.python-version }}
+  poetry-version:
+    description: "Poetry version used"
+    value: ${{ steps.set-poetry-version.outputs.poetry-version }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up python
+      id: setup-python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ inputs.python-version }}
+
+    - name: Output python version
+      id: set-python-version
+      run: echo "python-version=${{ steps.setup-python.outputs.python-version}}" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Install Poetry
+      id: setup-poetry
+      uses: snok/install-poetry@93ada01c735cc8a383ce0ce2ae205a21c415379b
+      with:
+        version: ${{ inputs.poetry-version }}
+        virtualenvs-in-project: true
+
+    - name: Output poetry version
+      id: set-poetry-version
+      run: echo "poetry-version=${{ steps.setup-poetry.outputs.version}}" >> $GITHUB_OUTPUT
+      shell: bash
+
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v3
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ inputs.cache-extra-key }}-${{ hashFiles('pyproject.toml') }}
+
+    - name: Install dependencies
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: |
+        poetry install --no-interaction --no-root
+        poetry install --no-interaction --only ci
+      shell: bash
