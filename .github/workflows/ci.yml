@@ -8,6 +8,9 @@ on:
       - v*
   pull_request: {}
 
+permissions:
+  contents: read
+
 env:
   POETRY_VERSION: "1.3.1"
   MINIMUM_PYTHON_VERSION: "3.9"
@@ -33,11 +36,15 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
 
     steps:
+      - name: Monitor actions permissions
+        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
+        with:
+          config: ${{ vars.PERMISSIONS_CONFIG }}
       #----------------------------------------------
       #       check-out repo and set-up python
       #----------------------------------------------
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up python ${{ env.MINIMUM_PYTHON_VERSION }}
         id: setup-python
         uses: actions/setup-python@v4
@@ -106,11 +113,15 @@ jobs:
 
     runs-on: ${{ matrix.os }}-latest
     steps:
+      - name: Monitor actions permissions
+        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
+        with:
+          config: ${{ vars.PERMISSIONS_CONFIG }}
       #----------------------------------------------
       #       check-out repo and set-up python
       #----------------------------------------------
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up python ${{ matrix.python-version }}
         id: setup-python
         uses: actions/setup-python@v4
@@ -176,7 +187,12 @@ jobs:
     if: always()
     needs: [lint, coverage]
     runs-on: ubuntu-latest
+    permissions: {}
     steps:
+      - name: Monitor actions permissions
+        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
+        with:
+          config: ${{ vars.PERMISSIONS_CONFIG }}
       - name: Decide whether the needed jobs succeeded or failed
         uses: re-actors/alls-green@release/v1
         with:
@@ -189,11 +205,15 @@ jobs:
     if: "success() && (startsWith(github.ref, 'refs/tags/') || github.ref == 'refs/heads/main')"
     runs-on: ubuntu-latest
     steps:
+      - name: Monitor actions permissions
+        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
+        with:
+          config: ${{ vars.PERMISSIONS_CONFIG }}
       #----------------------------------------------
       #       check-out repo and set-up python
       #----------------------------------------------
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up python ${{ env.MINIMUM_PYTHON_VERSION }}
         id: setup-python
         uses: actions/setup-python@v4
@@ -234,7 +254,11 @@ jobs:
 
     runs-on: ${{ matrix.os }}-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Monitor actions permissions
+        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
+        with:
+          config: ${{ vars.PERMISSIONS_CONFIG }}
+      - uses: actions/checkout@v4
 
       - name: set up python
         uses: actions/setup-python@v4
@@ -262,7 +286,11 @@ jobs:
       # IMPORTANT: this permission is mandatory for trusted publishing
       id-token: write
     steps:
-      - uses: actions/checkout@v3
+      - name: Monitor actions permissions
+        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
+        with:
+          config: ${{ vars.PERMISSIONS_CONFIG }}
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Set up Python ${{ env.MINIMUM_PYTHON_VERSION }}
