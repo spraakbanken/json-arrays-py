@@ -2,7 +2,10 @@
 name = "json-streams"
 version = "0.12.4"
 description = "Stream JSON and JSON-Lines lazily."
-authors = ["Språkbanken at Göteborgs universitet <sb-info@svenska.gu.se>"]
+authors = [
+    "Språkbanken at Göteborgs universitet <sb-info@svenska.gu.se>",
+    "Kristoffer Andersson <kristoffer.andersson@gu.se>",
+]
 license = "MIT"
 homepage = "https://github.com/spraakbanken/json-streams-py"
 readme = "README.md"
