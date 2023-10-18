@@ -5,7 +5,7 @@ from typing import Any, Optional
 from json_streams import _types, utility
 
 
-def open_file(file_name: _types.Pathlike, mode="rb") -> _types.File:
+def open_file(file_name: _types.Pathlike, mode="rb") -> _types.File:  # type: ignore [type-var]
     assert "b" in mode  # noqa: S101
     if utility.is_gzip(file_name):
         return gzip.GzipFile(file_name, mode)  # type: ignore

@@ -2,7 +2,10 @@
 name = "json-streams"
 version = "0.12.4"
 description = "Stream JSON and JSON-Lines lazily."
-authors = ["Språkbanken at Göteborgs universitet <sb-info@svenska.gu.se>"]
+authors = [
+    "Språkbanken at Göteborgs universitet <sb-info@svenska.gu.se>",
+    "Kristoffer Andersson <kristoffer.andersson@gu.se>",
+]
 license = "MIT"
 homepage = "https://github.com/spraakbanken/json-streams-py"
 readme = "README.md"
@@ -28,7 +31,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.9"
 ijson = "^3.2.0.post0"
-orjson = {version = "^3.7", optional = true}
+orjson = { version = "^3.7", optional = true }
 
 [tool.poetry.extras]
 orjson = ["orjson"]
@@ -46,6 +49,7 @@ mypy = "^1.1.1"
 pytest-cov = "^4"
 types-orjson = "^3.6.2"
 black = "^23.1.0"
+watchfiles = "^0.20.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -53,5 +57,3 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.black]
 target-version = ["py39"]
-
-
