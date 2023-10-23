@@ -123,7 +123,7 @@ jobs:
       # Run tests and upload coverage
       #----------------------------------------------
       - name: Run tests for coverage
-        run: make cov_report=xml run-all-tests-w-coverage
+        run: make cov_report=xml test-w-coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3

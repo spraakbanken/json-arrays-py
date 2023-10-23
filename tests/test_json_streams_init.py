@@ -1,9 +1,9 @@
 import io
 from unittest import mock
 
+import json_streams
 import pytest
 
-import json_streams
 from tests.utils import compare_iters
 
 

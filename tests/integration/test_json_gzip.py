@@ -3,7 +3,6 @@ import json
 from pathlib import Path
 
 import pytest
-
 from json_streams import json_iter
 
 

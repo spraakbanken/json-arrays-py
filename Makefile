@@ -27,7 +27,7 @@ PLATFORM := ${shell uname -o}
 
 ifeq (${VIRTUAL_ENV},)
   VENV_NAME = .venv
-  INVENV = poetry run
+  INVENV = rye run
 else
   VENV_NAME = ${VIRTUAL_ENV}
   INVENV =
@@ -50,34 +50,38 @@ PYTHON = ${VENV_BIN}/python
 
 dev: install-dev
 install-dev:
-	poetry install
+	rye sync
 
 install-ci: install-dev
-	poetry install --only ci
+	rye sync --features=ci
 
-install-orjson:
-	poetry install --extras orjson
+install-dev-orjson:
+	rye sync --features=orjson
 
-upgrade-pip: venv
-	${INVENV} pip install --upgrade pip
+default_cov := "--cov=src/json_streams"
+cov_report := "term-missing"
+cov := ${default_cov}
+
+all_tests := tests
+tests := tests
 
 .PHONY: test
 test: run-all-tests
 .PHONY: run-all-tests
 run-all-tests:
-	${INVENV} pytest -vv tests
+	${INVENV} pytest -vv ${tests}
 
-.PHONY: run-all-tests-w-coverage
-run-all-tests-w-coverage:
-	${INVENV} pytest -vv --cov=json_streams  --cov-report=xml tests
+.PHONY: test-w-coverage
+test-w-coverage:
+	${INVENV} pytest -vv ${cov} --cov-report=${cov_report} ${all_tests}
 
 .PHONY: type-check
 type-check:
-	${INVENV} mypy --config-file mypy.ini json_streams
+	${INVENV} mypy --config-file mypy.ini src
 
 .PHONY: lint
 lint:
-	${INVENV} ruff json_streams tests
+	${INVENV} ruff src tests
 
 part := "patch"
 bumpversion: install-dev
@@ -85,13 +89,13 @@ bumpversion: install-dev
 
 .PHONY: fmt
 fmt:
-	${INVENV} black json_streams tests
+	${INVENV} black src tests
 
 .PHONY: fmt-check check-fmt
 fmt-check: check-fmt
 check-fmt:
-	${INVENV} black --check json_streams tests
+	${INVENV} black --check src tests
 
 .PHONY: tests/requirements.txt
 tests/requirements.txt: pyproject.toml
-	poetry export --with=dev --without-hashes -E orjson --output=$@
+	rye lock --features=orjson && cp requirements-dev.lock $@
