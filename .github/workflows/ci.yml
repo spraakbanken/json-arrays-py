@@ -98,7 +98,7 @@ jobs:
       - name: Set up the environment
         uses: ./.github/actions/setup-python-env
         with:
-          python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
+          python-version: ${{ matrix.python-version }}
           cache-extra-key: ${{ matrix.json-lib }}
      
       #----------------------------------------------

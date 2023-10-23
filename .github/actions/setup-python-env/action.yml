@@ -25,22 +25,20 @@ outputs:
 runs:
   using: "composite"
   steps:
-    - name: Set up python
-      id: setup-python
-      uses: actions/setup-python@v4
-      with:
-        python-version: ${{ inputs.python-version }}
-
-    - name: Output python version
-      id: set-python-version
-      run: echo "python-version=${{ steps.setup-python.outputs.python-version}}" >> $GITHUB_OUTPUT
-      shell: bash
-
     - name: Install rye
       id: setup-rye
       uses: eifinger/setup-rye@f8f2ca26808cdffef0b77c4fddf4305a5e5b010a
       with:
         version: ${{ inputs.rye-version }}
+
+    - name: Pin python version
+      run: rye pin ${{ inputs.python-version }}
+      shell: bash
+
+    - name: Output python version
+      id: set-python-version
+      run: echo "python-version=$(rye run python -c 'import sys; print(".".join(map(str, sys.version_info[0:3])))')" >> $GITHUB_OUTPUT
+      shell: bash
 
     - name: Output rye version
       id: set-rye-version
@@ -52,7 +50,7 @@ runs:
       uses: actions/cache@v3
       with:
         path: .venv
-        key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ inputs.cache-extra-key }}-${{ hashFiles('pyproject.toml') }}
+        key: venv-${{ runner.os }}-${{ steps.set-python-version.outputs.python-version }}-${{ inputs.cache-extra-key }}-${{ hashFiles('**/pyproject.toml') }}
 
     - name: Install dependencies
       if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
