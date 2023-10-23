@@ -1,14 +1,17 @@
-[tool.poetry]
+[project]
 name = "json-streams"
 version = "0.12.4"
 description = "Stream JSON and JSON-Lines lazily."
 authors = [
-    "Språkbanken at Göteborgs universitet <sb-info@svenska.gu.se>",
-    "Kristoffer Andersson <kristoffer.andersson@gu.se>",
+    { name = "Kristoffer Andersson", email = "kristoffer.andersson@gu.se" },
+    { name = "Språkbanken at Göteborgs universitet", email = "sb-info@svenska.gu.se" },
 ]
 license = "MIT"
-homepage = "https://github.com/spraakbanken/json-streams-py"
+dependencies = [
+    "ijson>=3.2.3",
+]
 readme = "README.md"
+requires-python = ">= 3.9"
 classifiers = [
     "Development Status :: 4 - Beta",
     # "Development Status :: 5 - Production/Stable",
@@ -25,35 +28,37 @@ classifiers = [
     "Topic :: Utilities",
 ]
 
-[tool.poetry.urls]
+[project.urls]
+Homepage = "https://github.com/spraakbanken/json-streams-py"
+Repository = "https://github.com/spraakbanken/json-streams-py"
 "Bug Tracker" = "https://github.com/spraakbanken/json-streams-py/issues"
 
-[tool.poetry.dependencies]
-python = "^3.9"
-ijson = "^3.2.0.post0"
-orjson = { version = "^3.7", optional = true }
-
-[tool.poetry.extras]
-orjson = ["orjson"]
-
-[tool.poetry.group.ci]
-optional = true
-
-[tool.poetry.group.ci.dependencies]
-ruff = "^0.0.254"
-
-[tool.poetry.group.dev.dependencies]
-pytest = "^7"
-bump2version = "^1"
-mypy = "^1.1.1"
-pytest-cov = "^4"
-types-orjson = "^3.6.2"
-black = "^23.1.0"
-watchfiles = "^0.20.0"
+[project.optional-dependencies]
+orjson = [
+    "orjson>=3.9.9",
+]
+ci = [
+    "ruff>=0.1.1",
+]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.black]
 target-version = ["py39"]
+
+[tool.rye]
+managed = true
+dev-dependencies = [
+    "pytest>=7.4.2",
+    "bump2version>=1.0.1",
+    "mypy>=1.6.1",
+    "pytest-cov>=4.1.0",
+    "types-orjson>=3.6.2",
+    "black>=23.10.0",
+    "watchfiles>=0.21.0",
+]
+
+[tool.hatch.metadata]
+allow-direct-references = true

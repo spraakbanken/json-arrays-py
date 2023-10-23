@@ -1,5 +1,4 @@
 import pytest
-
 from json_streams.utility import get_name_of_file, is_jsonl
 
 

@@ -1,6 +1,5 @@
-import pytest
-
 import json_streams
+import pytest
 
 
 @pytest.mark.parametrize(
