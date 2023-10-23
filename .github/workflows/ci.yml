@@ -31,10 +31,6 @@ jobs:
     runs-on: ${{ matrix.os }}-latest
 
     steps:
-      - name: Monitor actions permissions
-        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
-        with:
-          config: ${{ vars.PERMISSIONS_CONFIG }}
       #----------------------------------------------
       #       check-out repo
       #----------------------------------------------
@@ -82,10 +78,6 @@ jobs:
 
     runs-on: ${{ matrix.os }}-latest
     steps:
-      - name: Monitor actions permissions
-        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
-        with:
-          config: ${{ vars.PERMISSIONS_CONFIG }}
       #----------------------------------------------
       #       check-out repo and set-up python
       #----------------------------------------------
@@ -132,15 +124,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions: {}
     steps:
-      - name: Monitor actions permissions
-        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
-        with:
-          config: ${{ vars.PERMISSIONS_CONFIG }}
       - name: Decide whether the needed jobs succeeded or failed
         uses: re-actors/alls-green@release/v1
         with:
           jobs: ${{ toJSON(needs) }}
-          allowed-failures: coverage
+          # allowed-failures: coverage
 
   build:
     name: Build package
@@ -148,10 +136,6 @@ jobs:
     if: success() && (startsWith(github.ref, 'refs/tags/v') || github.ref == 'refs/heads/main')
     runs-on: ubuntu-latest
     steps:
-      - name: Monitor actions permissions
-        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
-        with:
-          config: ${{ vars.PERMISSIONS_CONFIG }}
       #----------------------------------------------
       #       check-out repo and set-up python
       #----------------------------------------------
@@ -194,10 +178,6 @@ jobs:
 
     runs-on: ${{ matrix.os }}-latest
     steps:
-      - name: Monitor actions permissions
-        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
-        with:
-          config: ${{ vars.PERMISSIONS_CONFIG }}
       - uses: actions/checkout@v4
 
       - name: set up python
@@ -226,10 +206,6 @@ jobs:
       # IMPORTANT: this permission is mandatory for trusted publishing
       id-token: write
     steps:
-      - name: Monitor actions permissions
-        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
-        with:
-          config: ${{ vars.PERMISSIONS_CONFIG }}
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
