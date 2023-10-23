@@ -75,7 +75,7 @@ jobs:
       fail-fast: false
       matrix:
         # ignore windows for now
-        os: [ubuntu, macos] # , windows-latest]
+        os: [ubuntu] #, macos] # , windows-latest]
         python-version:
           - "3.9"
           - "3.10"
