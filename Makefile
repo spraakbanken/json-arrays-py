@@ -52,11 +52,11 @@ dev: install-dev
 install-dev:
 	rye sync
 
-install-ci: install-dev
+install-ci:
 	rye sync --features=ci
 
 install-dev-orjson:
-	rye sync --features=orjson
+	rye sync --features=orjson,ci
 
 default_cov := "--cov=src/json_streams"
 cov_report := "term-missing"

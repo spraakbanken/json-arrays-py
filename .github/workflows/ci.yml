@@ -51,12 +51,6 @@ jobs:
           cache-extra-key: ${{ matrix.json-lib }}
        
       #----------------------------------------------
-      # install your root project, if required
-      #----------------------------------------------
-      - name: Install library
-        if: matrix.json-lib == 'json'
-        run: make install-dev
-      #----------------------------------------------
       # Install json library, if not using stock
       #----------------------------------------------
       - name: Install json library
@@ -106,13 +100,7 @@ jobs:
         with:
           python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
           cache-extra-key: ${{ matrix.json-lib }}
-       
-      #----------------------------------------------
-      # install your root project, if required
-      #----------------------------------------------
-      - name: Install library
-        if: matrix.json-lib == 'json'
-        run: make install-dev
+     
       #----------------------------------------------
       # Install json library, if not using stock
       #----------------------------------------------

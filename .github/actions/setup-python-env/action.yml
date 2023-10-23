@@ -44,7 +44,7 @@ runs:
 
     - name: Output rye version
       id: set-rye-version
-      run: echo "poetry-version=${{ steps.setup-rye.outputs.rye-version}}" >> $GITHUB_OUTPUT
+      run: echo "rye-version=${{ steps.setup-rye.outputs.rye-version}}" >> $GITHUB_OUTPUT
       shell: bash
 
     - name: Load cached venv
