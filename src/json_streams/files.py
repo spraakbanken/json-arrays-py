@@ -27,9 +27,9 @@ class BinaryFile:
             raise ValueError("Only binary modes supported")
         elif "b" not in mode:
             mode = f"{mode}b"
+        self._needs_closing = False
         if fileobj is None:
             self._file = open_file(filename, mode)  # type: ignore
-
         else:
             fileobj_name = utility.get_name_of_file(fileobj)
             if utility.is_gzip(fileobj_name):
@@ -39,12 +39,21 @@ class BinaryFile:
                     self._file = gzip.GzipFile(  # type: ignore
                         filename=filename, fileobj=fileobj, mode=mode
                     )
+                    self._needs_closing = True
             else:
                 self._file = fileobj  # type: ignore
 
     @property
     def file(self):
         return self._file
+
+    @property
+    def needs_closing(self) -> bool:
+        return self._needs_closing
+
+    def close(self):
+        if self.needs_closing:
+            self._file.close()
 
 
 class BinaryFileRead(BinaryFile):

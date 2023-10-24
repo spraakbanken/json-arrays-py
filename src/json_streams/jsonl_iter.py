@@ -20,6 +20,8 @@ def dump(data: Union[dict, Iterable], fileobj: _types.File, **kwargs):
     except TypeError:
         fp.write(jsonlib.dumps(data, **kwargs))
         fp.write(b"\n")
+    if fp.needs_closing:
+        fp.close()
 
 
 def load(fileobj: _types.File, **kwargs) -> Iterable:
@@ -40,7 +42,7 @@ def dump_to_file(obj, file_name: _types.Pathlike, *, file_mode: str = "wb", **kw
 
 def sink(fileobj: _types.File):
     fp = files.BinaryFileWrite(fileobj=fileobj)
-    return utility.Sink(jsonl_sink(fp))  # type: ignore
+    return utility.Sink(jsonl_sink(fp, close_file=fp.needs_closing))  # type: ignore
 
 
 def sink_from_file(file_name: _types.Pathlike, *, file_mode: str = "wb"):

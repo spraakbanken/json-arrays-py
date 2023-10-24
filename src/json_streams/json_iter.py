@@ -5,8 +5,6 @@ import ijson  # type: ignore
 
 from json_streams import _types, files, jsonlib, utility
 
-# pylint: disable=unsubscriptable-object
-
 
 def dump(data: Union[dict, Iterable], fileobj: _types.File, **kwargs):
     """Dump array to a file object.
@@ -21,30 +19,10 @@ def dump(data: Union[dict, Iterable], fileobj: _types.File, **kwargs):
     """
     fp = files.BinaryFileWrite(fileobj=fileobj)
     for chunk in dumps(data, **kwargs):
+        print(f"writing {chunk=}")
         fp.write(chunk)
-
-
-#     if isinstance(data, dict):
-#         fp.write(jsonlib.dumps(data))
-#         return
-#
-#     try:
-#         it = iter(data)
-#     except TypeError:
-#         fp.write(jsonlib.dumps(data))
-#         return
-#
-#     fp.write(b"[\n")
-#     try:
-#         obj = next(it)
-#         fp.write(jsonlib.dumps(obj))
-#     except StopIteration:
-#         pass
-#     else:
-#         for v in it:
-#             fp.write(b",\n")
-#             fp.write(jsonlib.dumps(v))
-#     fp.write(b"\n]")
+    if fp.needs_closing:
+        fp.close()
 
 
 def dumps(obj, **kwargs) -> Iterable[bytes]:
@@ -101,7 +79,7 @@ def dump_to_file(
 
 def sink(fileobj: _types.File):
     fp = files.BinaryFileWrite(fileobj=fileobj)
-    return utility.Sink(json_sink(fp))  # type: ignore
+    return utility.Sink(json_sink(fp, close_file=fp.needs_closing))  # type: ignore
 
 
 def sink_from_file(file_name: _types.Pathlike, *, file_mode: str = "wb"):

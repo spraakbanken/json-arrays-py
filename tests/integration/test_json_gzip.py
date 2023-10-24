@@ -67,7 +67,7 @@ def test_json_gzip_sink_fp(entries: list[dict]):
 
     with open(filename, mode="wb") as fp:
         with json_iter.sink(fp) as sink:
-            for entry in entries:
+            for entry in entries:  # sourcery skip: no-loop-in-tests
                 sink.send(entry)
 
     loaded_entries = list(json_iter.load_from_file(filename))
