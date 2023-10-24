@@ -110,3 +110,6 @@ tests/data/gen/
 
 # VS Code settings
 /.vscode
+requirements-dev.lock
+.gitignore
+requirements.lock

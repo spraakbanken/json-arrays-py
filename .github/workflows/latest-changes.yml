@@ -17,7 +17,11 @@ jobs:
   latest-changes:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Monitor actions permissions
+        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
+        with:
+          config: ${{ vars.PERMISSIONS_CONFIG }}
+      - uses: actions/checkout@v4
       - uses: docker://tiangolo/latest-changes:0.0.3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
