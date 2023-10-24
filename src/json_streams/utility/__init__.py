@@ -29,7 +29,7 @@ def is_jsonl(name: _types.Pathlike) -> bool:
     if suffix == ".gz":
         _, suffix = os.path.splitext(base)
     # print('suffix = {suffix}'.format(suffix=suffix))
-    return suffix in [".jsonl", ".jl"]
+    return suffix in [".jsonl", ".jl", ".ndjson"]
 
 
 def is_gzip(name: _types.Pathlike) -> bool:
