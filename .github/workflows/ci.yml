@@ -118,46 +118,6 @@ jobs:
           path: coverage
 
 
-  coverage-check:
-    # dogfooding! use smokeshow to view our coverage report
-    needs:
-      - coverage
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Monitor actions permissions
-        uses: GithubSecurityLab/actions-permissions/monitor@fc99d70db4fb9c0443f50f248c2b3590948d0b9b
-        with:
-          config: ${{ vars.PERMISSIONS_CONFIG }}
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
-
-      - name: get coverage files
-        uses: actions/download-artifact@v3
-        with:
-          name: coverage
-          path: coverage
-
-      - run: pip install coverage smokeshow
-
-      - name: build coverage
-        # working-directory: cli
-        run: |
-
-          coverage combine --data-file=coverage/.coverage
-          ls coverage
-          coverage html -i --data-file=coverage/.coverage
-
-      - run: smokeshow upload htmlcov
-        env:
-          SMOKESHOW_GITHUB_STATUS_DESCRIPTION: CLI Coverage {coverage-percentage}
-          SMOKESHOW_GITHUB_COVERAGE_THRESHOLD: 89
-          SMOKESHOW_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          SMOKESHOW_GITHUB_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
-    
   upload-coverage:
     name: Upload test coverage to CodeCov
     needs: [coverage]
@@ -210,7 +170,7 @@ jobs:
    # https://github.com/marketplace/actions/alls-green#why used for branch protection checks
   check:
     if: always()
-    needs: [lint, coverage-check]
+    needs: [lint, coverage]
     runs-on: ubuntu-latest
     permissions: {}
     steps:
