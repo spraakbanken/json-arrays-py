@@ -142,18 +142,16 @@ jobs:
       #----------------------------------------------
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Set up python ${{ env.MINIMUM_PYTHON_VERSION }}
-        id: setup-python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
+      
       #----------------------------------------------
-      #  -----  install & configure poetry  -----
+      #  -----  install & configure rye       -----
       #----------------------------------------------
       - name: Install rye
         id: setup-rye
         uses: eifinger/setup-rye@f8f2ca26808cdffef0b77c4fddf4305a5e5b010a
-
+      
+      - name: Set up python ${{ env.MINIMUM_PYTHON_VERSION }}
+        run: rye pin ${{ env.MINIMUM_PYTHON_VERSION }}
       #----------------------------------------------
       #  -----  build distribution -----
       #----------------------------------------------
