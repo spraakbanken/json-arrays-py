@@ -1,7 +1,7 @@
 # json-streams
 
 [![codecov](https://codecov.io/gh/spraakbanken/json-streams-py/branch/main/graph/badge.svg)](https://codecov.io/gh/spraakbanken/json-streams-py/)
-[![Build & Publish](https://github.com/spraakbanken/json-streams-py/workflows/Build%20&%20Publish/badge.svg)](https://github.com/spraakbanken/json-streams-py/actions)
+[![CI](https://github.com/spraakbanken/json-streams-py/workflows/CI/badge.svg)](https://github.com/spraakbanken/json-streams-py/actions)
 [![PyPI status](https://badge.fury.io/py/json-streams.svg)](https://pypi.org/project/json-streams/)
 [![image](https://img.shields.io/pypi/pyversions/json-streams.svg)](https://pypi.python.org/pypi/json-streams)
 
@@ -107,36 +107,11 @@ with open("out.json", "bw") as fp:
       sink.send(data)
 ```
 
-# Release Notes
+## Release Notes
 
-## Latest Changes
+This projects [keeps a CHANGELOG](./CHANGELOG.md).
 
-## 0.12.4 - 2023-03-10
-
-### Changed
-
-- Set minimum supported python version to 3.9. PR [#10](https://github.com/spraakbanken/json-streams-py/pull/10) by [@kod-kristoff](https://github.com/kod-kristoff).
-
-### Fixed
-
-- Fix error when parsing json with floats. PR [#8](https://github.com/spraakbanken/json-streams-py/pull/8) by [@kod-kristoff](https://github.com/kod-kristoff).
-- Fix gzip for files. PR [#6](https://github.com/spraakbanken/json-streams-py/pull/6) by [@kod-kristoff](https://github.com/kod-kristoff).
-
-## 0.12.0
-
-### Added
-
-- Add support for reading and writing gzipped files. PR [#5](https://github.com/spraakbanken/json-streams-py/pull/5) by [@kod-kristoff](https://github.com/kod-kristoff).
-
-### Changed
-
-- Dropped support for Python 3.6, 3.7 and 3.8.
-
-## 0.11.0
-
-- Allow kwargs to dump\* methods. PR [#3](https://github.com/spraakbanken/json-streams-py/pull/3) by [@kod-kristoff](https://github.com/kod-kristoff).
-
-# Development
+## Development
 
 After cloning the repo, just run
 
@@ -152,6 +127,6 @@ and run the unit tests.
 _Note:_ If you run the command in a activated virtual environment,
 that environment is used instead.
 
-# Deployment
+## Deployment
 
 Push a tag in the format `v\d+.\d+.\d+`to `main`-branch, to build & publish package to PyPi.
