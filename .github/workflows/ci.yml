@@ -162,6 +162,8 @@ jobs:
     name: Upload test coverage to CodeCov
     needs: [coverage]
     runs-on: ubuntu-latest
+    permissions:
+      statuses: write
     steps:
       #----------------------------------------------
       #       check-out repo and set-up python
