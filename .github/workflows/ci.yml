@@ -104,16 +104,99 @@ jobs:
       # Run tests and upload coverage
       #----------------------------------------------
       - name: Run tests for coverage
-        run: make cov_report=xml test-w-coverage
+        run: make test-w-coverage
+
+      - name: copy coverage
+        run: |
+          mkdir coverage
+          cp -v .coverage coverage/.coverage.${{ matrix.os }}-py${{ matrix.python-version }}-${{ matrix.json-lib }}
+
+      - name: store coverage files
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: coverage
+
+
+  coverage-check:
+    # dogfooding! use smokeshow to view our coverage report
+    needs:
+      - coverage
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
+
+      - name: get coverage files
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage
+          path: coverage
+
+      - run: pip install coverage smokeshow
+
+      - name: build coverage
+        # working-directory: cli
+        run: |
+
+          coverage combine --data-file=coverage/.coverage
+          ls coverage
+          coverage html -i --data-file=coverage/.coverage
+
+      - run: smokeshow upload htmlcov
+        env:
+          SMOKESHOW_GITHUB_STATUS_DESCRIPTION: CLI Coverage {coverage-percentage}
+          SMOKESHOW_GITHUB_COVERAGE_THRESHOLD: 89
+          SMOKESHOW_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SMOKESHOW_GITHUB_PR_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+    
+  upload-coverage:
+    name: Upload test coverage to CodeCov
+    needs: [coverage]
+    runs-on: ubuntu-latest
+    steps:
+      #----------------------------------------------
+      #       check-out repo and set-up python
+      #----------------------------------------------
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up python ${{ env.MINIMUM_PYTHON_VERSION }}
+        id: setup-python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
+
+      #----------------------------------------------
+      # install dependencies if cache does not exist
+      #----------------------------------------------
+      - name: Install dependencies
+        run: pip install coverage
+
+      - name: download coverage files
+        uses: actions/download-artifact@v3
+        with:
+          name: coverage
+          path: coverage
+
+      - name: convert coverage to xml
+        run: |
+          coverage combine --data-file=coverage/.coverage
+          coverage xml -i --data-file=coverage/.coverage
+          ls
+          ls coverage
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          # directory: ./coverage/reports/
+          # directory: ./coverage
           # env_vars: OS,PYTHON
-          fail_ci_if_error: true
-          # files: ./coverage1.xml,./coverage2.xml
+          fail_ci_if_error: false
+          # files: ./coverage/coverage.xml
           # flags: unittests
           # name: codecov-umbrella
           verbose: true
@@ -121,7 +204,7 @@ jobs:
    # https://github.com/marketplace/actions/alls-green#why used for branch protection checks
   check:
     if: always()
-    needs: [lint, coverage]
+    needs: [lint, coverage-check]
     runs-on: ubuntu-latest
     permissions: {}
     steps:
