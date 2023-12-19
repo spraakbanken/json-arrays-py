@@ -197,7 +197,7 @@ jobs:
         with:
           python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
       #----------------------------------------------
-      #  -----  install & configure poetry  -----
+      #  -----  install & configure rye  -----
       #----------------------------------------------
       - name: Install rye
         id: setup-rye
