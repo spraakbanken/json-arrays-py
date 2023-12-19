@@ -148,7 +148,7 @@ jobs:
       #----------------------------------------------
       - name: Install rye
         id: setup-rye
-        uses: eifinger/setup-rye@f8f2ca26808cdffef0b77c4fddf4305a5e5b010a
+        uses: eifinger/setup-rye@5b24b104a68da1e2ea0073aa191a2bab66f55d7c
       
       - name: Set up python ${{ env.MINIMUM_PYTHON_VERSION }}
         run: rye pin ${{ env.MINIMUM_PYTHON_VERSION }}
