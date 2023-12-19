@@ -7,9 +7,7 @@ authors = [
     { name = "Språkbanken at Göteborgs universitet", email = "sb-info@svenska.gu.se" },
 ]
 license = "MIT"
-dependencies = [
-    "ijson>=3.2.3",
-]
+dependencies = ["ijson>=3.2.3"]
 readme = "README.md"
 requires-python = ">= 3.9"
 classifiers = [
@@ -34,12 +32,8 @@ Repository = "https://github.com/spraakbanken/json-streams-py"
 "Bug Tracker" = "https://github.com/spraakbanken/json-streams-py/issues"
 
 [project.optional-dependencies]
-orjson = [
-    "orjson>=3.9.9",
-]
-ci = [
-    "ruff>=0.1.1",
-]
+orjson = ["orjson>=3.9.9"]
+ci = ["ruff>=0.1.1"]
 
 [build-system]
 requires = ["hatchling"]
@@ -62,3 +56,9 @@ dev-dependencies = [
 
 [tool.hatch.metadata]
 allow-direct-references = true
+
+[tool.hatch.build.targets.sdist]
+exclude = ["/.github", "/docs"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/json_streams"]
