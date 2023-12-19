@@ -3,9 +3,9 @@ import sys
 import typing
 from typing import BinaryIO, Iterable, Optional
 
-from json_streams import _types, encoders, json_iter, jsonl_iter, utility
+from json_streams import _types, encoders, json_iter, jsonl_iter, jsonlib, utility
 
-__all__ = ["encoders", "json_iter", "jsonl_iter", "utility"]
+__all__ = ["encoders", "json_iter", "jsonl_iter", "jsonlib", "utility"]
 
 
 # pylint: disable=unsubscriptable-object
@@ -51,11 +51,10 @@ def load_from_file(
         _iter = choose_iter(file_name, json_format)
 
         yield from _iter.load_from_file(file_name, file_mode=file_mode, **kwargs)
-
     elif use_stdin_as_default:
         yield from jsonl_iter.load(sys.stdin.buffer, **kwargs)
     else:
-        raise ValueError("You can't read from a empty file")
+        raise ValueError("You must give a FILENAME or USE_STDIN_AS_DEFAULT=`True`")
 
 
 def dump(in_iter_, fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None):
@@ -100,7 +99,9 @@ def dump_to_file(
     elif use_stderr_as_default:
         jsonl_iter.dump(in_iter_, sys.stderr.buffer, **kwargs)
     else:
-        raise ValueError("file_name can't be empty")
+        raise ValueError(
+            "You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`"  # noqa: E501
+        )
 
 
 def sink(fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None):
@@ -136,7 +137,9 @@ def sink_from_file(
             return jsonl_iter.sink(sys.stdout.buffer)
         if use_stderr_as_default:
             return jsonl_iter.sink(sys.stderr.buffer)
-        raise ValueError("file_name can't be empty")
+        raise ValueError(
+            "You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`"  # noqa: E501
+        )
 
     _iter = choose_iter(file_name, json_format)
 
