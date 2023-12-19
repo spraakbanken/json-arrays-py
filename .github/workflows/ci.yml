@@ -132,7 +132,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Set up python ${{ env.MINIMUM_PYTHON_VERSION }}
         id: setup-python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
 
@@ -229,7 +229,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: set up python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
 
@@ -258,7 +258,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set up Python ${{ env.MINIMUM_PYTHON_VERSION }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
       - name: get dist artifacts
