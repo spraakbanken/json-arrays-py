@@ -142,18 +142,16 @@ jobs:
       #----------------------------------------------
       - name: Check out repository
         uses: actions/checkout@v4
-      - name: Set up python ${{ env.MINIMUM_PYTHON_VERSION }}
-        id: setup-python
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
+      
       #----------------------------------------------
-      #  -----  install & configure poetry  -----
+      #  -----  install & configure rye       -----
       #----------------------------------------------
       - name: Install rye
         id: setup-rye
-        uses: eifinger/setup-rye@f8f2ca26808cdffef0b77c4fddf4305a5e5b010a
-
+        uses: eifinger/setup-rye@5b24b104a68da1e2ea0073aa191a2bab66f55d7c
+      
+      - name: Set up python ${{ env.MINIMUM_PYTHON_VERSION }}
+        run: rye pin ${{ env.MINIMUM_PYTHON_VERSION }}
       #----------------------------------------------
       #  -----  build distribution -----
       #----------------------------------------------
@@ -163,7 +161,7 @@ jobs:
       #----------------------------------------------
       #  -----  upload artifacts  -----
       #----------------------------------------------
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: pypi_files
           path: dist
@@ -187,7 +185,7 @@ jobs:
           python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
 
       - name: get dist artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: pypi_files
           path: dist
@@ -215,7 +213,7 @@ jobs:
         with:
           python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
       - name: get dist artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: pypi_files
           path: dist
