@@ -112,7 +112,7 @@ jobs:
           cp -v .coverage coverage/.coverage.${{ matrix.os }}-py${{ matrix.python-version }}-${{ matrix.json-lib }}
 
       - name: store coverage files
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: coverage
           path: coverage
