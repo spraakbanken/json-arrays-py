@@ -19,7 +19,6 @@ def dump(data: Union[dict, Iterable], fileobj: _types.File, **kwargs):
     """
     fp = files.BinaryFileWrite(fileobj=fileobj)
     for chunk in dumps(data, **kwargs):
-        print(f"writing {chunk=}")
         fp.write(chunk)
     if fp.needs_closing:
         fp.close()

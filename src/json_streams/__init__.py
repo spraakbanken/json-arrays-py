@@ -16,6 +16,25 @@ def choose_iter(name, json_format: Optional[utility.JsonFormat]):
 
 
 def load(fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None) -> Iterable:
+    """Dump an iterable to file-like object.
+
+    Examples:
+        Loading iterable in JSON format:
+        >>> import io
+        >>> import json_streams
+        >>> in_json = io.BytesIO(b'[{"a": 1}, {"a": 2}]')
+        >>> iter = json_streams.load(in_json)
+        >>> list(iter)
+        [{'a': 1}, {'a': 2}]
+
+        Loading iterable in JSON_LINES format:
+        >>> import io
+        >>> import json_streams
+        >>> in_jsonl = io.BytesIO(b'{"a": 1}\\n{"a": 2}\\n')
+        >>> iter = json_streams.load(in_jsonl, json_format="jsonl")
+        >>> list(iter)
+        [{'a': 1}, {'a': 2}]
+    """
     _iter = choose_iter(utility.get_name_of_file(fp), json_format)
 
     yield from _iter.load(fp)
@@ -58,6 +77,27 @@ def load_from_file(
 
 
 def dump(in_iter_, fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None):
+    """Dump an iterable to BinaryIO-object.
+
+    Examples:
+        Dumping iterable in JSON format:
+        >>> import io
+        >>> import json_streams
+        >>> data = [{"a": 1}, {"a": 2}]
+        >>> out_json = io.BytesIO()
+        >>> json_streams.dump(data, out_json)
+        >>> out_json.getvalue()
+        b'[{"a":1},{"a":2}]'
+
+        Dumping iterable in JSON_LINES format:
+        >>> import io
+        >>> import json_streams
+        >>> data = [{"a": 1}, {"a": 2}]
+        >>> out_jsonl = io.BytesIO()
+        >>> json_streams.dump(data, out_jsonl, json_format="jsonl")
+        >>> out_jsonl.getvalue()
+        b'{"a":1}\\n{"a":2}\\n'
+    """
     _iter = choose_iter(utility.get_name_of_file(fp), json_format)
 
     _iter.dump(in_iter_, fp)

@@ -70,6 +70,10 @@ test: run-all-tests
 run-all-tests:
 	${INVENV} pytest -vv ${tests}
 
+.PHONY: doc-tests
+doc-tests:
+	${INVENV} pytest ${cov} --cov-report=${cov_report} --doctest-modules ${PROJECT_SRC}
+
 .PHONY: test-w-coverage
 test-w-coverage:
 	${INVENV} pytest -vv ${cov} --cov-report=${cov_report} ${all_tests}
