@@ -25,9 +25,7 @@ from tests.utils import compare_iters
     ],
 )
 def test_dump_to_file_json(file_name, json_format, expected_iter):
-    with mock.patch(
-        "json_streams.json_iter.dump_to_file"
-    ) as json_iter_mock, mock.patch(
+    with mock.patch("json_streams.json_iter.dump_to_file") as json_iter_mock, mock.patch(
         "json_streams.jsonl_iter.dump_to_file"
     ) as jsonl_iter_mock:
         in_iter = None
@@ -59,9 +57,7 @@ def test_dump_to_file_json(file_name, json_format, expected_iter):
     ],
 )
 def test_sink_from_file_json(file_name, json_format, expected_iter):
-    with mock.patch(
-        "json_streams.json_iter.sink_from_file"
-    ) as json_iter_mock, mock.patch(
+    with mock.patch("json_streams.json_iter.sink_from_file") as json_iter_mock, mock.patch(
         "json_streams.jsonl_iter.sink_from_file"
     ) as jsonl_iter_mock:
         json_streams.sink_from_file(file_name, json_format=json_format)
@@ -92,9 +88,7 @@ def test_sink_from_file_json(file_name, json_format, expected_iter):
     ],
 )
 def test_load_from_file_json(file_name, json_format, expected_iter):
-    with mock.patch(
-        "json_streams.json_iter.load_from_file"
-    ) as json_iter_mock, mock.patch(
+    with mock.patch("json_streams.json_iter.load_from_file") as json_iter_mock, mock.patch(
         "json_streams.jsonl_iter.load_from_file"
     ) as jsonl_iter_mock:
         for _ in json_streams.load_from_file(file_name, json_format=json_format):
@@ -144,9 +138,7 @@ def test_dump_int_memoryio(data, facit, json_format):
 def test_sink_int_memoryio(data, facit, json_format):
     out = io.BytesIO()
     with json_streams.sink(out, json_format=json_format) as sink:
-        for d in (
-            data if isinstance(data, list) else [data]
-        ):  # sourcery skip: no-loop-in-tests
+        for d in data if isinstance(data, list) else [data]:  # sourcery skip: no-loop-in-tests
             sink.send(d)
     assert out.getvalue() == facit
 
