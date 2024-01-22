@@ -23,6 +23,8 @@ help:
 	@echo "   check types"
 	@echo ""
 
+PROJECT := json_streams
+PROJECT_SRC := src/json_streams
 PLATFORM := ${shell uname -o}
 
 ifeq (${VIRTUAL_ENV},)
@@ -52,11 +54,8 @@ dev: install-dev
 install-dev:
 	rye sync
 
-install-ci:
-	rye sync --features=ci
-
 install-dev-orjson:
-	rye sync --features=orjson,ci
+	rye sync --no-lock --features=orjson
 
 default_cov := "--cov=src/json_streams"
 cov_report := "term-missing"
@@ -70,6 +69,10 @@ test: run-all-tests
 .PHONY: run-all-tests
 run-all-tests:
 	${INVENV} pytest -vv ${tests}
+
+.PHONY: doc-tests
+doc-tests:
+	${INVENV} pytest ${cov} --cov-report=${cov_report} --doctest-modules ${PROJECT_SRC}
 
 .PHONY: test-w-coverage
 test-w-coverage:
@@ -89,12 +92,12 @@ bumpversion: install-dev
 
 .PHONY: fmt
 fmt:
-	${INVENV} black src tests
+	${INVENV} ruff format ${PROJECT_SRC} tests
 
 .PHONY: fmt-check check-fmt
 fmt-check: check-fmt
 check-fmt:
-	${INVENV} black --check src tests
+	${INVENV} ruff format --check ${PROJECT_SRC} tests
 
 .PHONY: tests/requirements.txt
 tests/requirements.txt: pyproject.toml

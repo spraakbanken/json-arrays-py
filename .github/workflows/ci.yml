@@ -106,21 +106,61 @@ jobs:
       - name: Run tests for coverage
         run: make test-w-coverage
 
-      - name: copy coverage
-        run: |
-          mkdir coverage
-          cp -v .coverage coverage/.coverage.${{ matrix.os }}-py${{ matrix.python-version }}-${{ matrix.json-lib }}
-
-      - name: store coverage files
-        uses: actions/upload-artifact@v3
+      - name: Upload coverage files
+        uses: actions/upload-artifact@v4
         with:
-          name: coverage
-          path: coverage
+          name: .coverage-${{ matrix.os }}-py${{ matrix.python-version }}-${{ matrix.json-lib }}
+          path: .coverage
+  
+  doctests:
+    name: "Doctest (${{ matrix.os }}) [jsonlib: ${{ matrix.json-lib }}]"
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+        # ignore windows for now
+        os: [ubuntu] #, macos] # , windows-latest]
+        json-lib: [orjson]
+
+    runs-on: ${{ matrix.os }}-latest
+    steps:
+      #----------------------------------------------
+      #       check-out repo and set-up python
+      #----------------------------------------------
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      #----------------------------------------------
+      #  -----  install & configure python & rye  -----
+      #----------------------------------------------
+      - name: Set up the environment
+        uses: ./.github/actions/setup-python-env
+        with:
+          python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
+          cache-extra-key: ${{ matrix.json-lib }}
+      
+      #----------------------------------------------
+      # Install json library, if not using stock
+      #----------------------------------------------
+      - name: Install json library
+        if: matrix.json-lib != 'json'
+        run: make install-dev-${{ matrix.json-lib }}
+      #----------------------------------------------
+      # Run tests and upload coverage
+      #----------------------------------------------
+      - name: Run tests for coverage
+        run: make test-w-coverage
+
+      - name: Upload coverage files
+        uses: actions/upload-artifact@v4
+        with:
+          name: .coverage-${{ matrix.os }}-doctest-${{ matrix.json-lib }}
+          path: .coverage
 
 
   upload-coverage:
     name: Upload test coverage to CodeCov
-    needs: [coverage]
+    needs: [coverage,doctests]
     runs-on: ubuntu-latest
     permissions:
       statuses: write
@@ -143,17 +183,16 @@ jobs:
         run: pip install coverage
 
       - name: download coverage files
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: coverage
-          path: coverage
+          pattern: .coverage-*
 
       - name: convert coverage to xml
         run: |
-          coverage combine --data-file=coverage/.coverage
-          coverage xml -i --data-file=coverage/.coverage
-          ls
-          ls coverage
+          ls -aR
+          coverage combine .coverage*/.coverage
+          coverage xml -i 
+          ls -a
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
@@ -170,7 +209,7 @@ jobs:
    # https://github.com/marketplace/actions/alls-green#why used for branch protection checks
   check:
     if: always()
-    needs: [lint, coverage]
+    needs: [lint, coverage,doctests]
     runs-on: ubuntu-latest
     permissions: {}
     steps:
