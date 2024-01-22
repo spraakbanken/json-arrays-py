@@ -112,11 +112,12 @@ This projects [keeps a CHANGELOG](./CHANGELOG.md).
 
 ## Development
 
+This project uses [rye](https://rye-up.com).
 After cloning the repo, just run
 
-```
-$ make dev
-$ make test
+```bash
+make dev
+make test
 ```
 
 to setup a virtual environment,
