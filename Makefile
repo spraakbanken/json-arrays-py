@@ -55,7 +55,7 @@ install-dev:
 	rye sync
 
 install-dev-orjson:
-	rye sync --no-lock --features=orjson
+	rye sync --features=orjson
 
 default_cov := "--cov=src/json_streams"
 cov_report := "term-missing"
