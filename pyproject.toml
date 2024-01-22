@@ -33,7 +33,6 @@ Repository = "https://github.com/spraakbanken/json-streams-py"
 
 [project.optional-dependencies]
 orjson = ["orjson>=3.9.9"]
-ci = ["ruff>=0.1.1"]
 
 [build-system]
 requires = ["hatchling"]
@@ -50,8 +49,8 @@ dev-dependencies = [
     "mypy>=1.6.1",
     "pytest-cov>=4.1.0",
     "types-orjson>=3.6.2",
-    "black>=23.10.0",
     "watchfiles>=0.21.0",
+    "ruff>=0.1.14",
 ]
 
 [tool.hatch.metadata]
