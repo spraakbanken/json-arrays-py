@@ -70,9 +70,7 @@ def load_from_file(file_name: _types.Pathlike, *, file_mode: str = "rb", **kwarg
         yield from load(fp, **kwargs)  # type: ignore
 
 
-def dump_to_file(
-    gen: Iterable, file_name: _types.Pathlike, *, file_mode: str = "wb", **kwargs
-):
+def dump_to_file(gen: Iterable, file_name: _types.Pathlike, *, file_mode: str = "wb", **kwargs):
     with files.open_file(file_name, file_mode) as fp:
         return dump(gen, fp, **kwargs)  # type: ignore
 

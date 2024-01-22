@@ -8,6 +8,4 @@ def dumps(obj, **kwargs) -> bytes:
 
 
 def loads(s: Union[bytes, bytearray, str], **kwargs) -> Any:
-    return json.loads(
-        s.decode("utf-8") if isinstance(s, (bytes, bytearray)) else s, **kwargs
-    )
+    return json.loads(s.decode("utf-8") if isinstance(s, (bytes, bytearray)) else s, **kwargs)
