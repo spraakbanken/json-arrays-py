@@ -7,7 +7,7 @@
 #   all-features: false
 
 -e file:.
-anyio==4.0.0
+anyio==4.2.0
 bump2version==1.0.1
 coverage==7.3.2
 idna==3.4
