@@ -9,7 +9,7 @@
 -e file:.
 anyio==4.0.0
 bump2version==1.0.1
-coverage==7.3.2
+coverage==7.4.1
 idna==3.4
 ijson==3.2.3
 iniconfig==2.0.0
