@@ -49,8 +49,8 @@ help:
 	@echo ""
 
 PLATFORM := `uname -o`
-REPO := "<REPO-NAME-HERE>"
-PROJECT_SRC := "<SRC-FOLDER-HERE>"
+REPO := "json_streams"
+PROJECT_SRC := "src/json_streams"
 
 ifeq (${VIRTUAL_ENV},)
   VENV_NAME = .venv
@@ -76,6 +76,9 @@ dev: install-dev
 # setup development environment
 install-dev:
 	pdm install --dev
+
+install-dev-orjson:
+	pdm install --dev --group orjson
 
 .PHONY: test
 test:
@@ -124,4 +127,4 @@ publish:
 prepare-release: tests/requirements-testing.txt
 
 tests/requirements-testing.txt: pyproject.toml
-	pdm lock --dev --output $@
+	pdm lock --dev --group orjson --output $@
