@@ -32,7 +32,9 @@ Repository = "https://github.com/spraakbanken/json-streams-py"
 "Bug Tracker" = "https://github.com/spraakbanken/json-streams-py/issues"
 
 [project.optional-dependencies]
-orjson = ["orjson>=3.9.9"]
+orjson = [
+    "orjson>=3.9.13",
+]
 
 [build-system]
 requires = ["hatchling"]
@@ -61,3 +63,14 @@ exclude = ["/.github", "/docs"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/json_streams"]
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "bump2version>=1.0.1",
+    "mypy>=1.8.0",
+    "pytest-cov>=4.1.0",
+    "types-orjson>=3.6.2",
+    "watchfiles>=0.21.0",
+    "ruff>=0.2.1",
+]

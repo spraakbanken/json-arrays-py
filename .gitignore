@@ -113,3 +113,4 @@ tests/data/gen/
 requirements-dev.lock
 .gitignore
 requirements.lock
+.pdm-python
