@@ -41,7 +41,7 @@ jobs:
     
       - name: Install dependencies
         if: steps.cached-venv.outputs.cache-hit != 'true'
-        run: make install-dev
+        run: make install-dev-orjson
       
       - name: check formatting
         run: make check-fmt
@@ -63,7 +63,7 @@ jobs:
           key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/pyproject.toml') }}-${{ hashFiles('.github/workflows/check.yml') }}
       - name: Install dependencies
         if: steps.cached-venv.outputs.cache-hit != 'true'
-        run: make install-dev
+        run: make install-dev-orjson
       - name: lint code
         run: make lint
   type-check:
@@ -84,7 +84,7 @@ jobs:
           key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/pyproject.toml') }}-${{ hashFiles('.github/workflows/check.yml') }}
       - name: Install dependencies
         if: steps.cached-venv.outputs.cache-hit != 'true'
-        run: make install-dev
+        run: make install-dev-orjson
       - name: type-check code
         run: make lint
 
