@@ -253,10 +253,10 @@ jobs:
           name: pypi_files
           path: dist
 
-      - run: rm -r src/ocr_suggestion
+      - run: rm -r src/json_streams
       - run: pip install typing-extensions
       - run: pip install -r tests/requirements-testing.txt
-      - run: pip install sparv-ocr-suggestion-plugin --no-index --no-deps --find-links dist --force-reinstall
+      - run: pip install json-streams --no-index --no-deps --find-links dist --force-reinstall
       - run: pytest
 
   publish:
