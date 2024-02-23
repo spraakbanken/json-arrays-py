@@ -6,7 +6,7 @@ authors = [
     { name = "Kristoffer Andersson", email = "kristoffer.andersson@gu.se" },
     { name = "Språkbanken at Göteborgs universitet", email = "sb-info@svenska.gu.se" },
 ]
-license = "MIT"
+license = { text = "MIT" }
 dependencies = ["ijson>=3.2.3"]
 readme = "README.md"
 requires-python = ">= 3.9"
@@ -32,13 +32,12 @@ Repository = "https://github.com/spraakbanken/json-streams-py"
 "Bug Tracker" = "https://github.com/spraakbanken/json-streams-py/issues"
 
 [project.optional-dependencies]
-orjson = [
-    "orjson>=3.9.13",
-]
+orjson = ["orjson>=3.9.13"]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["flit_core>=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
 
 [tool.black]
 target-version = ["py39"]
@@ -58,11 +57,14 @@ dev-dependencies = [
 [tool.hatch.metadata]
 allow-direct-references = true
 
-[tool.hatch.build.targets.sdist]
-exclude = ["/.github", "/docs"]
+[tool.flit.sdist]
+exclude = [".github/"]
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/json_streams"]
+
+[tool.pdm]
+distribution = true
 
 [tool.pdm.dev-dependencies]
 dev = [
