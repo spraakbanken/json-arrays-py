@@ -35,9 +35,8 @@ Repository = "https://github.com/spraakbanken/json-streams-py"
 orjson = ["orjson>=3.9.13"]
 
 [build-system]
-requires = ["flit_core>=3.2,<4"]
-build-backend = "flit_core.buildapi"
-
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.black]
 target-version = ["py39"]
@@ -57,8 +56,9 @@ dev-dependencies = [
 [tool.hatch.metadata]
 allow-direct-references = true
 
-[tool.flit.sdist]
-exclude = [".github/"]
+[tool.hatch.build.targets.sdist]
+exclude = ["/.github", "/docs"]
+
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/json_streams"]
