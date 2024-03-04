@@ -3,7 +3,7 @@ import sys
 import typing
 from typing import BinaryIO, Iterable, Optional
 
-from json_streams import _types, encoders, json_iter, jsonl_iter, jsonlib, utility
+from json_arrays import _types, encoders, json_iter, jsonl_iter, jsonlib, utility
 
 __all__ = ["encoders", "json_iter", "jsonl_iter", "jsonlib", "utility"]
 
@@ -21,17 +21,17 @@ def load(fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None) -> I
     Examples:
         Loading iterable in JSON format:
         >>> import io
-        >>> import json_streams
+        >>> import json_arrays
         >>> in_json = io.BytesIO(b'[{"a": 1}, {"a": 2}]')
-        >>> iter = json_streams.load(in_json)
+        >>> iter = json_arrays.load(in_json)
         >>> list(iter)
         [{'a': 1}, {'a': 2}]
 
         Loading iterable in JSON_LINES format:
         >>> import io
-        >>> import json_streams
+        >>> import json_arrays
         >>> in_jsonl = io.BytesIO(b'{"a": 1}\\n{"a": 2}\\n')
-        >>> iter = json_streams.load(in_jsonl, json_format="jsonl")
+        >>> iter = json_arrays.load(in_jsonl, json_format="jsonl")
         >>> list(iter)
         [{'a': 1}, {'a': 2}]
     """
@@ -82,19 +82,19 @@ def dump(in_iter_, fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = 
     Examples:
         Dumping iterable in JSON format:
         >>> import io
-        >>> import json_streams
+        >>> import json_arrays
         >>> data = [{"a": 1}, {"a": 2}]
         >>> out_json = io.BytesIO()
-        >>> json_streams.dump(data, out_json)
+        >>> json_arrays.dump(data, out_json)
         >>> out_json.getvalue()
         b'[{"a":1},{"a":2}]'
 
         Dumping iterable in JSON_LINES format:
         >>> import io
-        >>> import json_streams
+        >>> import json_arrays
         >>> data = [{"a": 1}, {"a": 2}]
         >>> out_jsonl = io.BytesIO()
-        >>> json_streams.dump(data, out_jsonl, json_format="jsonl")
+        >>> json_arrays.dump(data, out_jsonl, json_format="jsonl")
         >>> out_jsonl.getvalue()
         b'{"a":1}\\n{"a":2}\\n'
     """

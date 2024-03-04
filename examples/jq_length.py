@@ -1,6 +1,6 @@
 import sys
 
-import json_streams
+import json_arrays
 
 
 def main():
@@ -13,9 +13,7 @@ def main():
     Should print 2
     """
     path = sys.argv[1] if len(sys.argv) > 1 else None
-    length = sum(
-        (1 for _ in json_streams.load_from_file(path, use_stdin_as_default=True))
-    )
+    length = sum((1 for _ in json_arrays.load_from_file(path, use_stdin_as_default=True)))
     print(length)
 
 

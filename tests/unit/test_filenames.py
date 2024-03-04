@@ -1,5 +1,5 @@
 import pytest
-from json_streams.utility import is_jsonl
+from json_arrays.utility import is_jsonl
 
 
 @pytest.mark.parametrize(

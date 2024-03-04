@@ -1,4 +1,4 @@
-from json_streams import json_iter
+from json_arrays import json_iter
 
 
 def main():

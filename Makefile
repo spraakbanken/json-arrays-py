@@ -49,8 +49,8 @@ help:
 	@echo ""
 
 PLATFORM := `uname -o`
-REPO := "json_streams"
-PROJECT_SRC := "src/json_streams"
+REPO := "json_arrays"
+PROJECT_SRC := "src/json_arrays"
 
 ifeq (${VIRTUAL_ENV},)
   VENV_NAME = .venv
