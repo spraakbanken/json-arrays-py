@@ -1,7 +1,7 @@
 import io
 from unittest import mock
 
-import json_streams
+import json_arrays
 import pytest
 
 from tests.utils import compare_iters
@@ -25,11 +25,11 @@ from tests.utils import compare_iters
     ],
 )
 def test_dump_to_file_json(file_name, json_format, expected_iter):
-    with mock.patch("json_streams.json_iter.dump_to_file") as json_iter_mock, mock.patch(
-        "json_streams.jsonl_iter.dump_to_file"
+    with mock.patch("json_arrays.json_iter.dump_to_file") as json_iter_mock, mock.patch(
+        "json_arrays.jsonl_iter.dump_to_file"
     ) as jsonl_iter_mock:
         in_iter = None
-        json_streams.dump_to_file(in_iter, file_name, json_format=json_format)
+        json_arrays.dump_to_file(in_iter, file_name, json_format=json_format)
         expected_call = [mock.call(in_iter, file_name, file_mode="wb")]
         if expected_iter == "json_iter":
             assert json_iter_mock.mock_calls == expected_call
@@ -57,10 +57,10 @@ def test_dump_to_file_json(file_name, json_format, expected_iter):
     ],
 )
 def test_sink_from_file_json(file_name, json_format, expected_iter):
-    with mock.patch("json_streams.json_iter.sink_from_file") as json_iter_mock, mock.patch(
-        "json_streams.jsonl_iter.sink_from_file"
+    with mock.patch("json_arrays.json_iter.sink_from_file") as json_iter_mock, mock.patch(
+        "json_arrays.jsonl_iter.sink_from_file"
     ) as jsonl_iter_mock:
-        json_streams.sink_from_file(file_name, json_format=json_format)
+        json_arrays.sink_from_file(file_name, json_format=json_format)
         expected_call = [mock.call(file_name, file_mode="wb")]
         if expected_iter == "json_iter":
             assert json_iter_mock.mock_calls == expected_call
@@ -88,10 +88,10 @@ def test_sink_from_file_json(file_name, json_format, expected_iter):
     ],
 )
 def test_load_from_file_json(file_name, json_format, expected_iter):
-    with mock.patch("json_streams.json_iter.load_from_file") as json_iter_mock, mock.patch(
-        "json_streams.jsonl_iter.load_from_file"
+    with mock.patch("json_arrays.json_iter.load_from_file") as json_iter_mock, mock.patch(
+        "json_arrays.jsonl_iter.load_from_file"
     ) as jsonl_iter_mock:
-        for _ in json_streams.load_from_file(file_name, json_format=json_format):
+        for _ in json_arrays.load_from_file(file_name, json_format=json_format):
             pass
         expected_call = mock.call(file_name, file_mode="rb")
         if expected_iter == "json_iter":
@@ -113,15 +113,15 @@ def test_load_from_file_json(file_name, json_format, expected_iter):
 )
 def test_dump_int_memoryio(data, facit, json_format):
     out = io.BytesIO()
-    json_streams.dump(data, out, json_format=json_format)
+    json_arrays.dump(data, out, json_format=json_format)
     assert out.getvalue() == facit
 
     out.seek(0)  # read it from the beginning
-    out_iter = json_streams.load(out, json_format=json_format)
+    out_iter = json_arrays.load(out, json_format=json_format)
     if isinstance(data, list):
         compare_iters(out_iter, data)
     else:
-        for i in json_streams.load(out, json_format=json_format):
+        for i in json_arrays.load(out, json_format=json_format):
             print("i = {i}".format(i=i))
             assert i == data
 
@@ -137,7 +137,7 @@ def test_dump_int_memoryio(data, facit, json_format):
 )
 def test_sink_int_memoryio(data, facit, json_format):
     out = io.BytesIO()
-    with json_streams.sink(out, json_format=json_format) as sink:
+    with json_arrays.sink(out, json_format=json_format) as sink:
         for d in data if isinstance(data, list) else [data]:  # sourcery skip: no-loop-in-tests
             sink.send(d)
     assert out.getvalue() == facit
@@ -145,14 +145,14 @@ def test_sink_int_memoryio(data, facit, json_format):
 
 def test_load_from_file_fails_without_file_name() -> None:
     try:
-        next(json_streams.load_from_file(None, use_stdin_as_default=False))
+        next(json_arrays.load_from_file(None, use_stdin_as_default=False))
     except ValueError as exc:
         assert str(exc) == "You must give a FILENAME or USE_STDIN_AS_DEFAULT=`True`"
 
 
 def test_dump_to_file_fails_without_file_name() -> None:
     try:
-        json_streams.dump_to_file(
+        json_arrays.dump_to_file(
             [], None, use_stdout_as_default=False, use_stderr_as_default=False
         )
     except ValueError as exc:
@@ -164,7 +164,7 @@ def test_dump_to_file_fails_without_file_name() -> None:
 
 def test_sink_from_file_fails_without_file_name() -> None:
     try:
-        json_streams.sink_from_file(
+        json_arrays.sink_from_file(
             None, use_stdout_as_default=False, use_stderr_as_default=False
         )
     except ValueError as exc:

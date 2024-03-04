@@ -1,8 +1,8 @@
-# json-streams
+# json-arrays
 
-[![codecov](https://codecov.io/gh/spraakbanken/json-streams-py/branch/main/graph/badge.svg)](https://codecov.io/gh/spraakbanken/json-streams-py/)
-[![CI](https://github.com/spraakbanken/json-streams-py/workflows/CI/badge.svg)](https://github.com/spraakbanken/json-streams-py/actions)
-[![PyPI status](https://badge.fury.io/py/json-streams.svg)](https://pypi.org/project/json-streams/)
+[![codecov](https://codecov.io/gh/spraakbanken/json-arrays-py/branch/main/graph/badge.svg)](https://codecov.io/gh/spraakbanken/json-arrays-py/)
+[![CI](https://github.com/spraakbanken/json-arrays-py/workflows/CI/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions)
+[![PyPI status](https://badge.fury.io/py/json-arrays.svg)](https://pypi.org/project/json-arrays/)
 
 Read and write JSON lazy, especially json-arrays.
 
@@ -36,10 +36,10 @@ Uses `orjson` if present, otherwise standard `json`.
 
 ```bash
 # Using standard json
-pip install json-streams
+pip install json-arrays
 
 # Using orjson
-pip install json-streams[orjson]
+pip install json-arrays[orjson]
 
 ```
 
@@ -56,17 +56,17 @@ Allows you to use `json.load` and `json.dump` with
 both json and json-lines files as well as dumping generators.
 
 ```python
-import json_streams
+import json_arrays
 
 # This command tries to guess format and opens the file
-data = json_streams.load_from_file("data.json") # or data.jsonl
+data = json_arrays.load_from_file("data.json") # or data.jsonl
 
 # Write to file, again guessing format
-json_streams.dump_to_file(data, "data.jsonl")
+json_arrays.dump_to_file(data, "data.jsonl")
 ```
 
 ```python
-from json_streams import json_iter, jsonl_iter
+from json_arrays import json_iter, jsonl_iter
 
 # Open and read the file without guessing
 data = json_iter.load_from_file("data.json")
@@ -78,7 +78,7 @@ jsonl_iter.dump_to_file(data, "data.jsonl")
 ```
 
 ```python
-import json_streams
+import json_arrays
 def process(data):
     for entry in data:
         # process
@@ -86,22 +86,22 @@ def process(data):
 
 def read_process_and_write(filename_in, filename_out):
 
-    json_streams.dump_to_file(
+    json_arrays.dump_to_file(
         process(
-            json_streams.load_from_file(filename_in)
+            json_arrays.load_from_file(filename_in)
         ),
         filename_out
     )
 ```
 
-You can also use json_streams as a sink, that you can send data to.
+You can also use json_arrays as a sink, that you can send data to.
 
 ```python
-import json_streams
+import json_arrays
 
 with open("out.json", "bw") as fp:
   # guessing format
-  with json_streams.sink(fp) as sink:
+  with json_arrays.sink(fp) as sink:
     for data in data_source():
       sink.send(data)
 ```

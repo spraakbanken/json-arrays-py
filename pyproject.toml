@@ -1,5 +1,5 @@
 [project]
-name = "json-streams"
+name = "json-arrays"
 version = "0.13.0"
 description = "Stream JSON and JSON-Lines lazily."
 authors = [
@@ -27,9 +27,9 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/spraakbanken/json-streams-py"
-Repository = "https://github.com/spraakbanken/json-streams-py"
-"Bug Tracker" = "https://github.com/spraakbanken/json-streams-py/issues"
+Homepage = "https://github.com/spraakbanken/json-arrays-py"
+Repository = "https://github.com/spraakbanken/json-arrays-py"
+"Bug Tracker" = "https://github.com/spraakbanken/json-arrays-py/issues"
 
 [project.optional-dependencies]
 orjson = ["orjson>=3.9.13"]
@@ -61,7 +61,7 @@ exclude = ["/.github", "/docs"]
 
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/json_streams"]
+packages = ["src/json_arrays"]
 
 [tool.pdm]
 distribution = true

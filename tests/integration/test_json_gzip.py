@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 import pytest
-from json_streams import json_iter
+from json_arrays import json_iter
 
 
 @pytest.mark.skip()

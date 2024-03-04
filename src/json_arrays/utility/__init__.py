@@ -4,7 +4,7 @@ import os
 from enum import Enum
 from typing import Any, Generator, Union
 
-from json_streams import _types
+from json_arrays import _types
 
 # pylint: disable=unsubscriptable-object
 

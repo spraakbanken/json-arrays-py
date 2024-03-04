@@ -2,7 +2,7 @@ import gzip
 import json
 from pathlib import Path
 
-from json_streams import jsonl_iter
+from json_arrays import jsonl_iter
 
 
 def test_jsonl_gzip():

@@ -2,7 +2,7 @@ import builtins
 import gzip
 from typing import Any, Optional
 
-from json_streams import _types, utility
+from json_arrays import _types, utility
 
 
 def open_file(file_name: _types.Pathlike, mode="rb") -> _types.File:  # type: ignore [type-var]

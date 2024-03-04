@@ -3,7 +3,7 @@ from typing import Iterable, Union
 
 import ijson  # type: ignore
 
-from json_streams import _types, files, jsonlib, utility
+from json_arrays import _types, files, jsonlib, utility
 
 
 def dump(data: Union[dict, Iterable], fileobj: _types.File, **kwargs):
