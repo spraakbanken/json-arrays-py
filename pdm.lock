@@ -5,7 +5,7 @@
 groups = ["default", "orjson", "dev"]
 strategy = ["cross_platform", "inherit_metadata"]
 lock_version = "4.4.1"
-content_hash = "sha256:b4b5a25bc0566fc5ba787d9d4697beb9f62e7d0db803c7af13b73c8be357f726"
+content_hash = "sha256:d947f03bf547805b5a5d2843023c1697ac6b591acc369f8f2e6a1bf76b952b09"
 
 [[package]]
 name = "anyio"
@@ -254,6 +254,20 @@ groups = ["dev"]
 files = [
     {file = "iniconfig-2.0.0-py3-none-any.whl", hash = "sha256:b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"},
     {file = "iniconfig-2.0.0.tar.gz", hash = "sha256:2d91e135bf72d31a410b17c16da610a82cb55f6b0477d1a902134b24a455b8b3"},
+]
+
+[[package]]
+name = "json-arrays"
+version = "0.14.0"
+requires_python = ">=3.9"
+summary = "Stream JSON and JSON-Lines lazily."
+groups = ["default"]
+dependencies = [
+    "ijson>=3.2.3",
+]
+files = [
+    {file = "json_arrays-0.14.0-py3-none-any.whl", hash = "sha256:a6ed52d164631a47ca0aaf5d3e48b6d2e165adf3e338fed0f858606369170c49"},
+    {file = "json_arrays-0.14.0.tar.gz", hash = "sha256:bae33e1940433cc808993314fb397de1acecd2ae79f73c4e153d18d6bcf967d9"},
 ]
 
 [[package]]
