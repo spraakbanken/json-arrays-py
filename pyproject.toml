@@ -7,11 +7,11 @@ authors = [
     { name = "Språkbanken at Göteborgs universitet", email = "sb-info@svenska.gu.se" },
 ]
 license = { text = "MIT" }
-dependencies = ["ijson>=3.2.3"]
+dependencies = ["json-arrays>=0.14"]
 readme = "README.md"
 requires-python = ">= 3.9"
 classifiers = [
-    "Development Status :: 4 - Beta",
+    "Development Status :: 7 - Inactive",
     # "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
@@ -40,18 +40,6 @@ build-backend = "hatchling.build"
 
 [tool.black]
 target-version = ["py39"]
-
-[tool.rye]
-managed = true
-dev-dependencies = [
-    "pytest>=7.4.2",
-    "bump2version>=1.0.1",
-    "mypy>=1.6.1",
-    "pytest-cov>=4.1.0",
-    "types-orjson>=3.6.2",
-    "watchfiles>=0.21.0",
-    "ruff>=0.1.14",
-]
 
 [tool.hatch.metadata]
 allow-direct-references = true
