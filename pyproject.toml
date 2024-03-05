@@ -1,6 +1,6 @@
 [project]
 name = "json-arrays"
-version = "0.13.0"
+version = "0.14.0"
 description = "Stream JSON and JSON-Lines lazily."
 authors = [
     { name = "Kristoffer Andersson", email = "kristoffer.andersson@gu.se" },
