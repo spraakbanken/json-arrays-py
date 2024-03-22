@@ -25,9 +25,10 @@ from tests.utils import compare_iters
     ],
 )
 def test_dump_to_file_json(file_name, json_format, expected_iter):
-    with mock.patch("json_arrays.json_iter.dump_to_file") as json_iter_mock, mock.patch(
-        "json_arrays.jsonl_iter.dump_to_file"
-    ) as jsonl_iter_mock:
+    with (
+        mock.patch("json_arrays.json_iter.dump_to_file") as json_iter_mock,
+        mock.patch("json_arrays.jsonl_iter.dump_to_file") as jsonl_iter_mock,
+    ):
         in_iter = None
         json_arrays.dump_to_file(in_iter, file_name, json_format=json_format)
         expected_call = [mock.call(in_iter, file_name, file_mode="wb")]
@@ -57,9 +58,10 @@ def test_dump_to_file_json(file_name, json_format, expected_iter):
     ],
 )
 def test_sink_from_file_json(file_name, json_format, expected_iter):
-    with mock.patch("json_arrays.json_iter.sink_from_file") as json_iter_mock, mock.patch(
-        "json_arrays.jsonl_iter.sink_from_file"
-    ) as jsonl_iter_mock:
+    with (
+        mock.patch("json_arrays.json_iter.sink_from_file") as json_iter_mock,
+        mock.patch("json_arrays.jsonl_iter.sink_from_file") as jsonl_iter_mock,
+    ):
         json_arrays.sink_from_file(file_name, json_format=json_format)
         expected_call = [mock.call(file_name, file_mode="wb")]
         if expected_iter == "json_iter":
@@ -88,9 +90,10 @@ def test_sink_from_file_json(file_name, json_format, expected_iter):
     ],
 )
 def test_load_from_file_json(file_name, json_format, expected_iter):
-    with mock.patch("json_arrays.json_iter.load_from_file") as json_iter_mock, mock.patch(
-        "json_arrays.jsonl_iter.load_from_file"
-    ) as jsonl_iter_mock:
+    with (
+        mock.patch("json_arrays.json_iter.load_from_file") as json_iter_mock,
+        mock.patch("json_arrays.jsonl_iter.load_from_file") as jsonl_iter_mock,
+    ):
         for _ in json_arrays.load_from_file(file_name, json_format=json_format):
             pass
         expected_call = mock.call(file_name, file_mode="rb")
@@ -145,7 +148,8 @@ def test_sink_int_memoryio(data, facit, json_format):
 
 def test_load_from_file_fails_without_file_name() -> None:
     try:
-        next(json_arrays.load_from_file(None, use_stdin_as_default=False))
+        for _ in json_arrays.load_from_file(None, use_stdin_as_default=False):
+            pass
     except ValueError as exc:
         assert str(exc) == "You must give a FILENAME or USE_STDIN_AS_DEFAULT=`True`"
 
