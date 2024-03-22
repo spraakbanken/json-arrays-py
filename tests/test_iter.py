@@ -75,11 +75,6 @@ def fixture_strings():
     return ["a", "b", "c"]
 
 
-@pytest.fixture
-def dicts():
-    return [{"a": "a1"}, {"b": ["b1", "b2"]}]
-
-
 def gen_values(lst):
     yield from lst
 
