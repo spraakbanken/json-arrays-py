@@ -69,10 +69,10 @@ distribution = true
 [tool.pdm.dev-dependencies]
 dev = [
     "pytest>=8.0.0",
-    "bump2version>=1.0.1",
     "mypy>=1.8.0",
     "pytest-cov>=4.1.0",
     "types-orjson>=3.6.2",
     "watchfiles>=0.21.0",
     "ruff>=0.2.1",
+    "bump-my-version>=0.19.0",
 ]
