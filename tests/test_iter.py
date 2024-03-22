@@ -64,18 +64,10 @@ def test_dump_gen_memoryio(it):
 
 
 @pytest.mark.parametrize(
-    "it,file_name,facit,file_mode",
-    [
-        (json_iter, "tests/data/array.json", None, "rb"),
-    ],
+    "it, file_name, file_mode", [(json_iter, "tests/data/array.json", "rb")]
 )
-def test_load_file_name(it, file_name: str, facit, file_mode):
-    if not facit:
-        facit = file_name
-    with open(facit, encoding="utf-8") as fp:
-        facit_it = json.load(fp)
-    test_it = it.load_from_file(file_name, file_mode=file_mode)
-    compare_iters(test_it, facit_it)
+def test_load_file_name(it, file_name: str, file_mode, snapshot_json):
+    assert list(it.load_from_file(file_name, file_mode=file_mode)) == snapshot_json
 
 
 @pytest.fixture(name="strings")
