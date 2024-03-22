@@ -15,6 +15,8 @@ help:
 	@echo "usage:"
 	@echo "dev | install-dev"
 	@echo "   setup development environment"
+	@echo "install"
+	@echo "   setup production environment"
 	@echo ""
 	@echo "info"
 	@echo "   print info about the system and project"
@@ -28,6 +30,9 @@ help:
 	@echo "lint"
 	@echo "   lint the code"
 	@echo ""
+	@echo "lint-fix"
+	@echo "   lint the code and try to fix it"
+	@echo ""
 	@echo "type-check"
 	@echo "   check types"
 	@echo ""
@@ -39,6 +44,9 @@ help:
 	@echo ""
 	@echo "bumpversion [part=]"
 	@echo "   bumps the given part of the version of the project. (Default: part='patch')"
+	@echo ""
+	@echo "bumpversion-show"
+	@echo "   shows the bump path that is possible"
 	@echo ""
 	@echo "publish [branch=]"
 	@echo "   pushes the given branch including tags to origin, for CI to publish based on tags. (Default: branch='main')"
@@ -80,6 +88,10 @@ install-dev:
 install-dev-orjson:
 	pdm install --dev --group orjson
 
+# setup production environment
+install:
+	pdm sync --prod
+
 .PHONY: test
 test:
 	${INVENV} pytest -vv ${tests}
@@ -101,11 +113,19 @@ type-check:
 .PHONY: lint
 # lint the code
 lint:
-	${INVENV} ruff ${PROJECT_SRC} ${tests}
+	${INVENV} ruff check ${PROJECT_SRC} ${tests}
+
+.PHONY: lint-fix
+# lint the code (and fix if possible)
+lint-fix:
+	${INVENV} ruff check --fix ${PROJECT_SRC} ${tests}
 
 part := "patch"
-bumpversion: install-dev
-	${INVENV} bump2version ${part}
+bumpversion:
+	${INVENV} bump-my-version bump ${part}
+
+bumpversion-show:
+	${INVENV} bump-my-version show-bump
 
 # run formatter(s)
 fmt:
