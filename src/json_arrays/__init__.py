@@ -5,6 +5,7 @@ import typing
 from typing import BinaryIO, Iterable, Optional
 
 from json_arrays import _types, encoders, json_iter, jsonl_iter, jsonlib, utility
+from json_arrays.utility import JsonFormat
 
 __all__ = [
     "encoders",
@@ -18,6 +19,7 @@ __all__ = [
     "dump_to_file",
     "sink",
     "sink_from_file",
+    "JsonFormat",
 ]
 
 

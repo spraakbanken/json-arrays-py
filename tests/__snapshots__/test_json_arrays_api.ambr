@@ -1,0 +1,43 @@
+# serializer version: 1
+# name: test_dump[json]
+  b'[{"a": "a1"},{"b": ["b1", "b2"]}]'
+# ---
+# name: test_dump[jsonl]
+  b'{"a": "a1"}\n{"b": ["b1", "b2"]}\n'
+# ---
+# name: test_dump_to_file[tests/data/gen/api_array.json.gz]
+  b'[{"a": "a1"},{"b": ["b1", "b2"]}]'
+# ---
+# name: test_dump_to_file[tests/data/gen/api_array.json]
+  b'[{"a": "a1"},{"b": ["b1", "b2"]}]'
+# ---
+# name: test_dump_to_file[tests/data/gen/api_array.jsonl.gz]
+  b'{"a": "a1"}\n{"b": ["b1", "b2"]}\n'
+# ---
+# name: test_dump_to_file[tests/data/gen/api_array.jsonl]
+  b'{"a": "a1"}\n{"b": ["b1", "b2"]}\n'
+# ---
+# name: test_dump_to_file[tests/data/gen/api_array.ndjson.gz]
+  b'{"a": "a1"}\n{"b": ["b1", "b2"]}\n'
+# ---
+# name: test_dump_to_file[tests/data/gen/api_array.ndjson]
+  b'{"a": "a1"}\n{"b": ["b1", "b2"]}\n'
+# ---
+# name: test_sink_from_file[tests/data/gen/api_array.json.gz]
+  b'[\n{"a": "a1"},\n{"b": ["b1", "b2"]}\n]'
+# ---
+# name: test_sink_from_file[tests/data/gen/api_array.json]
+  b'[\n{"a": "a1"},\n{"b": ["b1", "b2"]}\n]'
+# ---
+# name: test_sink_from_file[tests/data/gen/api_array.jsonl.gz]
+  b'{"a": "a1"}\n{"b": ["b1", "b2"]}\n'
+# ---
+# name: test_sink_from_file[tests/data/gen/api_array.jsonl]
+  b'{"a": "a1"}\n{"b": ["b1", "b2"]}\n'
+# ---
+# name: test_sink_from_file[tests/data/gen/api_array.ndjson.gz]
+  b'{"a": "a1"}\n{"b": ["b1", "b2"]}\n'
+# ---
+# name: test_sink_from_file[tests/data/gen/api_array.ndjson]
+  b'{"a": "a1"}\n{"b": ["b1", "b2"]}\n'
+# ---
