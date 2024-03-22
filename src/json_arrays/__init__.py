@@ -1,15 +1,28 @@
 """Handle JSON or JSON_LINES lazily."""
+
 import sys
 import typing
 from typing import BinaryIO, Iterable, Optional
 
 from json_arrays import _types, encoders, json_iter, jsonl_iter, jsonlib, utility
 
-__all__ = ["encoders", "json_iter", "jsonl_iter", "jsonlib", "utility"]
+__all__ = [
+    "encoders",
+    "json_iter",
+    "jsonl_iter",
+    "jsonlib",
+    "utility",
+    "load",
+    "load_from_file",
+    "dump",
+    "dump_to_file",
+    "sink",
+    "sink_from_file",
+]
 
 
 # pylint: disable=unsubscriptable-object
-def choose_iter(name, json_format: Optional[utility.JsonFormat]):
+def _choose_iter(name, json_format: Optional[utility.JsonFormat]):
     if json_format == utility.JsonFormat.JSON_LINES or utility.is_jsonl(name):
         return jsonl_iter
     return json_iter
@@ -35,7 +48,7 @@ def load(fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None) -> I
         >>> list(iter)
         [{'a': 1}, {'a': 2}]
     """
-    _iter = choose_iter(utility.get_name_of_file(fp), json_format)
+    _iter = _choose_iter(utility.get_name_of_file(fp), json_format)
 
     yield from _iter.load(fp)
 
@@ -67,7 +80,7 @@ def load_from_file(
             lazily loaded from file
     """
     if file_name is not None:
-        _iter = choose_iter(file_name, json_format)
+        _iter = _choose_iter(file_name, json_format)
 
         yield from _iter.load_from_file(file_name, file_mode=file_mode, **kwargs)
     elif use_stdin_as_default:
@@ -98,7 +111,7 @@ def dump(in_iter_, fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = 
         >>> out_jsonl.getvalue()
         b'{"a":1}\\n{"a":2}\\n'
     """
-    _iter = choose_iter(utility.get_name_of_file(fp), json_format)
+    _iter = _choose_iter(utility.get_name_of_file(fp), json_format)
 
     _iter.dump(in_iter_, fp)
 
@@ -130,7 +143,7 @@ def dump_to_file(
             use stderr if file_name is empty.
     """
     if file_name is not None:
-        _iter = choose_iter(file_name, json_format)
+        _iter = _choose_iter(file_name, json_format)
 
         _iter.dump_to_file(in_iter_, file_name, file_mode=file_mode, **kwargs)
 
@@ -145,7 +158,7 @@ def dump_to_file(
 
 
 def sink(fp: BinaryIO, *, json_format: Optional[utility.JsonFormat] = None):
-    _iter = choose_iter(utility.get_name_of_file(fp), json_format)
+    _iter = _choose_iter(utility.get_name_of_file(fp), json_format)
 
     return _iter.sink(fp)
 
@@ -181,6 +194,6 @@ def sink_from_file(
             "You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`"  # noqa: E501
         )
 
-    _iter = choose_iter(file_name, json_format)
+    _iter = _choose_iter(file_name, json_format)
 
     return _iter.sink_from_file(file_name, file_mode=file_mode)
