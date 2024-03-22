@@ -1,8 +1,17 @@
 # json-arrays
 
-[![codecov](https://codecov.io/gh/spraakbanken/json-arrays-py/branch/main/graph/badge.svg)](https://codecov.io/gh/spraakbanken/json-arrays-py/)
-[![CI](https://github.com/spraakbanken/json-arrays-py/workflows/CI/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions)
-[![PyPI status](https://badge.fury.io/py/json-arrays.svg)](https://pypi.org/project/json-arrays/)
+[![PyPI version](https://badge.fury.io/py/json-arrays.svg)](https://pypi.org/project/json-arrays/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/json-arrays)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/json-arrays)](https://pypi.org/project/json-arrays/)
+
+[![Maturity badge - level 3](https://img.shields.io/badge/Maturity-Level%203%20--%20Stable-green.svg)](https://github.com/spraakbanken/getting-started/blob/main/scorecard.md)
+[![Stage](https://img.shields.io/pypi/status/sparv-sbx-word-prediction-kb-bert)](https://pypi.org/project/sparv-sbx-word-prediction-kb-bert/)
+
+[![Code Coverage](https://codecov.io/gh/spraakbanken/json-arrays-py/branch/main/graph/badge.svg)](https://codecov.io/gh/spraakbanken/json-arrays-py/)
+[![CI(check)](https://github.com/spraakbanken/json-arrays-py/workflows/check.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions/check.yml)
+[![CI(release)](https://github.com/spraakbanken/json-arrays-py/workflows/release.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions/release.yml)
+[![CI(scheduled)](https://github.com/spraakbanken/json-arrays-py/workflows/scheduled.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions/scheduled.yml)
+[![CI(test)](https://github.com/spraakbanken/json-arrays-py/workflows/test.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions/test.yml)
 
 Read and write JSON lazy, especially json-arrays.
 
