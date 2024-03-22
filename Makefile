@@ -145,8 +145,12 @@ publish:
 
 
 .PHONY: prepare-release
-prepare-release: tests/requirements-testing.lock
+prepare-release: tests/requirements-testing.lock CHANGELOG.md
 
 # we use lock extension so that dependabot doesn't pick up changes in this file
 tests/requirements-testing.lock: pyproject.toml
 	pdm export --dev --format requirements --output $@
+
+.PHONY: CHANGELOG.md
+CHANGELOG.md:
+	git cliff --unreleased --prepend $@
