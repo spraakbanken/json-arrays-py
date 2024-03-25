@@ -154,3 +154,7 @@ tests/requirements-testing.lock: pyproject.toml
 .PHONY: CHANGELOG.md
 CHANGELOG.md:
 	git cliff --unreleased --prepend $@
+
+.PHONY: snapshot-update
+snapshot-update:
+	${INVENV} pytest --snapshot-update

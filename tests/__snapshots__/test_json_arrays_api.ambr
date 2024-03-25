@@ -23,6 +23,33 @@
 # name: test_dump_to_file[tests/data/gen/api_array.ndjson]
   b'{"a":"a1"}\n{"b":["b1","b2"]}\n'
 # ---
+# name: test_dump_to_file_stderr[None]
+  b'{"a":"a1"}\n{"b":["b1","b2"]}\n'
+# ---
+# name: test_dump_to_file_stderr[json]
+  b'[{"a":"a1"},{"b":["b1","b2"]}]'
+# ---
+# name: test_dump_to_file_stderr[jsonl]
+  b'{"a":"a1"}\n{"b":["b1","b2"]}\n'
+# ---
+# name: test_dump_to_file_stdout[None]
+  b'{"a":"a1"}\n{"b":["b1","b2"]}\n'
+# ---
+# name: test_dump_to_file_stdout[json]
+  b'[{"a":"a1"},{"b":["b1","b2"]}]'
+# ---
+# name: test_dump_to_file_stdout[jsonl]
+  b'{"a":"a1"}\n{"b":["b1","b2"]}\n'
+# ---
+# name: test_sink[.json]
+  b'[\n{"a":"a1"},\n{"b":["b1","b2"]}\n]'
+# ---
+# name: test_sink[.jsonl]
+  b'{"a":"a1"}\n{"b":["b1","b2"]}\n'
+# ---
+# name: test_sink[.ndjson]
+  b'{"a":"a1"}\n{"b":["b1","b2"]}\n'
+# ---
 # name: test_sink_from_file[tests/data/gen/api_array.json.gz]
   b'[\n{"a":"a1"},\n{"b":["b1","b2"]}\n]'
 # ---
@@ -39,5 +66,14 @@
   b'{"a":"a1"}\n{"b":["b1","b2"]}\n'
 # ---
 # name: test_sink_from_file[tests/data/gen/api_array.ndjson]
+  b'{"a":"a1"}\n{"b":["b1","b2"]}\n'
+# ---
+# name: test_sink_from_file_stdout[None]
+  b'{"a":"a1"}\n{"b":["b1","b2"]}\n'
+# ---
+# name: test_sink_from_file_stdout[json]
+  b'[\n{"a":"a1"},\n{"b":["b1","b2"]}\n]'
+# ---
+# name: test_sink_from_file_stdout[jsonl]
   b'{"a":"a1"}\n{"b":["b1","b2"]}\n'
 # ---

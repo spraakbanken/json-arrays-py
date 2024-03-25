@@ -86,7 +86,10 @@ def load_from_file(
 
         yield from _iter.load_from_file(file_name, file_mode=file_mode, **kwargs)
     elif use_stdin_as_default:
-        yield from jsonl_iter.load(sys.stdin.buffer, **kwargs)
+        if json_format == JsonFormat.JSON:
+            yield from json_iter.load(sys.stdin.buffer, **kwargs)
+        else:
+            yield from jsonl_iter.load(sys.stdin.buffer, **kwargs)
     else:
         raise ValueError("You must give a FILENAME or USE_STDIN_AS_DEFAULT=`True`")
 
@@ -149,10 +152,12 @@ def dump_to_file(
 
         _iter.dump_to_file(in_iter_, file_name, file_mode=file_mode, **kwargs)
 
-    elif use_stdout_as_default:
-        jsonl_iter.dump(in_iter_, sys.stdout.buffer, **kwargs)
-    elif use_stderr_as_default:
-        jsonl_iter.dump(in_iter_, sys.stderr.buffer, **kwargs)
+    elif use_stdout_as_default or use_stderr_as_default:
+        buffer = sys.stdout.buffer if use_stdout_as_default else sys.stderr.buffer
+        if json_format == JsonFormat.JSON:
+            json_iter.dump(in_iter_, buffer, **kwargs)
+        else:
+            jsonl_iter.dump(in_iter_, buffer, **kwargs)
     else:
         raise ValueError(
             "You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`"  # noqa: E501
@@ -188,10 +193,13 @@ def sink_from_file(
             use stderr if file_name is empty.
     """
     if not file_name:
-        if use_stdout_as_default:
-            return jsonl_iter.sink(sys.stdout.buffer)
-        if use_stderr_as_default:
-            return jsonl_iter.sink(sys.stderr.buffer)
+        if use_stdout_as_default or use_stderr_as_default:
+            buffer = sys.stdout.buffer if use_stdout_as_default else sys.stderr.buffer
+            return (
+                json_iter.sink(buffer)
+                if json_format == JsonFormat.JSON
+                else jsonl_iter.sink(buffer)
+            )
         raise ValueError(
             "You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`"  # noqa: E501
         )
