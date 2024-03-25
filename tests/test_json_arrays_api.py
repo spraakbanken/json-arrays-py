@@ -75,6 +75,42 @@ def test_dump(json_format: json_arrays.JsonFormat, snapshot, array_of_dicts: lis
 
 
 @pytest.mark.parametrize(
+    "json_format", [json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
+)
+def test_dump_dict(json_format: json_arrays.JsonFormat, snapshot, data_dict: dict) -> None:
+    with tempfile.TemporaryFile() as fp:
+        json_arrays.dump(data_dict, fp, json_format=json_format)
+        fp.seek(0)
+        data_written = fp.read()
+
+    assert data_written == snapshot
+
+
+@pytest.mark.parametrize(
+    "json_format", [json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
+)
+def test_dump_int(json_format: json_arrays.JsonFormat, snapshot) -> None:
+    with tempfile.TemporaryFile() as fp:
+        json_arrays.dump(1234, fp, json_format=json_format)
+        fp.seek(0)
+        data_written = fp.read()
+
+    assert data_written == snapshot
+
+
+@pytest.mark.parametrize(
+    "json_format", [json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
+)
+def test_dump_str(json_format: json_arrays.JsonFormat, snapshot) -> None:
+    with tempfile.TemporaryFile() as fp:
+        json_arrays.dump("just an ordinary\n string", fp, json_format=json_format)
+        fp.seek(0)
+        data_written = fp.read()
+
+    assert data_written == snapshot
+
+
+@pytest.mark.parametrize(
     "file_name",
     [
         "tests/data/gen/api_array.json",

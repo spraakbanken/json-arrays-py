@@ -1,4 +1,4 @@
-""" Handle JSON-LINES lazily. """
+"""Handle JSON-LINES lazily."""
 
 import contextlib
 from typing import Iterable, Union
@@ -8,7 +8,7 @@ from json_arrays import _types, files, jsonlib, utility
 
 def dump(data: Union[dict, Iterable], fileobj: _types.File, **kwargs):
     fp = files.BinaryFileWrite(fileobj=fileobj)
-    if isinstance(data, dict):
+    if isinstance(data, (dict, str)):
         fp.write(jsonlib.dumps(data, **kwargs))
         fp.write(b"\n")
         return
@@ -20,8 +20,7 @@ def dump(data: Union[dict, Iterable], fileobj: _types.File, **kwargs):
     except TypeError:
         fp.write(jsonlib.dumps(data, **kwargs))
         fp.write(b"\n")
-    if fp.needs_closing:
-        fp.close()
+    fp.close()
 
 
 def load(fileobj: _types.File, **kwargs) -> Iterable:

@@ -5,6 +5,24 @@
 # name: test_dump[jsonl]
   b'{"a":"a1"}\n{"b":["b1","b2"]}\n{"c":{"c1":"c11"}}\n'
 # ---
+# name: test_dump_dict[json]
+  b'{"a":[{"b":2,"c":"hi","d":[1,2]}],"b":[1,2]}'
+# ---
+# name: test_dump_dict[jsonl]
+  b'{"a":[{"b":2,"c":"hi","d":[1,2]}],"b":[1,2]}\n'
+# ---
+# name: test_dump_int[json]
+  b'1234'
+# ---
+# name: test_dump_int[jsonl]
+  b'1234\n'
+# ---
+# name: test_dump_str[json]
+  b'"just an ordinary\\n string"'
+# ---
+# name: test_dump_str[jsonl]
+  b'"just an ordinary\\n string"\n'
+# ---
 # name: test_dump_to_file[tests/data/gen/api_array.json.gz]
   b'[{"a":"a1"},{"b":["b1","b2"]},{"c":{"c1":"c11"}}]'
 # ---
