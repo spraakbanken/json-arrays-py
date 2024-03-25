@@ -2,3 +2,6 @@
 # name: test_dump_to_file
   b'[{"a":"a1"},{"b":["b1","b2"]},{"c":{"c1":"c11"}}]'
 # ---
+# name: test_encode_decimal
+  b'[10.2,"10.20",10.2]'
+# ---
