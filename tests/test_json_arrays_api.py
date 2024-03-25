@@ -141,6 +141,17 @@ def test_sink(file_suffix: str, snapshot, array_of_dicts: list[dict]) -> None:
     assert data_written == snapshot
 
 
+@pytest.mark.parametrize("file_suffix", [".json", ".jsonl", ".ndjson"])
+def test_sink_dict(file_suffix: str, snapshot) -> None:
+    with tempfile.NamedTemporaryFile(suffix=file_suffix) as fp:
+        with json_arrays.sink(fp) as sink:
+            sink.send({"a": "b"})
+        fp.seek(0)
+        data_written = fp.read()
+
+    assert data_written == snapshot
+
+
 @pytest.mark.parametrize(
     "file_name",
     [

@@ -1,0 +1,28 @@
+# serializer version: 1
+# name: test_dumps_dict
+  list([
+    b'{',
+    b'"a":',
+    b'[',
+    b'{"b":2,"c":"hi","d":[1,2]}',
+    b']',
+    b',',
+    b'"b":',
+    b'[',
+    b'1',
+    b',',
+    b'2',
+    b']',
+    b'}',
+  ])
+# ---
+# name: test_dumps_int
+  list([
+    b'1234',
+  ])
+# ---
+# name: test_dumps_str
+  list([
+    b'"just a\\n string"',
+  ])
+# ---
