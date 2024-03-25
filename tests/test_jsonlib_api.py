@@ -1,4 +1,12 @@
-from json_arrays import files, jsonlib
+from decimal import Decimal
+
+from json_arrays import encoders, files, jsonlib
+
+
+def test_encode_decimal(snapshot):
+    result = jsonlib.dumps([10.20, "10.20", Decimal("10.20")], default=encoders.encode_decimal)
+
+    assert result == snapshot
 
 
 def test_load_from_file(snapshot_json) -> None:
