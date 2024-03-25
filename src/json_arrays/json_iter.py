@@ -1,4 +1,5 @@
-""" Handle JSON lazily. """
+"""Handle JSON lazily."""
+
 from typing import Iterable, Union
 
 import ijson  # type: ignore
@@ -20,8 +21,7 @@ def dump(data: Union[dict, Iterable], fileobj: _types.File, **kwargs):
     fp = files.BinaryFileWrite(fileobj=fileobj)
     for chunk in dumps(data, **kwargs):
         fp.write(chunk)
-    if fp.needs_closing:
-        fp.close()
+    fp.close()
 
 
 def dumps(obj, **kwargs) -> Iterable[bytes]:
@@ -54,14 +54,6 @@ def load(fileobj: _types.File, *, use_float: bool = True, **kwargs) -> Iterable:
     fp = files.BinaryFileRead(fileobj=fileobj)
     kwargs = {"use_float": use_float} | kwargs
     yield from ijson.items(fp.file, "item", **kwargs)
-
-
-def load_eager(fp: _types.File):
-    data = jsonlib.loads(fp.read())
-    if isinstance(data, list):
-        yield from data
-    else:
-        yield data
 
 
 def load_from_file(file_name: _types.Pathlike, *, file_mode: str = "rb", **kwargs):
