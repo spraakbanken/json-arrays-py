@@ -121,7 +121,7 @@ This projects [keeps a CHANGELOG](./CHANGELOG.md).
 
 ## Development
 
-This project uses [rye](https://rye-up.com).
+This project uses [pdm](https://pdm-project.org).
 After cloning the repo, just run
 
 ```bash
