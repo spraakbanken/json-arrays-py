@@ -1,4 +1,6 @@
+import gzip
 import io
+import json
 import tempfile
 from pathlib import Path
 from typing import Optional
@@ -260,3 +262,27 @@ def test_sink_from_file_fails_without_file_name() -> None:
             str(exc)
             == "You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`"  # noqa: E501
         )
+
+
+def test_json_gzip_dump_fp(array_of_dicts: list[dict], snapshot_json):
+    filename = Path("tests/data/gen/json_gzip_dump_fp.json.gz")
+
+    with open(filename, "wb") as fp:
+        json_arrays.dump(array_of_dicts, fp)
+
+    with gzip.open(filename) as fp:  # type: ignore
+        loaded_entries = json.load(fp)
+
+    assert loaded_entries == snapshot_json
+
+
+def test_json_gzip_load_fp(array_of_dicts: list[dict], snapshot_json):
+    filename = Path("tests/data/gen/json_gzip_load_fp.json.gz")
+
+    with gzip.open(filename, "wt") as fp:
+        json.dump(array_of_dicts, fp)
+
+    with open(filename, "rb") as fp:  # type: ignore
+        loaded_entries = list(json_arrays.load(fp))  # type: ignore
+
+    assert loaded_entries == snapshot_json
