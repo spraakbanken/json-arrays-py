@@ -4,7 +4,7 @@
 >>> from decimal import Decimal
 >>> from json_arrays import jsonlib, encoders
 >>> jsonlib.dumps([10.20, "10.20", Decimal("10.20")], default=encoders.encode_decimal)
-b'[10.20,"10.20",10.20]'
+b'[10.2,"10.20",10.2]'
 """
 
 from .decimal_encoders import encode_decimal
