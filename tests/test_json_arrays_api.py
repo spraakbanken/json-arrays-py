@@ -134,7 +134,7 @@ def test_dump_to_file(file_name: str, snapshot, array_of_dicts: list[dict]) -> N
     "json_format", [None, json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
 )
 def test_dump_to_file_stdout(
-    json_format: json_arrays.JsonFormat | None, snapshot, array_of_dicts: list[dict]
+    json_format: Optional[json_arrays.JsonFormat], snapshot, array_of_dicts: list[dict]
 ) -> None:
     buffer = io.BytesIO()
     stdout_patcher = patch("sys.stdout", buffer=buffer)
@@ -152,7 +152,7 @@ def test_dump_to_file_stdout(
     "json_format", [None, json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
 )
 def test_dump_to_file_stderr(
-    json_format: json_arrays.JsonFormat | None, snapshot, array_of_dicts: list[dict]
+    json_format: Optional[json_arrays.JsonFormat], snapshot, array_of_dicts: list[dict]
 ) -> None:
     buffer = io.BytesIO()
     stderr_patcher = patch("sys.stderr", buffer=buffer)
@@ -214,7 +214,7 @@ def test_sink_from_file(file_name: str, snapshot, array_of_dicts: list[dict]) ->
     "json_format", [None, json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
 )
 def test_sink_from_file_stdout(
-    json_format: json_arrays.JsonFormat | None, snapshot, array_of_dicts: list[dict]
+    json_format: Optional[json_arrays.JsonFormat], snapshot, array_of_dicts: list[dict]
 ) -> None:
     buffer = io.BytesIO()
     stdout_patcher = patch("sys.stdout", buffer=buffer)
