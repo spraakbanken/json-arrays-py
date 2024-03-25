@@ -169,7 +169,7 @@ def test_dump_to_file_stderr(
 @pytest.mark.parametrize("file_suffix", [".json", ".jsonl", ".ndjson"])
 def test_sink(file_suffix: str, snapshot, array_of_dicts: list[dict]) -> None:
     with tempfile.NamedTemporaryFile(suffix=file_suffix) as fp:
-        with json_arrays.sink(fp) as sink:
+        with json_arrays.sink(fp) as sink:  # type: ignore[arg-type]
             for obj in array_of_dicts:
                 sink.send(obj)
         fp.seek(0)
@@ -181,7 +181,7 @@ def test_sink(file_suffix: str, snapshot, array_of_dicts: list[dict]) -> None:
 @pytest.mark.parametrize("file_suffix", [".json", ".jsonl", ".ndjson"])
 def test_sink_dict(file_suffix: str, snapshot) -> None:
     with tempfile.NamedTemporaryFile(suffix=file_suffix) as fp:
-        with json_arrays.sink(fp) as sink:
+        with json_arrays.sink(fp) as sink:  # type: ignore[arg-type]
             sink.send({"a": "b"})
         fp.seek(0)
         data_written = fp.read()
