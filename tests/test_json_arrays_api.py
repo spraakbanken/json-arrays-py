@@ -1,6 +1,7 @@
 import io
 import tempfile
 from pathlib import Path
+from typing import Optional
 from unittest.mock import patch
 
 import json_arrays
@@ -48,7 +49,7 @@ def test_load(file_name: str, snapshot_json) -> None:
     ],
 )
 def test_load_from_file_stdin(
-    file_name: str, json_format: json_arrays.JsonFormat | None, snapshot_json
+    file_name: str, json_format: Optional[json_arrays.JsonFormat], snapshot_json
 ) -> None:
     buffer = io.BytesIO(Path(file_name).read_bytes())
     stdin_patcher = patch("sys.stdin", buffer=buffer)
