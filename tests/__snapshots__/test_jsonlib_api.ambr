@@ -1,0 +1,4 @@
+# serializer version: 1
+# name: test_dump_to_file
+  b'[{"a":"a1"},{"b":["b1","b2"]},{"c":{"c1":"c11"}}]'
+# ---

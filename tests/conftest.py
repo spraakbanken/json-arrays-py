@@ -19,5 +19,10 @@ def make_gen(src: list) -> Generator:
 
 
 @pytest.fixture
+def data_dict() -> dict:
+    return {"a": [{"b": 2, "c": "hi", "d": [1, 2]}], "b": [1, 2]}
+
+
+@pytest.fixture
 def data_dict_w_gen() -> dict:
     return {"a": make_gen([{"b": 2, "c": "hi", "d": [1, 2]}]), "b": [1, 2]}

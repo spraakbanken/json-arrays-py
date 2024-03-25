@@ -16,13 +16,3 @@
     b'}',
   ])
 # ---
-# name: test_dumps_int
-  list([
-    b'1234',
-  ])
-# ---
-# name: test_dumps_str
-  list([
-    b'"just a\\n string"',
-  ])
-# ---
