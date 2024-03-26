@@ -1,5 +1,5 @@
-"""Util functions.
-"""
+"""Util functions."""
+
 import os
 from enum import Enum
 from typing import Any, Generator, Union
