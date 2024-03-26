@@ -41,6 +41,9 @@
 # name: test_dump_to_file[tests/data/gen/api_array.ndjson]
   b'{"a":"a1"}\n{"b":["b1","b2"]}\n{"c":{"c1":"c11"}}\n'
 # ---
+# name: test_dump_to_file_fails_without_file_name
+  'You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`'
+# ---
 # name: test_dump_to_file_stderr[None]
   b'{"a":"a1"}\n{"b":["b1","b2"]}\n{"c":{"c1":"c11"}}\n'
 # ---
@@ -58,6 +61,9 @@
 # ---
 # name: test_dump_to_file_stdout[jsonl]
   b'{"a":"a1"}\n{"b":["b1","b2"]}\n{"c":{"c1":"c11"}}\n'
+# ---
+# name: test_load_from_file_fails_without_file_name
+  'You must give a FILENAME or USE_STDIN_AS_DEFAULT=`True`'
 # ---
 # name: test_sink[.json]
   b'[\n{"a":"a1"},\n{"b":["b1","b2"]},\n{"c":{"c1":"c11"}}\n]'
@@ -94,6 +100,9 @@
 # ---
 # name: test_sink_from_file[tests/data/gen/api_array.ndjson]
   b'{"a":"a1"}\n{"b":["b1","b2"]}\n{"c":{"c1":"c11"}}\n'
+# ---
+# name: test_sink_from_file_fails_without_file_name
+  'You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`'
 # ---
 # name: test_sink_from_file_stdout[None]
   b'{"a":"a1"}\n{"b":["b1","b2"]}\n{"c":{"c1":"c11"}}\n'
