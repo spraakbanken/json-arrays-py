@@ -83,10 +83,14 @@ dev: install-dev
 
 # setup development environment
 install-dev:
-	pdm install --dev
+	pdm sync --dev --clean
 
-install-dev-orjson:
-	pdm install --dev --group orjson
+pdm.dev.orjson.lock: pyproject.toml
+	pdm lock --dev --group orjson --lockfile $@
+
+.PHONY: install-dev-orjson
+install-dev-orjson: pdm.dev.orjson.lock
+	pdm install --lockfile $<
 
 # setup production environment
 install:
