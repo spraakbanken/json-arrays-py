@@ -232,36 +232,30 @@ def test_sink_from_file_stdout(
     assert data_written == snapshot
 
 
-def test_load_from_file_fails_without_file_name() -> None:
+def test_load_from_file_fails_without_file_name(snapshot) -> None:
     try:
         for _ in json_arrays.load_from_file(None, use_stdin_as_default=False):
             pass
     except ValueError as exc:
-        assert str(exc) == "You must give a FILENAME or USE_STDIN_AS_DEFAULT=`True`"
+        assert str(exc) == snapshot
 
 
-def test_dump_to_file_fails_without_file_name() -> None:
+def test_dump_to_file_fails_without_file_name(snapshot) -> None:
     try:
         json_arrays.dump_to_file(
             [], None, use_stdout_as_default=False, use_stderr_as_default=False
         )
     except ValueError as exc:
-        assert (
-            str(exc)
-            == "You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`"  # noqa: E501
-        )
+        assert str(exc) == snapshot
 
 
-def test_sink_from_file_fails_without_file_name() -> None:
+def test_sink_from_file_fails_without_file_name(snapshot) -> None:
     try:
         json_arrays.sink_from_file(
             None, use_stdout_as_default=False, use_stderr_as_default=False
         )
     except ValueError as exc:
-        assert (
-            str(exc)
-            == "You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`"  # noqa: E501
-        )
+        assert str(exc) == snapshot
 
 
 def test_json_gzip_dump_fp(array_of_dicts: list[dict], snapshot_json):
