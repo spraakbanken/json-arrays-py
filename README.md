@@ -8,10 +8,11 @@
 [![Stage](https://img.shields.io/pypi/status/sparv-sbx-word-prediction-kb-bert)](https://pypi.org/project/sparv-sbx-word-prediction-kb-bert/)
 
 [![Code Coverage](https://codecov.io/gh/spraakbanken/json-arrays-py/branch/main/graph/badge.svg)](https://codecov.io/gh/spraakbanken/json-arrays-py/)
-[![CI(check)](https://github.com/spraakbanken/json-arrays-py/workflows/check.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions/check.yml)
-[![CI(release)](https://github.com/spraakbanken/json-arrays-py/workflows/release.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions/release.yml)
-[![CI(scheduled)](https://github.com/spraakbanken/json-arrays-py/workflows/scheduled.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions/scheduled.yml)
-[![CI(test)](https://github.com/spraakbanken/json-arrays-py/workflows/test.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions/test.yml)
+
+[![CI(check)](https://github.com/spraakbanken/json-arrays-py/actions/workflows/check.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions/workflows/check.yml)
+[![CI(release)](https://github.com/spraakbanken/json-arrays-py/actions/workflows/release.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions/workflows/release.yml)
+[![CI(scheduled)](https://github.com/spraakbanken/json-arrays-py/actions/workflows/scheduled.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions/workflows/scheduled.yml)
+[![CI(test)](https://github.com/spraakbanken/json-arrays-py/actions/workflows/test.yml/badge.svg)](https://github.com/spraakbanken/json-arrays-py/actions/workflows/test.yml)
 
 Read and write JSON lazy, especially json-arrays.
 
