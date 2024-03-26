@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Documentation
+
+- Add doc-test for encoders
+- Add pyversion classifiers
+
+### Fixed
+
+- Use compact mode for pure json export
+
 ## [0.14.0] - 2024-03-05
 
 - Renamed project: `json_streams` -> `json_arrays`
