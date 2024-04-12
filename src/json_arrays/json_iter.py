@@ -1,10 +1,11 @@
 """Handle JSON lazily."""
 
+import typing
 from typing import Iterable, Union
 
 import ijson  # type: ignore
 
-from json_arrays import _types, files, jsonlib, utility
+from json_arrays import _types, files, jsonlib, shared, utility
 
 
 def dump(data: Union[dict, Iterable], fileobj: _types.File, **kwargs):
@@ -19,35 +20,15 @@ def dump(data: Union[dict, Iterable], fileobj: _types.File, **kwargs):
 
     """
     fp = files.BinaryFileWrite(fileobj=fileobj)
-    for chunk in dumps(data, **kwargs):
+    writer = shared.JsonArrayWriter()
+    for chunk in writer.dumps(data, **kwargs):
         fp.write(chunk)
     fp.close()
 
 
-def dumps(obj, **kwargs) -> Iterable[bytes]:
-    if isinstance(obj, str):
-        yield jsonlib.dumps(obj, **kwargs)
-    elif isinstance(obj, dict):
-        yield b"{"
-        for i, (key, value) in enumerate(obj.items()):
-            if i > 0:
-                yield b","
-            yield b'"%s":' % utility.to_bytes(key)
-            yield from dumps(value, **kwargs)
-        yield b"}"
-    else:
-        try:
-            it = iter(obj)
-        except TypeError:
-            yield jsonlib.dumps(obj, **kwargs)
-        else:
-            yield b"["
-            for i, o in enumerate(it):
-                if i > 0:
-                    yield b","
-                yield jsonlib.dumps(o, **kwargs)
-
-            yield b"]"
+def dumps(obj, **kwargs) -> typing.Iterable[bytes]:
+    writer = shared.JsonArrayWriter()
+    yield from writer.dumps(obj, **kwargs)
 
 
 def load(fileobj: _types.File, *, use_float: bool = True, **kwargs) -> Iterable:
