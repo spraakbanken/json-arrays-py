@@ -12,7 +12,7 @@ def get_backend(backend_name: str):
     """Import the backend named `backend`"""
     import importlib
 
-    return importlib.import_module(f"json_arrays.backends.{backend_name}")
+    return importlib.import_module(f"json_arrays.jsonlib.backends.{backend_name}")
 
 
 def _default_backend():
