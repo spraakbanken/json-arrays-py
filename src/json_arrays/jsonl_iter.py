@@ -3,22 +3,17 @@
 import contextlib
 from typing import Iterable, Union
 
-from json_arrays import _types, files, jsonlib, utility
+from json_arrays import _types, files, jsonlib, shared, utility
 
 
 def dump(data: Union[dict, Iterable], fileobj: _types.File, **kwargs):
     fp = files.BinaryFileWrite(fileobj=fileobj)
-    if isinstance(data, (dict, str)):
-        fp.write(jsonlib.dumps(data, **kwargs))
-        fp.write(b"\n")
-        return
-
-    try:
-        for obj in data:
-            fp.write(jsonlib.dumps(obj, **kwargs))
-            fp.write(b"\n")
-    except TypeError:
-        fp.write(jsonlib.dumps(data, **kwargs))
+    writer = shared.JsonArrayWriter(json_lines=True)
+    did_write = False
+    for chunk in writer.dumps(data, **kwargs):
+        fp.write(chunk)
+        did_write = True
+    if did_write:
         fp.write(b"\n")
     fp.close()
 
