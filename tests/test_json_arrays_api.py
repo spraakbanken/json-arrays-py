@@ -1,3 +1,4 @@
+import bz2
 import gzip
 import io
 import json
@@ -21,6 +22,9 @@ from json_arrays.utility import JsonFormat
         "tests/data/array.json.gz",
         "tests/data/array.jsonl.gz",
         "tests/data/array.ndjson.gz",
+        "tests/data/array.json.bz2",
+        "tests/data/array.jsonl.bz2",
+        "tests/data/array.ndjson.bz2",
     ],
 )
 def test_load_from_file(file_name: str, snapshot_json):
@@ -116,12 +120,15 @@ def test_dump_str(json_format: json_arrays.JsonFormat, snapshot) -> None:
 @pytest.mark.parametrize(
     "file_name",
     [
-        "tests/data/gen/api_array.json",
-        "tests/data/gen/api_array.jsonl",
-        "tests/data/gen/api_array.ndjson",
-        "tests/data/gen/api_array.json.gz",
-        "tests/data/gen/api_array.jsonl.gz",
-        "tests/data/gen/api_array.ndjson.gz",
+        "tests/data/gen/api_dump_array.json",
+        "tests/data/gen/api_dump_array.jsonl",
+        "tests/data/gen/api_dump_array.ndjson",
+        "tests/data/gen/api_dump_array.json.gz",
+        "tests/data/gen/api_dump_array.jsonl.gz",
+        "tests/data/gen/api_dump_array.ndjson.gz",
+        "tests/data/gen/api_dump_array.json.bz2",
+        "tests/data/gen/api_dump_array.jsonl.bz2",
+        "tests/data/gen/api_dump_array.ndjson.bz2",
     ],
 )
 def test_dump_to_file(file_name: str, snapshot, array_of_dicts: list[dict]) -> None:
@@ -194,12 +201,15 @@ def test_sink_dict(file_suffix: str, snapshot) -> None:
 @pytest.mark.parametrize(
     "file_name",
     [
-        "tests/data/gen/api_array.json",
-        "tests/data/gen/api_array.jsonl",
-        "tests/data/gen/api_array.ndjson",
-        "tests/data/gen/api_array.json.gz",
-        "tests/data/gen/api_array.jsonl.gz",
-        "tests/data/gen/api_array.ndjson.gz",
+        "tests/data/gen/api_sink_array.json",
+        "tests/data/gen/api_sink_array.jsonl",
+        "tests/data/gen/api_sink_array.ndjson",
+        "tests/data/gen/api_sink_array.json.gz",
+        "tests/data/gen/api_sink_array.jsonl.gz",
+        "tests/data/gen/api_sink_array.ndjson.gz",
+        "tests/data/gen/api_sink_array.json.bz2",
+        "tests/data/gen/api_sink_array.jsonl.bz2",
+        "tests/data/gen/api_sink_array.ndjson.bz2",
     ],
 )
 def test_sink_from_file(file_name: str, snapshot, array_of_dicts: list[dict]) -> None:
@@ -278,5 +288,41 @@ def test_json_gzip_load_fp(array_of_dicts: list[dict], snapshot_json):
 
     with open(filename, "rb") as fp:  # type: ignore
         loaded_entries = list(json_arrays.load(fp))  # type: ignore
+
+    assert loaded_entries == snapshot_json
+
+
+def test_json_bzip2_dump_fp(array_of_dicts: list[dict], snapshot_json):
+    filename = Path("tests/data/gen/json_bzip2_dump_fp.json.bz2")
+
+    with open(filename, "wb") as fp:
+        json_arrays.dump(array_of_dicts, fp)
+
+    with bz2.open(filename) as fp:  # type: ignore
+        loaded_entries = json.load(fp)
+
+    assert loaded_entries == snapshot_json
+
+
+def test_json_bzip2_load_fp(array_of_dicts: list[dict], snapshot_json):
+    filename = Path("tests/data/gen/json_bzip2_load_fp.json.bz2")
+
+    with bz2.open(filename, "wt") as fp:
+        json.dump(array_of_dicts, fp)
+
+    with open(filename, "rb") as fp:  # type: ignore
+        loaded_entries = list(json_arrays.load(fp))  # type: ignore
+
+    assert loaded_entries == snapshot_json
+
+
+def test_json_bzip2_load_fileobj(array_of_dicts: list[dict], snapshot_json):
+    filename = Path("tests/data/gen/json_bzip2_load_fileobj.json.bz2")
+
+    with bz2.open(filename, "wt") as fp:
+        json.dump(array_of_dicts, fp)
+
+    fp = bz2.BZ2File(filename, "rb")  # type: ignore
+    loaded_entries = list(json_arrays.load(fp))  # type: ignore
 
     assert loaded_entries == snapshot_json

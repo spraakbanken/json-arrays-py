@@ -1,4 +1,5 @@
 import builtins
+import bz2
 import gzip
 from typing import Any, Optional
 
@@ -9,6 +10,8 @@ def open_file(file_name: _types.Pathlike, mode="rb") -> _types.File:  # type: ig
     assert "b" in mode  # noqa: S101
     if utility.is_gzip(file_name):
         return gzip.GzipFile(file_name, mode)  # type: ignore
+    elif utility.is_bzip2(file_name):
+        return bz2.BZ2File(file_name, mode)  # type: ignore
     else:
         return builtins.open(file_name, mode)  # type: ignore
 
@@ -38,6 +41,17 @@ class BinaryFile:
                 else:
                     self._file = gzip.GzipFile(  # type: ignore
                         filename=filename, fileobj=fileobj, mode=mode
+                    )
+                    self._needs_closing = True
+            elif utility.is_bzip2(fileobj_name) or filename and utility.is_bzip2(filename):
+                print(f"{type(fileobj)=}")
+
+                if isinstance(fileobj, bz2.BZ2File):
+                    self._file = fileobj  # type: ignore
+                else:
+                    fileobj_or_filename = fileobj or filename
+                    self._file = bz2.BZ2File(  # type: ignore
+                        filename=fileobj_or_filename, mode=mode
                     )
                     self._needs_closing = True
             else:

@@ -26,7 +26,7 @@ def is_jsonl(name: _types.Pathlike) -> bool:
     if name in ["<stdin>", "<stdout>"]:
         return True
     base, suffix = os.path.splitext(str(name))
-    if suffix == ".gz":
+    if suffix in [".gz", ".bz2"]:
         _, suffix = os.path.splitext(base)
     # print('suffix = {suffix}'.format(suffix=suffix))
     return suffix in [".jsonl", ".jl", ".ndjson"]
@@ -36,6 +36,12 @@ def is_gzip(name: _types.Pathlike) -> bool:
     """Test if a filename is gzip."""
     _, suffix = os.path.splitext(str(name))
     return suffix == ".gz"
+
+
+def is_bzip2(name: _types.Pathlike) -> bool:
+    """Test if a filename is gzip."""
+    _, suffix = os.path.splitext(str(name))
+    return suffix == ".bz2"
 
 
 def to_bytes(s: Union[str, bytes, bytearray]) -> Union[bytes, bytearray]:
