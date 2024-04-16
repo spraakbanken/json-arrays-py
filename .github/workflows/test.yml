@@ -60,7 +60,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ matrix.json-lib }}-${{ hashFiles('**/pyproject.toml') }}-${{ hashFiles('.github/workflows/test.yml') }}
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ matrix.json-lib }}-${{ hashFiles('**/pyproject.toml') }}-${{ hashFiles('**/pdm.lock') }}-${{ hashFiles('.github/workflows/test.yml') }}
   
       - name: Install dependencies
         if: steps.cached-venv.outputs.cache-hit != 'true'
@@ -116,7 +116,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ matrix.json-lib }}-${{ hashFiles('**/pyproject.toml') }}-${{ hashFiles('.github/workflows/test.yml') }}
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ matrix.json-lib }}-${{ hashFiles('**/pyproject.toml') }}-${{ hashFiles('**/pdm.lock') }}-${{ hashFiles('.github/workflows/test.yml') }}
   
       - name: Install dependencies
         if: steps.cached-venv.outputs.cache-hit != 'true'
