@@ -18,30 +18,7 @@ concurrency:
 name: rolling
 
 jobs:
-  # https://twitter.com/mycoliza/status/1571295690063753218
-  nightly:
-    runs-on: ubuntu-latest
-    name: ubuntu / 3.13-dev
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          submodules: true
-      - name: Install pdm
-        uses: pdm-project/setup-pdm@v4
-        with:
-          python-version: "3.11"
-      - name: Install python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.13-dev"
-      - run: python --version
-      - name: pdm lock
-        if: hashFiles('pdm.lock') == ''
-        run: pdm lock
-      - name: pdm sync --dev
-        run: pdm sync --dev
-      - name: make test
-        run: make test
+
   # https://twitter.com/alcuadrado/status/1571291687837732873
   update:
     # This action checks that updating the dependencies of this crate to the latest available that
