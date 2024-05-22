@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Added
+
+- Add bzip2 support
+
+### Changed
+
+- Make jsonlib and backends to separate module
+- Move json_iter.dumps to writer
+- Use writer for json_lines
+
+### Documentation
+
+- Update CI badges
+- Update author
+- Use correct repo
+
+### Miscellaneous Tasks
+
+- Update cliff config
+- Use hashes from pdm.lock also
+- Remove nightly step in scheduled
+
 ## [0.14.1] - 2024-03-26
 
 ### Documentation
