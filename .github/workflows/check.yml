@@ -40,7 +40,6 @@ jobs:
       #----------------------------------------------
       - name: Set up uv
         uses: astral-sh/setup-uv@v4
-
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -69,7 +68,6 @@ jobs:
       #----------------------------------------------
       - name: Set up uv
         uses: astral-sh/setup-uv@v4
-
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
