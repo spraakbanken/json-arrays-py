@@ -92,6 +92,7 @@ jobs:
     # Actions and Dependabot
 
     name: "${{ matrix.os }} / 3.9 / ${{ matrix.json-lib }} / doctest"
+
     strategy:
       max-parallel: 4
       fail-fast: false
