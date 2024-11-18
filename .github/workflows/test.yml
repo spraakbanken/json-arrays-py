@@ -73,7 +73,7 @@ jobs:
         run: make test-w-coverage cov_report=xml
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           # directory: ./coverage
@@ -128,7 +128,7 @@ jobs:
         run: make doc-tests cov_report=xml
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           # directory: ./coverage
