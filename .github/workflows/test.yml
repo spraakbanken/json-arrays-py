@@ -122,6 +122,7 @@ jobs:
 
       - name: Install dependencies
         run: make install-dev-${{ matrix.json-lib }}
+
       #----------------------------------------------
       # Run tests and upload coverage
       #----------------------------------------------
