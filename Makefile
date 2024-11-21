@@ -79,7 +79,7 @@ info:
 	@echo "Platform: ${PLATFORM}"
 	@echo "INVENV: '${INVENV}'"
 
-dev: install-dev
+dev: install-dev-orjson
 
 # setup development environment
 install-dev:
@@ -166,3 +166,6 @@ snapshot-update:
 	${INVENV} pytest --snapshot-update
 
 ### === project targets below this line ===
+# setup development environment (with orjson)
+install-dev-orjson:
+	uv sync --dev --extra orjson

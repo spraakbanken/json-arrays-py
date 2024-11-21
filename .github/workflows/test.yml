@@ -24,7 +24,7 @@ jobs:
     # This requires the secret `CODECOV_TOKEN` be set as secret on GitHub, both for
     # Actions and Dependabot
 
-    name: "${{ matrix.os }} / ${{ matrix.python-version }} / coverage"
+    name: "${{ matrix.os }} / ${{ matrix.python-version }} / ${{ matrix.json-lib }} / coverage"
     strategy:
       max-parallel: 4
       fail-fast: false
@@ -37,6 +37,9 @@ jobs:
           - "3.11"
           - "3.12"
           - "3.13"
+        json-lib:
+          - orjson
+          - json
 
     runs-on: ${{ matrix.os }}-latest
     env:
@@ -60,7 +63,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Install dependencies
-        run: uv sync --all-extras --dev
+        run: make install-dev
+
+      - name: Install json library
+        if: matrix.json-lib != 'json'
+        run: make install-dev-${{ matrix.json-lib }}
 
       - name: Run tests for coverage
         run: make test-w-coverage cov_report=xml
@@ -70,24 +77,27 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           # directory: ./coverage
-          env_vars: OS,PYTHON
+          env_vars: OS,PYTHON,JSONLIB
           fail_ci_if_error: true
           # files: ./coverage/coverage.xml
           # flags: unittests
           # name: codecov-umbrella
           verbose: true
+        env:
+          JSONLIB: ${{ matrix.json-lib }}
 
   doctests:
     # This action runs doctests for coverage collection and uploads them to codecov.io.
     # This requires the secret `CODECOV_TOKEN` be set as secret on GitHub, both for
     # Actions and Dependabot
 
-    name: "${{ matrix.os }} / 3.9 / doctest"
+    name: "${{ matrix.os }} / 3.9 / ${{ matrix.json-lib }} / doctest"
     strategy:
       max-parallel: 4
       fail-fast: false
       matrix:
         os: [ubuntu]
+        json-lib: [orjson]
 
     runs-on: ${{ matrix.os }}-latest
     env:
@@ -110,7 +120,7 @@ jobs:
           python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
 
       - name: Install dependencies
-        run: uv sync --all-extras --dev
+        run: make install-dev-${{ matrix.json-lib }}
       #----------------------------------------------
       # Run tests and upload coverage
       #----------------------------------------------
@@ -118,7 +128,7 @@ jobs:
         run: make doc-tests cov_report=xml
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           # directory: ./coverage

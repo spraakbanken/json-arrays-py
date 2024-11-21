@@ -45,7 +45,7 @@ jobs:
           enable-cache: true
 
       - name: Install dependencies
-        run: make install-dev
+        run: make install-dev-orjson
 
       - name: check formatting
         run: make check-fmt
@@ -73,7 +73,7 @@ jobs:
           enable-cache: true
 
       - name: Install dependencies
-        run: make install-dev
+        run: make install-dev-orjson
 
       - name: lint code
         run: make lint
@@ -101,7 +101,7 @@ jobs:
           enable-cache: true
 
       - name: Install dependencies
-        run: make install-dev
+        run: make install-dev-orjson
 
       - name: type-check code
         run: make type-check
