@@ -2,8 +2,8 @@ import io
 import json
 
 import pytest
-from json_arrays import json_iter, jsonl_iter
 
+from json_arrays import json_iter, jsonl_iter
 from tests.utils import compare_iters
 
 DATA = [
