@@ -7,8 +7,9 @@ from pathlib import Path
 from typing import Optional
 from unittest.mock import patch
 
-import json_arrays
 import pytest
+
+import json_arrays
 from json_arrays import files
 from json_arrays.utility import JsonFormat
 

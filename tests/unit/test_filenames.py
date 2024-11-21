@@ -1,4 +1,5 @@
 import pytest
+
 from json_arrays.utility import is_jsonl
 
 

@@ -1,4 +1,5 @@
 import pytest
+
 from json_arrays.utility import get_name_of_file, is_bzip2, is_gzip, is_jsonl
 
 
