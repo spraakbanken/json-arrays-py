@@ -1,0 +1,3 @@
+[submodule "assets/supp-data"]
+	path = assets/supp-data
+	url = https://github.com/spraakbanken/json-arrays-supplementary-data
