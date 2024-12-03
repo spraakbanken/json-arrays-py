@@ -8,18 +8,18 @@ from json_arrays import _types, encoders, json_iter, jsonl_iter, jsonlib, utilit
 from json_arrays.utility import JsonFormat
 
 __all__ = [
+    "JsonFormat",
+    "dump",
+    "dump_to_file",
     "encoders",
     "json_iter",
     "jsonl_iter",
     "jsonlib",
-    "utility",
     "load",
     "load_from_file",
-    "dump",
-    "dump_to_file",
     "sink",
     "sink_from_file",
-    "JsonFormat",
+    "utility",
 ]
 
 
