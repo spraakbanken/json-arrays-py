@@ -107,6 +107,7 @@ venv.bak/
 
 # generated test data
 tests/data/gen/
+assets/supp-data-gen/
 
 # VS Code settings
 /.vscode
