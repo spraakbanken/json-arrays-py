@@ -170,8 +170,5 @@ snapshot-update:
 install-dev-orjson:
 	uv sync --dev --extra orjson
 
-assets/supp-data-gen/skbl.ndjson: assets/supp-data/data/skbl.json
-	${INVENV} python examples/json_ndjson_converter.py $< $@
-
-run-benchmarks: assets/supp-data-gen/skbl.ndjson
-	${INVENV} pytest --benchmark-only tests/benchmarks
+run-benchmarks:
+	${INVENV} pytest --benchmark-only benchmarks

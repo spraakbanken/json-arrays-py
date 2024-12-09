@@ -40,7 +40,7 @@ jobs:
         run: make dev
       - name: Run Benchmarks for Forked PR
         run: |
-          uv run pytest --benchmark-json benchmark_results-${{ matrix.python-version }}.json  tests/benchmarks
+          uv run pytest --benchmark-json benchmark_results-${{ matrix.python-version }}.json  benchmarks
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
         with:

@@ -57,4 +57,4 @@ jobs:
           --adapter python_pytest \
           --file results.json \
           --github-actions '${{ secrets.GITHUB_TOKEN }}' \
-          "pytest --benchmark-json results.json tests/benchmarks"
+          "pytest --benchmark-json results.json benchmarks"

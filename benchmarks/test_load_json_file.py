@@ -12,12 +12,12 @@ def consume_iter(it) -> None:
     # assert sum(1 for _v in it) == expected_length
 
 
-ARRAY_SMALL_JSON: str = "assets/supp-data/array_small.json"
-ARRAY_MEDIUM_JSON: str = "assets/supp-data/array_medium.json"
+ARRAY_SMALL_JSON: str = "assets/supp-data/data/array_small.json"
+ARRAY_MEDIUM_JSON: str = "assets/supp-data/data/array_medium.json"
 ARRAY_LARGE_JSON: str = "assets/supp-data/data/skbl.json"
-ARRAY_SMALL_NDJSON: str = "assets/supp-data/array_small.ndjson"
-ARRAY_MEDIUM_NDJSON: str = "assets/supp-data/array_medium.ndjson"
-ARRAY_LARGE_NDJSON: str = "assets/supp-data-gen/skbl.ndjson"
+ARRAY_SMALL_NDJSON: str = "assets/supp-data/data/array_small.ndjson"
+ARRAY_MEDIUM_NDJSON: str = "assets/supp-data/data/array_medium.ndjson"
+ARRAY_LARGE_NDJSON: str = "assets/supp-data/data/skbl.ndjson"
 
 
 @pytest.mark.benchmark(group="load-from-file-small")
