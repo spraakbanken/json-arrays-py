@@ -1,0 +1,53 @@
+name: benchmarks_fork_pr_run
+
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+
+env:
+  MINIMUM_PYTHON_VERSION: "3.9"
+  UV_VERSION: "0.5.1"
+
+jobs:
+  benchmark_fork_pr_branch:
+    name: ubuntu / ${{ matrix.python-version }} / run fork pr benchmarks
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+      - name: Set up Python ${{ matrix.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: make dev
+      - name: Run Benchmarks for Forked PR
+        run: |
+          uv run pytest --benchmark-json benchmark_results-${{ matrix.python-version }}.json  tests/benchmarks
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: benchmark_results.json
+          path: ./benchmark_results-${{ matrix.python-version }}.json
+      - name: Upload GitHub Pull Request Event
+        uses: actions/upload-artifact@v4
+        with:
+          name: event.json
+          path: ${{ github.event_path }}
