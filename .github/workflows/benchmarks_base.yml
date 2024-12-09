@@ -43,6 +43,7 @@ jobs:
       - uses: bencherdev/bencher@main
       - name: Track base branch benchmarks with Bencher
         run: |
+          source .venv/bin/activate
           bencher run \
           --project json-arrays-py \
           --token '${{ secrets.BENCHER_API_TOKEN }}' \
