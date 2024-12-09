@@ -1,0 +1,60 @@
+on:
+  pull_request:
+    types: [opened, reopened, edited, synchronize]
+name: benchmarks_pr
+
+env:
+  MINIMUM_PYTHON_VERSION: "3.9"
+  UV_VERSION: "0.5.1"
+
+jobs:
+  benchmark_pr_branch:
+    name: ubuntu / ${{ matrix.python-version }} / continuous benchmarking prs with bencher
+    # DO NOT REMOVE: For handling Fork PRs see Pull Requests from Forks
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      pull-requests: write
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+        python-version:
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+          - "3.13"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+      - name: Set up Python ${{ matrix.python-version }}
+        id: setup-python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install dependencies
+        run: make dev
+      - uses: bencherdev/bencher@main
+      - name: Track PR Benchmarks with Bencher
+        run: |
+          bencher run \
+          --project json-arrays-py \
+          --token '${{ secrets.BENCHER_API_TOKEN }}' \
+          --branch "$GITHUB_HEAD_REF" \
+          --start-point "$GITHUB_BASE_REF" \
+          --start-point-hash '${{ github.event.pull_request.base.sha }}' \
+          --start-point-clone-thresholds \
+          --start-point-reset \
+          --testbed 'ci-ubuntu-latest-python-${{ matrix.python-version }}' \
+          --err \
+          --adapter python_pytest \
+          --file results.json \
+          --github-actions '${{ secrets.GITHUB_TOKEN }}' \
+          "pytest --benchmark-json results.json tests/benchmarks"
