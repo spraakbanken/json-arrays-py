@@ -18,7 +18,7 @@ concurrency:
 name: rolling
 
 env:
-  UV_VERSION: "0.5.4"
+  UV_VERSION: "0.5.15"
 
 jobs:
   # https://twitter.com/alcuadrado/status/1571291687837732873
@@ -40,7 +40,7 @@ jobs:
 
       - name: Set up uv
         if: hashFiles('uv.lock') != ''
-        uses: astral-sh/setup-uv@v4
+        uses: astral-sh/setup-uv@v5
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
