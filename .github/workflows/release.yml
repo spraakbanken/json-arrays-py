@@ -17,7 +17,7 @@ permissions:
 
 env:
   MINIMUM_PYTHON_VERSION: "3.9"
-  UV_VERSION: "0.5.15"
+  UV_VERSION: "0.6.17"
 
 jobs:
   build:
@@ -47,7 +47,7 @@ jobs:
       #  -----  setup uv and load cache   -----
       #----------------------------------------------
       - name: Set up uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -70,7 +70,7 @@ jobs:
     # This action runs the test suite on the built artifact in the `build` action.
     # The default is to run this in ubuntu, macos and windows
 
-    name: ${{ matrix.os }} / 3.9 / ${{ matrix.json-lib }} / test built artifact
+    name: ${{ matrix.os }} / 3.9 / test built artifact
     needs: [build]
 
     strategy:
@@ -80,9 +80,6 @@ jobs:
           - ubuntu
           - macos
           - windows
-        json-lib:
-          - orjson
-          - json
 
     runs-on: ${{ matrix.os }}-latest
     steps:
@@ -104,10 +101,8 @@ jobs:
       - run: rm -r src/json_arrays
       - run: pip install typing-extensions
       - run: pip install -r tests/requirements-testing.lock
-      - run: pip install ${{ matrix.json-lib }}
-        if: matrix.json-lib != 'json'
       - run: pip install json-arrays --no-index --no-deps --find-links dist --force-reinstall
-      - run: pytest tests
+      - run: pytest
 
   # https://github.com/marketplace/actions/alls-green#why used for branch protection checks
   release-check:

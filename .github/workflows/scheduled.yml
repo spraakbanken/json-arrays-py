@@ -6,7 +6,8 @@ permissions:
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
   schedule:
     - cron: "7 7 * * *"
@@ -18,7 +19,7 @@ concurrency:
 name: rolling
 
 env:
-  UV_VERSION: "0.5.15"
+  UV_VERSION: "0.6.17"
 
 jobs:
   # https://twitter.com/alcuadrado/status/1571291687837732873
@@ -29,7 +30,7 @@ jobs:
     # Cargo semver rules (i.e cargo does not update to a new major version unless explicitly told
     # to).
     runs-on: ubuntu-latest
-    name: ubuntu / 3.12 / updates work
+    name: ubuntu / 3.13 / updates work
     # There's no point running this if no uv.lock was checked in in the first place, since we'd
     # just redo what happened in the regular test job. Unfortunately, hashFiles only works in if on
     # steps, so we repeat it.
@@ -40,16 +41,16 @@ jobs:
 
       - name: Set up uv
         if: hashFiles('uv.lock') != ''
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
 
-      - name: Install 3.12
+      - name: Install 3.13
         if: hashFiles('uv.lock') != ''
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.13"
 
       - name: uv sync --dev --upgrade
         if: hashFiles('uv.lock') != ''

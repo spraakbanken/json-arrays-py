@@ -16,7 +16,7 @@ permissions:
 
 env:
   MINIMUM_PYTHON_VERSION: "3.9"
-  UV_VERSION: "0.5.15"
+  UV_VERSION: "0.6.17"
 
 jobs:
   coverage:
@@ -51,7 +51,7 @@ jobs:
           submodules: true
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -79,7 +79,6 @@ jobs:
           # directory: ./coverage
           env_vars: OS,PYTHON,JSONLIB
           fail_ci_if_error: true
-          # files: ./coverage/coverage.xml
           # flags: unittests
           # name: codecov-umbrella
           verbose: true
@@ -92,13 +91,13 @@ jobs:
     # Actions and Dependabot
 
     name: "${{ matrix.os }} / 3.9 / ${{ matrix.json-lib }} / doctest"
-
     strategy:
       max-parallel: 4
       fail-fast: false
       matrix:
         os: [ubuntu]
-        json-lib: [orjson]
+        json-lib:
+          - orjson
 
     runs-on: ${{ matrix.os }}-latest
     env:
@@ -109,7 +108,7 @@ jobs:
           submodules: true
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -122,7 +121,6 @@ jobs:
 
       - name: Install dependencies
         run: make install-dev-${{ matrix.json-lib }}
-
       #----------------------------------------------
       # Run tests and upload coverage
       #----------------------------------------------
@@ -134,15 +132,15 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           # directory: ./coverage
-          env_vars: OS,PYTHON,TESTTYPE
+          env_vars: OS,PYTHON,TESTTYPE,JSONLIB
           fail_ci_if_error: true
-          # files: ./coverage/coverage.xml
           # flags: unittests
           # name: codecov-umbrella
           verbose: true
         env:
           PYTHON: ${{ env.MINIMUM_PYTHON_VERSION }}
           TESTTYPE: doctest
+          JSONLIB: ${{ matrix.json-lib }}
 
   minimal:
     # This action chooses the oldest version of the dependencies permitted by Cargo.toml to ensure
@@ -160,7 +158,7 @@ jobs:
           submodules: true
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@v5
+        uses: astral-sh/setup-uv@v6
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
