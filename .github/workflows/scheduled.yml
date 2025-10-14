@@ -65,7 +65,7 @@ jobs:
   rolling-check:
     if: always()
     needs:
-      - nightly
+      # - nightly
       - update
     runs-on: ubuntu-latest
     permissions: {}
