@@ -7,7 +7,9 @@ authors = [
     { name = "Kristoffer Andersson", email = "kristoffer.andersson@gu.se" },
 ]
 license = { text = "MIT" }
-dependencies = ["ijson>=3.2.3"]
+dependencies = [
+    "ijson>=3.2.3",
+]
 readme = "README.md"
 requires-python = ">= 3.9"
 classifiers = [
@@ -38,7 +40,9 @@ Repository = "https://github.com/spraakbanken/json-arrays-py"
 "Bug Tracker" = "https://github.com/spraakbanken/json-arrays-py/issues"
 
 [project.optional-dependencies]
-orjson = ["orjson>=3.9.13"]
+orjson = [
+    "orjson>=3.9.13",
+]
 
 [dependency-groups]
 dev = [
