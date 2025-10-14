@@ -57,8 +57,8 @@ help:
 	@echo ""
 
 PLATFORM := `uname -o`
-REPO := "<REPO-NAME-HERE>"
-PROJECT_SRC := "<SRC-FOLDER-HERE>"
+REPO := json-arrays-py
+PROJECT_SRC := src/json_arrays
 
 ifeq (${VIRTUAL_ENV},)
   VENV_NAME = .venv
@@ -79,7 +79,7 @@ info:
 	@echo "Platform: ${PLATFORM}"
 	@echo "INVENV: '${INVENV}'"
 
-dev: install-dev
+dev: install-dev-orjson
 
 # setup development environment
 install-dev: install-pre-commit
@@ -171,3 +171,9 @@ snapshot-update:
 	${INVENV} pytest --snapshot-update
 
 ### === project targets below this line ===
+# setup development environment (with orjson)
+install-dev-orjson: install-pre-commit
+	uv sync --dev --extra orjson
+
+run-benchmarks:
+	${INVENV} pytest --benchmark-only benchmarks
