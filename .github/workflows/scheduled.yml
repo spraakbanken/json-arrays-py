@@ -22,6 +22,39 @@ env:
   UV_VERSION: "0.8.13"
 
 jobs:
+  # https://twitter.com/mycoliza/status/1571295690063753218
+  nightly:
+    runs-on: ubuntu-latest
+    name: ubuntu / 3.15-dev
+    steps:
+      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
+        with:
+          persist-credentials: false
+          submodules: true
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@2382069a66b5b52782577081ec324838fd5fc1fc
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+
+      - name: Install python
+        uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
+        with:
+          python-version: "3.15-dev"
+
+      - run: python --version
+
+      - name: uv lock
+        if: hashFiles('uv.lock') == ''
+        run: uv lock
+
+      - name: uv sync --dev
+        run: uv sync --dev --all-packages --all-extras
+
+      - name: make test
+        run: make test
+
   # https://twitter.com/alcuadrado/status/1571291687837732873
   update:
     # This action checks that updating the dependencies of this crate to the latest available that
@@ -30,7 +63,7 @@ jobs:
     # Cargo semver rules (i.e cargo does not update to a new major version unless explicitly told
     # to).
     runs-on: ubuntu-latest
-    name: ubuntu / 3.13 / updates work
+    name: ubuntu / 3.14 / updates work
     # There's no point running this if no uv.lock was checked in in the first place, since we'd
     # just redo what happened in the regular test job. Unfortunately, hashFiles only works in if on
     # steps, so we repeat it.
@@ -51,7 +84,7 @@ jobs:
         if: hashFiles('uv.lock') != ''
         uses: actions/setup-python@e797f83bcb11b83ae66e0230d6156d7c80228e7c # v6.0.0
         with:
-          python-version: "3.13"
+          python-version: "3.14"
 
       - name: uv sync --dev --upgrade
         if: hashFiles('uv.lock') != ''
