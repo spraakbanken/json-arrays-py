@@ -7,7 +7,9 @@ authors = [
     { name = "Kristoffer Andersson", email = "kristoffer.andersson@gu.se" },
 ]
 license = { text = "MIT" }
-dependencies = ["ijson>=3.2.3"]
+dependencies = [
+    "ijson>=3.2.3",
+]
 readme = "README.md"
 requires-python = ">= 3.9"
 classifiers = [
@@ -22,6 +24,8 @@ classifiers = [
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
     "Programming Language :: Python :: Implementation :: CPython",
     # "uncomment if you test on these interpreters:",
     # "Programming Language :: Python :: Implementation :: IronPython",
@@ -36,7 +40,9 @@ Repository = "https://github.com/spraakbanken/json-arrays-py"
 "Bug Tracker" = "https://github.com/spraakbanken/json-arrays-py/issues"
 
 [project.optional-dependencies]
-orjson = ["orjson>=3.9.13"]
+orjson = [
+    "orjson>=3.9.13",
+]
 
 [dependency-groups]
 dev = [
@@ -44,9 +50,7 @@ dev = [
     "mypy>=1.8.0",
     "pytest-cov>=4.1.0",
     "types-orjson>=3.6.2",
-    "watchfiles>=0.21.0",
     "ruff>=0.2.1",
-    "bump-my-version>=0.19.0",
     "syrupy>=4.6.1",
     "pytest-benchmark>=5.1.0",
 ]
