@@ -16,14 +16,14 @@ permissions:
   contents: read
 
 env:
-  MINIMUM_PYTHON_VERSION: "3.9"
+  MINIMUM_PYTHON_VERSION: "3.10"
   UV_VERSION: "0.9.1"
 
 jobs:
   build:
     # This action builds distribution files for upload to PyPI
 
-    name: ubuntu / 3.9 / build
+    name: ubuntu / 3.10 / build
     runs-on: ubuntu-latest
     steps:
       #----------------------------------------------
@@ -70,7 +70,7 @@ jobs:
     # This action runs the test suite on the built artifact in the `build` action.
     # The default is to run this in ubuntu, macos and windows
 
-    name: ${{ matrix.os }} / 3.9 / test built artifact
+    name: ${{ matrix.os }} / 3.10 / test built artifact
     needs: [build]
 
     strategy:

@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 env:
-  MINIMUM_PYTHON_VERSION: "3.9"
+  MINIMUM_PYTHON_VERSION: "3.10"
   UV_VERSION: "0.9.1"
 
 jobs:
@@ -32,7 +32,6 @@ jobs:
         os: [ubuntu]
         python-version:
           # remove the unused versions
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
@@ -93,7 +92,7 @@ jobs:
     # This requires the secret `CODECOV_TOKEN` be set as secret on GitHub, both for
     # Actions and Dependabot
 
-    name: "${{ matrix.os }} / 3.9 / doctest"
+    name: "${{ matrix.os }} / 3.10 / doctest"
     strategy:
       max-parallel: 4
       fail-fast: false
@@ -162,7 +161,7 @@ jobs:
     #
 
     runs-on: ubuntu-latest
-    name: ubuntu / 3.9 / minimal-versions
+    name: ubuntu / 3.10 / minimal-versions
     steps:
       - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
