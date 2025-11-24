@@ -16,20 +16,20 @@ permissions:
   contents: read
 
 env:
-  MINIMUM_PYTHON_VERSION: "3.9"
+  MINIMUM_PYTHON_VERSION: "3.10"
   UV_VERSION: "0.9.1"
 
 jobs:
   build:
     # This action builds distribution files for upload to PyPI
 
-    name: ubuntu / 3.9 / build
+    name: ubuntu / 3.10 / build
     runs-on: ubuntu-latest
     steps:
       #----------------------------------------------
       #       check-out repo and set-up python
       #----------------------------------------------
-      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
+      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v5.0.0
         with:
           persist-credentials: false
           submodules: true
@@ -47,7 +47,7 @@ jobs:
       #  -----  setup uv and load cache   -----
       #----------------------------------------------
       - name: Set up uv
-        uses: astral-sh/setup-uv@3259c6206f993105e3a61b142c2d97bf4b9ef83d # 7.1.0
+        uses: astral-sh/setup-uv@5a7eac68fb9809dea845d802897dc5c723910fa3 # 7.1.3
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -61,7 +61,7 @@ jobs:
       #----------------------------------------------
       #  -----  upload artifacts  -----
       #----------------------------------------------
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+      - uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5.0.0
         with:
           name: pypi_files
           path: dist
@@ -70,7 +70,7 @@ jobs:
     # This action runs the test suite on the built artifact in the `build` action.
     # The default is to run this in ubuntu, macos and windows
 
-    name: ${{ matrix.os }} / 3.9 / test built artifact
+    name: ${{ matrix.os }} / 3.10 / test built artifact
     needs: [build]
 
     strategy:
@@ -83,7 +83,7 @@ jobs:
 
     runs-on: ${{ matrix.os }}-latest
     steps:
-      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
+      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v5.0.0
         with:
           persist-credentials: false
           submodules: true
@@ -94,7 +94,7 @@ jobs:
           python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
 
       - name: get dist artifacts
-        uses: actions/download-artifact@4a24838f3d5601fd639834081e118c2995d51e1c
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53
         with:
           name: pypi_files
           path: dist
@@ -132,7 +132,7 @@ jobs:
       # IMPORTANT: this permission is mandatory for trusted publishing
       id-token: write
     steps:
-      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
+      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v5.0.0
         with:
           persist-credentials: false
           fetch-depth: 0
@@ -141,7 +141,7 @@ jobs:
         with:
           python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
       - name: get dist artifacts
-        uses: actions/download-artifact@4a24838f3d5601fd639834081e118c2995d51e1c
+        uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53
         with:
           name: pypi_files
           path: dist

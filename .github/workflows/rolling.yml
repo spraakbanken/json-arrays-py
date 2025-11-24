@@ -40,14 +40,14 @@ jobs:
     # just redo what happened in the regular test job. Unfortunately, hashFiles only works in if on
     # steps, so we repeat it.
     steps:
-      - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
+      - uses: actions/checkout@71cf2267d89c5cb81562390fa70a37fa40b1305e # v5.0.0
         with:
           persist-credentials: false
           submodules: true
 
       - name: Set up uv
         if: hashFiles('uv.lock') != ''
-        uses: astral-sh/setup-uv@3259c6206f993105e3a61b142c2d97bf4b9ef83d # 7.1.0
+        uses: astral-sh/setup-uv@5a7eac68fb9809dea845d802897dc5c723910fa3 # 7.1.3
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
