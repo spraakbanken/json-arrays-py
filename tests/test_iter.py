@@ -1,7 +1,10 @@
 import io
 import json
+import typing as t
+from collections.abc import Generator, Iterable
 
 import pytest
+from syrupy.assertion import SnapshotAssertion
 
 from json_arrays import json_iter, jsonl_iter
 from tests.utils import compare_iters
@@ -12,7 +15,7 @@ DATA = [
 ]
 
 
-def gen_data():
+def gen_data() -> Generator[dict[str, int], None, None]:
     yield from DATA
 
 
@@ -23,13 +26,13 @@ def gen_data():
         (jsonl_iter, DATA[0]),
     ],
 )
-def test_dump_dict_memoryio(it, data):
+def test_dump_dict_memoryio(it: t.Any, data: dict[str, int]) -> None:
     out = io.BytesIO()
     it.dump(data, out)
 
     out.seek(0)
     for i in it.load(out):
-        print("i = {i}".format(i=i))
+        print(f"i = {i}")  # noqa: T201
         assert i == data
 
 
@@ -40,7 +43,7 @@ def test_dump_dict_memoryio(it, data):
         jsonl_iter,
     ],
 )
-def test_dump_array_memoryio(it):
+def test_dump_array_memoryio(it: t.Any) -> None:
     out = io.BytesIO()
     it.dump(DATA, out)
 
@@ -55,7 +58,7 @@ def test_dump_array_memoryio(it):
         jsonl_iter,
     ],
 )
-def test_dump_gen_memoryio(it):
+def test_dump_gen_memoryio(it: t.Any) -> None:
     out = io.BytesIO()
 
     it.dump(gen_data(), out)
@@ -66,16 +69,22 @@ def test_dump_gen_memoryio(it):
 @pytest.mark.parametrize(
     "it, file_name, file_mode", [(json_iter, "tests/data/array.json", "rb")]
 )
-def test_load_file_name(it, file_name: str, file_mode, snapshot_json):
+def test_load_file_name(
+    it: t.Any, file_name: str, file_mode: str, snapshot_json: SnapshotAssertion
+) -> None:
     assert list(it.load_from_file(file_name, file_mode=file_mode)) == snapshot_json
 
 
 @pytest.fixture(name="strings")
-def fixture_strings():
+def fixture_strings() -> list[str]:
     return ["a", "b", "c"]
 
 
-def gen_values(lst):
+T = t.TypeVar("T")
+
+
+def gen_values(lst: Iterable[T]) -> Generator[T, None, None]:
+    """Create generator from iterable."""
     yield from lst
 
 
@@ -92,10 +101,10 @@ def gen_values(lst):
         ["a", "b"],
     ],
 )
-def test_json_iter_dumps(it):
+def test_json_iter_dumps(it: t.Any) -> None:
     out = io.BytesIO()
     for x in json_iter.dumps(it):
-        print(f"x = {x}")
+        print(f"x = {x!r}")  # noqa: T201
         out.write(x)
 
     result = json.loads(out.getvalue())
@@ -103,7 +112,7 @@ def test_json_iter_dumps(it):
     assert result == it
 
 
-def test_dumps_gen_strings(strings):
+def test_dumps_gen_strings(strings: list[str]) -> None:
     out = io.BytesIO()
     for x in json_iter.dumps(gen_values(strings)):
         out.write(x)
@@ -113,7 +122,7 @@ def test_dumps_gen_strings(strings):
     assert result == strings
 
 
-def test_dumps_gen_list(strings):
+def test_dumps_gen_list(strings: list[str]) -> None:
     out = io.BytesIO()
     for x in json_iter.dumps(gen_values(strings)):
         out.write(x)
@@ -123,7 +132,7 @@ def test_dumps_gen_list(strings):
     assert result == strings
 
 
-def test_dumps_gen_dict(strings):
+def test_dumps_gen_dict(strings: list[str]) -> None:
     data = {"a": "a", "b": gen_values(strings), "c": "c"}
 
     out = io.BytesIO()

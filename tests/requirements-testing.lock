@@ -2,7 +2,7 @@
 #    uv export --dev --format=requirements-txt --no-hashes --no-emit-project --output-file=tests/requirements-testing.lock
 colorama==0.4.6 ; sys_platform == 'win32'
     # via pytest
-coverage==7.6.7
+coverage==7.12.0
     # via pytest-cov
 exceptiongroup==1.2.2 ; python_full_version < '3.11'
     # via pytest
@@ -16,7 +16,9 @@ mypy-extensions==1.0.0
 packaging==24.2
     # via pytest
 pluggy==1.5.0
-    # via pytest
+    # via
+    #   pytest
+    #   pytest-cov
 py-cpuinfo==9.0.0
     # via pytest-benchmark
 pytest==8.3.3
@@ -25,7 +27,7 @@ pytest==8.3.3
     #   pytest-cov
     #   syrupy
 pytest-benchmark==5.1.0
-pytest-cov==6.0.0
+pytest-cov==7.0.0
 ruff==0.7.4
 syrupy==4.7.2
 tomli==2.1.0 ; python_full_version <= '3.11'

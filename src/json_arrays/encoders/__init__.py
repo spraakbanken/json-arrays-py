@@ -1,4 +1,4 @@
-"""Encoders
+"""Encoders.
 
 `encode_decimal`
 >>> from decimal import Decimal

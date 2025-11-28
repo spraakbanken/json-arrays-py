@@ -16,5 +16,5 @@ from json_arrays.utility import is_jsonl
         ("test.ndjson.gz", True),
     ],
 )
-def test_guess_jsonl(filename: str, expected_is_jsonl: bool) -> None:  # noqa: FBT001
+def test_guess_jsonl(filename: str, expected_is_jsonl: bool) -> None:
     assert is_jsonl(filename) == expected_is_jsonl

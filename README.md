@@ -116,9 +116,28 @@ with open("out.json", "bw") as fp:
       sink.send(data)
 ```
 
-## Release Notes
+## Minimum Supported Python Version Policy
 
-This projects [keeps a CHANGELOG](./CHANGELOG.md).
+The Minimum Supported Python Version is fixed for a given minor (1.x)
+version. However it can be increased when bumping minor versions, i.e. going
+from 1.0 to 1.1 allows us to increase the Minimum Supported Python Version. Users unable to increase their
+Python version can use an older minor version instead. Below is a list of sparv-sbx-conllu versions
+and their Minimum Supported Python Version:
+
+- v0.16: Python 3.10
+- v0.15: Python 3.9
+
+Note however that sparv-sbx-conllu also has dependencies, which might have different MSPV
+policies. We try to stick to the above policy when updating dependencies, but
+this is not always possible.
+
+## Changelog
+
+This project keeps a [changelog](./CHANGELOG.md).
+
+## License
+
+This repository is licensed under the [MIT](./LICENSE) license.
 
 ## Development
 
