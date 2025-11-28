@@ -26,6 +26,7 @@ jobs:
           - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
     if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     env:
