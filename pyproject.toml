@@ -4,14 +4,13 @@ version = "0.15.0"
 description = "Stream JSON and JSON-Lines lazily."
 authors = [
     { name = "Språkbanken Text", email = "sb-info@svenska.gu.se" },
-    { name = "Kristoffer Andersson", email = "kristoffer.andersson@gu.se" },
 ]
 license = { text = "MIT" }
 dependencies = [
     "ijson>=3.2.3",
 ]
 readme = "README.md"
-requires-python = ">= 3.9"
+requires-python = ">= 3.10"
 classifiers = [
     "Development Status :: 4 - Beta",
     # "Development Status :: 5 - Production/Stable",
@@ -20,7 +19,6 @@ classifiers = [
     "Operating System :: Unix",
     "Operating System :: POSIX",
     # "Operating System :: Microsoft :: Windows",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -35,9 +33,10 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/spraakbanken/json-arrays-py"
+Homepage = "https://spraakbanken.gu.se"
 Repository = "https://github.com/spraakbanken/json-arrays-py"
-"Bug Tracker" = "https://github.com/spraakbanken/json-arrays-py/issues"
+Issues = "https://github.com/spraakbanken/json-arrays-py/issues"
+Changelog = "https://github.com/spraakbanken/json-arrays-py/blob/main/CHANGELOG.md"
 
 [project.optional-dependencies]
 orjson = [
@@ -56,18 +55,13 @@ dev = [
 ]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.hatch.metadata]
-allow-direct-references = true
-
-[tool.hatch.build.targets.sdist]
-exclude = ["/.github", "/docs"]
+requires = ["uv_build>=0.9.6,0.10.0"]
+build-backend = "uv_build"
 
 
-[tool.hatch.build.targets.wheel]
-packages = ["src/json_arrays"]
+[tool.uv.build-backend]
+module-name = "json_arrays"
+source-exclude = ["/.github", "/docs"]
 
 [tool.uv]
 package = true
