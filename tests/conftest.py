@@ -1,11 +1,12 @@
-from typing import Generator
+from collections.abc import Generator
 
 import pytest
+from syrupy.assertion import SnapshotAssertion
 from syrupy.extensions.json import JSONSnapshotExtension
 
 
 @pytest.fixture
-def snapshot_json(snapshot):
+def snapshot_json(snapshot: SnapshotAssertion) -> SnapshotAssertion:
     return snapshot.with_defaults(extension_class=JSONSnapshotExtension)
 
 

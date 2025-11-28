@@ -4,10 +4,10 @@ import io
 import json
 import tempfile
 from pathlib import Path
-from typing import Optional
 from unittest.mock import patch
 
 import pytest
+from syrupy.assertion import SnapshotAssertion
 
 import json_arrays
 from json_arrays import files
@@ -28,7 +28,7 @@ from json_arrays.utility import JsonFormat
         "tests/data/array.ndjson.bz2",
     ],
 )
-def test_load_from_file(file_name: str, snapshot_json):
+def test_load_from_file(file_name: str, snapshot_json: SnapshotAssertion) -> None:
     assert list(json_arrays.load_from_file(file_name)) == snapshot_json
 
 
@@ -40,8 +40,8 @@ def test_load_from_file(file_name: str, snapshot_json):
         "tests/data/array.ndjson",
     ],
 )
-def test_load(file_name: str, snapshot_json) -> None:
-    with open(file_name, mode="rb") as fp:
+def test_load(file_name: str, snapshot_json: SnapshotAssertion) -> None:
+    with Path(file_name).open(mode="rb") as fp:
         data_loaded = list(json_arrays.load(fp))
 
     assert data_loaded == snapshot_json
@@ -56,7 +56,7 @@ def test_load(file_name: str, snapshot_json) -> None:
     ],
 )
 def test_load_from_file_stdin(
-    file_name: str, json_format: Optional[json_arrays.JsonFormat], snapshot_json
+    file_name: str, json_format: json_arrays.JsonFormat | None, snapshot_json: SnapshotAssertion
 ) -> None:
     buffer = io.BytesIO(Path(file_name).read_bytes())
     stdin_patcher = patch("sys.stdin", buffer=buffer)
@@ -73,7 +73,9 @@ def test_load_from_file_stdin(
 @pytest.mark.parametrize(
     "json_format", [json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
 )
-def test_dump(json_format: json_arrays.JsonFormat, snapshot, array_of_dicts: list[dict]) -> None:
+def test_dump(
+    json_format: json_arrays.JsonFormat, snapshot: SnapshotAssertion, array_of_dicts: list[dict]
+) -> None:
     with tempfile.TemporaryFile() as fp:
         json_arrays.dump(array_of_dicts, fp, json_format=json_format)
         fp.seek(0)
@@ -85,7 +87,9 @@ def test_dump(json_format: json_arrays.JsonFormat, snapshot, array_of_dicts: lis
 @pytest.mark.parametrize(
     "json_format", [json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
 )
-def test_dump_dict(json_format: json_arrays.JsonFormat, snapshot, data_dict: dict) -> None:
+def test_dump_dict(
+    json_format: json_arrays.JsonFormat, snapshot: SnapshotAssertion, data_dict: dict
+) -> None:
     with tempfile.TemporaryFile() as fp:
         json_arrays.dump(data_dict, fp, json_format=json_format)
         fp.seek(0)
@@ -97,7 +101,7 @@ def test_dump_dict(json_format: json_arrays.JsonFormat, snapshot, data_dict: dic
 @pytest.mark.parametrize(
     "json_format", [json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
 )
-def test_dump_int(json_format: json_arrays.JsonFormat, snapshot) -> None:
+def test_dump_int(json_format: json_arrays.JsonFormat, snapshot: SnapshotAssertion) -> None:
     with tempfile.TemporaryFile() as fp:
         json_arrays.dump(1234, fp, json_format=json_format)
         fp.seek(0)
@@ -109,7 +113,7 @@ def test_dump_int(json_format: json_arrays.JsonFormat, snapshot) -> None:
 @pytest.mark.parametrize(
     "json_format", [json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
 )
-def test_dump_str(json_format: json_arrays.JsonFormat, snapshot) -> None:
+def test_dump_str(json_format: json_arrays.JsonFormat, snapshot: SnapshotAssertion) -> None:
     with tempfile.TemporaryFile() as fp:
         json_arrays.dump("just an ordinary\n string", fp, json_format=json_format)
         fp.seek(0)
@@ -132,7 +136,9 @@ def test_dump_str(json_format: json_arrays.JsonFormat, snapshot) -> None:
         "tests/data/gen/api_dump_array.ndjson.bz2",
     ],
 )
-def test_dump_to_file(file_name: str, snapshot, array_of_dicts: list[dict]) -> None:
+def test_dump_to_file(
+    file_name: str, snapshot: SnapshotAssertion, array_of_dicts: list[dict]
+) -> None:
     json_arrays.dump_to_file(array_of_dicts, file_name)
 
     with files.BinaryFileRead(file_name).file as fp:
@@ -144,7 +150,9 @@ def test_dump_to_file(file_name: str, snapshot, array_of_dicts: list[dict]) -> N
     "json_format", [None, json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
 )
 def test_dump_to_file_stdout(
-    json_format: Optional[json_arrays.JsonFormat], snapshot, array_of_dicts: list[dict]
+    json_format: json_arrays.JsonFormat | None,
+    snapshot: SnapshotAssertion,
+    array_of_dicts: list[dict],
 ) -> None:
     buffer = io.BytesIO()
     stdout_patcher = patch("sys.stdout", buffer=buffer)
@@ -162,7 +170,9 @@ def test_dump_to_file_stdout(
     "json_format", [None, json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
 )
 def test_dump_to_file_stderr(
-    json_format: Optional[json_arrays.JsonFormat], snapshot, array_of_dicts: list[dict]
+    json_format: json_arrays.JsonFormat | None,
+    snapshot: SnapshotAssertion,
+    array_of_dicts: list[dict],
 ) -> None:
     buffer = io.BytesIO()
     stderr_patcher = patch("sys.stderr", buffer=buffer)
@@ -177,7 +187,7 @@ def test_dump_to_file_stderr(
 
 
 @pytest.mark.parametrize("file_suffix", [".json", ".jsonl", ".ndjson"])
-def test_sink(file_suffix: str, snapshot, array_of_dicts: list[dict]) -> None:
+def test_sink(file_suffix: str, snapshot: SnapshotAssertion, array_of_dicts: list[dict]) -> None:
     with tempfile.NamedTemporaryFile(suffix=file_suffix) as fp:
         with json_arrays.sink(fp) as sink:  # type: ignore[arg-type]
             for obj in array_of_dicts:
@@ -189,7 +199,7 @@ def test_sink(file_suffix: str, snapshot, array_of_dicts: list[dict]) -> None:
 
 
 @pytest.mark.parametrize("file_suffix", [".json", ".jsonl", ".ndjson"])
-def test_sink_dict(file_suffix: str, snapshot) -> None:
+def test_sink_dict(file_suffix: str, snapshot: SnapshotAssertion) -> None:
     with tempfile.NamedTemporaryFile(suffix=file_suffix) as fp:
         with json_arrays.sink(fp) as sink:  # type: ignore[arg-type]
             sink.send({"a": "b"})
@@ -213,7 +223,9 @@ def test_sink_dict(file_suffix: str, snapshot) -> None:
         "tests/data/gen/api_sink_array.ndjson.bz2",
     ],
 )
-def test_sink_from_file(file_name: str, snapshot, array_of_dicts: list[dict]) -> None:
+def test_sink_from_file(
+    file_name: str, snapshot: SnapshotAssertion, array_of_dicts: list[dict]
+) -> None:
     with json_arrays.sink_from_file(file_name) as sink:
         for obj in array_of_dicts:
             sink.send(obj)
@@ -227,7 +239,9 @@ def test_sink_from_file(file_name: str, snapshot, array_of_dicts: list[dict]) ->
     "json_format", [None, json_arrays.JsonFormat.JSON, json_arrays.JsonFormat.JSON_LINES]
 )
 def test_sink_from_file_stdout(
-    json_format: Optional[json_arrays.JsonFormat], snapshot, array_of_dicts: list[dict]
+    json_format: json_arrays.JsonFormat | None,
+    snapshot: SnapshotAssertion,
+    array_of_dicts: list[dict],
 ) -> None:
     buffer = io.BytesIO()
     stdout_patcher = patch("sys.stdout", buffer=buffer)
@@ -243,7 +257,7 @@ def test_sink_from_file_stdout(
     assert data_written == snapshot
 
 
-def test_load_from_file_fails_without_file_name(snapshot) -> None:
+def test_load_from_file_fails_without_file_name(snapshot: SnapshotAssertion) -> None:
     try:
         for _ in json_arrays.load_from_file(None, use_stdin_as_default=False):
             pass
@@ -251,7 +265,7 @@ def test_load_from_file_fails_without_file_name(snapshot) -> None:
         assert str(exc) == snapshot
 
 
-def test_dump_to_file_fails_without_file_name(snapshot) -> None:
+def test_dump_to_file_fails_without_file_name(snapshot: SnapshotAssertion) -> None:
     try:
         json_arrays.dump_to_file(
             [], None, use_stdout_as_default=False, use_stderr_as_default=False
@@ -260,7 +274,7 @@ def test_dump_to_file_fails_without_file_name(snapshot) -> None:
         assert str(exc) == snapshot
 
 
-def test_sink_from_file_fails_without_file_name(snapshot) -> None:
+def test_sink_from_file_fails_without_file_name(snapshot: SnapshotAssertion) -> None:
     try:
         json_arrays.sink_from_file(
             None, use_stdout_as_default=False, use_stderr_as_default=False
@@ -269,10 +283,10 @@ def test_sink_from_file_fails_without_file_name(snapshot) -> None:
         assert str(exc) == snapshot
 
 
-def test_json_gzip_dump_fp(array_of_dicts: list[dict], snapshot_json):
+def test_json_gzip_dump_fp(array_of_dicts: list[dict], snapshot_json: SnapshotAssertion) -> None:
     filename = Path("tests/data/gen/json_gzip_dump_fp.json.gz")
 
-    with open(filename, "wb") as fp:
+    with Path(filename).open("wb") as fp:
         json_arrays.dump(array_of_dicts, fp)
 
     with gzip.open(filename) as fp:  # type: ignore
@@ -281,22 +295,24 @@ def test_json_gzip_dump_fp(array_of_dicts: list[dict], snapshot_json):
     assert loaded_entries == snapshot_json
 
 
-def test_json_gzip_load_fp(array_of_dicts: list[dict], snapshot_json):
+def test_json_gzip_load_fp(array_of_dicts: list[dict], snapshot_json: SnapshotAssertion) -> None:
     filename = Path("tests/data/gen/json_gzip_load_fp.json.gz")
 
     with gzip.open(filename, "wt") as fp:
         json.dump(array_of_dicts, fp)
 
-    with open(filename, "rb") as fp:  # type: ignore
+    with Path(filename).open("rb") as fp:  # type: ignore
         loaded_entries = list(json_arrays.load(fp))  # type: ignore
 
     assert loaded_entries == snapshot_json
 
 
-def test_json_bzip2_dump_fp(array_of_dicts: list[dict], snapshot_json):
+def test_json_bzip2_dump_fp(
+    array_of_dicts: list[dict], snapshot_json: SnapshotAssertion
+) -> None:
     filename = Path("tests/data/gen/json_bzip2_dump_fp.json.bz2")
 
-    with open(filename, "wb") as fp:
+    with Path(filename).open("wb") as fp:
         json_arrays.dump(array_of_dicts, fp)
 
     with bz2.open(filename) as fp:  # type: ignore
@@ -305,19 +321,23 @@ def test_json_bzip2_dump_fp(array_of_dicts: list[dict], snapshot_json):
     assert loaded_entries == snapshot_json
 
 
-def test_json_bzip2_load_fp(array_of_dicts: list[dict], snapshot_json):
+def test_json_bzip2_load_fp(
+    array_of_dicts: list[dict], snapshot_json: SnapshotAssertion
+) -> None:
     filename = Path("tests/data/gen/json_bzip2_load_fp.json.bz2")
 
     with bz2.open(filename, "wt") as fp:
         json.dump(array_of_dicts, fp)
 
-    with open(filename, "rb") as fp:  # type: ignore
+    with Path(filename).open("rb") as fp:  # type: ignore
         loaded_entries = list(json_arrays.load(fp))  # type: ignore
 
     assert loaded_entries == snapshot_json
 
 
-def test_json_bzip2_load_fileobj(array_of_dicts: list[dict], snapshot_json):
+def test_json_bzip2_load_fileobj(
+    array_of_dicts: list[dict], snapshot_json: SnapshotAssertion
+) -> None:
     filename = Path("tests/data/gen/json_bzip2_load_fileobj.json.bz2")
 
     with bz2.open(filename, "wt") as fp:
