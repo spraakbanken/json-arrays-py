@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
           persist-credentials: false
-      - uses: bencherdev/bencher@d84683bed6747f23f9903a02cd2a70502cee0b8d #v0.5.5
+      - uses: bencherdev/bencher@61e6a2c2e0b4c8f61c87bef598ba9dbafa51c689 #v0.5.8
       - name: Archive closed PR branch with Bencher
         run: |
           bencher archive \
