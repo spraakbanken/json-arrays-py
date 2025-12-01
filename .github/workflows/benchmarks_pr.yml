@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 env:
-  MINIMUM_PYTHON_VERSION: "3.9"
+  MINIMUM_PYTHON_VERSION: "3.10"
   UV_VERSION: "0.9.1"
 
 jobs:
@@ -29,11 +29,11 @@ jobs:
       fail-fast: false
       matrix:
         python-version:
-          - "3.9"
           - "3.10"
           - "3.11"
           - "3.12"
           - "3.13"
+          - "3.14"
     steps:
       - uses: actions/checkout@ff7abcd0c3c05ccf6adc123a8cd1fd4fb30fb493 # v5.0.0
         with:
