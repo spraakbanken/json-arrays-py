@@ -23,11 +23,13 @@ __all__ = [
 ]
 
 
-def _choose_iter(name: _types.Pathlike, json_format: utility.JsonFormat | None) -> t.Any:
+def _choose_iter(
+    name: _types.Pathlike, json_format: utility.JsonFormat | None
+) -> _types.IterModule:
     """Decide if `json_iter` or `jsonl_iter` should be used."""
     if json_format == utility.JsonFormat.JSON_LINES or utility.is_jsonl(name):
-        return jsonl_iter
-    return json_iter
+        return t.cast(_types.IterModule, jsonl_iter)
+    return t.cast(_types.IterModule, json_iter)
 
 
 def load(fp: _types.FileRead, *, json_format: utility.JsonFormat | None = None) -> Iterable:
@@ -84,7 +86,7 @@ def load_from_file(
             lazily loaded from file
     """
     if file_name is not None:
-        iter_ = _choose_iter(file_name, json_format)
+        iter_: _types.IterModule = _choose_iter(file_name, json_format)
 
         yield from iter_.load_from_file(file_name, file_mode=file_mode, **kwargs)
     elif use_stdin_as_default:
@@ -171,7 +173,7 @@ def dump_to_file(
         )
 
 
-def sink(fp: _types.FileWrite, *, json_format: utility.JsonFormat | None = None) -> utility.Sink:
+def sink(fp: _types.FileWrite, *, json_format: utility.JsonFormat | None = None) -> _types.SinkP:
     """Create a sink for this file."""
     iter_ = _choose_iter(utility.get_name_of_file(fp), json_format)
 
@@ -185,7 +187,7 @@ def sink_from_file(
     file_mode: str = "wb",
     use_stdout_as_default: bool = False,
     use_stderr_as_default: bool = False,
-) -> utility.Sink:
+) -> _types.SinkP:
     """Open file and use it as json sink.
 
     Args:

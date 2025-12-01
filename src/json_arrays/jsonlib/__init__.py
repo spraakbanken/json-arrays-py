@@ -16,7 +16,7 @@ def get_backend(backend_name: str) -> t.Any:
     return importlib.import_module(f"json_arrays.jsonlib.backends.{backend_name}")
 
 
-def _default_backend() -> t.Any:
+def _default_backend() -> _types.Backend:
     for backend_name in ("be_orjson", "be_json"):
         try:
             return get_backend(backend_name)
@@ -28,8 +28,8 @@ def _default_backend() -> t.Any:
 backend = _default_backend()
 del _default_backend
 
-dumps = backend.dumps  # type: ignore
-loads = backend.loads  # type: ignore
+dumps = backend.dumps
+loads = backend.loads
 
 
 def load_from_file(file_name: _types.Pathlike, file_mode: str = "rb", **kwargs: t.Any) -> t.Any:
