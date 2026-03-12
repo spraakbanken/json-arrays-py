@@ -109,6 +109,23 @@ jobs:
       - name: type-check code
         run: make type-check
 
+  pre-commit:
+    name: ubuntu / 3.10 / pre-commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v5.0.0
+        with:
+          persist-credentials: false
+          submodules: true
+      - name: Set up the python ${{ env.MINIMUM_PYTHON_VERSION }}
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        id: setup-python
+        with:
+          python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
+      - name: prek run
+        uses: j178/prek-action@0bb87d7f00b0c99306c8bcb8b8beba1eb581c037 # v1.1.1
+
+
   # https://github.com/marketplace/actions/alls-green#why used for branch protection checks
   check-check:
     if: always()
@@ -116,6 +133,7 @@ jobs:
       - fmt
       - lint
       - type-check
+      - pre-commit
     runs-on: ubuntu-latest
     permissions: {}
     steps:
