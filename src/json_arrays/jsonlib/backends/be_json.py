@@ -10,3 +10,6 @@ def dumps(obj: t.Any, **kwargs: t.Any) -> bytes:
 
 
 loads = json.loads
+
+JSONDecodeError = json.JSONDecodeError
+JSONEncodeError = TypeError
