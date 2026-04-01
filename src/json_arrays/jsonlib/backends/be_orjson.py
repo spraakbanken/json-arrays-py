@@ -1,5 +1,5 @@
 """Json backend using `orjson` library."""
 
-from orjson import dumps, loads
+from orjson import JSONDecodeError, JSONEncodeError, dumps, loads
 
-__all__ = ["dumps", "loads"]
+__all__ = ["JSONDecodeError", "JSONEncodeError", "dumps", "loads"]
