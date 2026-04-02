@@ -46,12 +46,12 @@ orjson = [
 [dependency-groups]
 dev = [
     "pytest>=8.0.0",
-    "mypy>=1.8.0",
     "pytest-cov>=4.1.0",
     "types-orjson>=3.6.2",
     "ruff>=0.2.1",
     "syrupy>=4.6.1",
     "pytest-benchmark>=5.1.0",
+    "ty>=0.0.18",
 ]
 
 [build-system]
