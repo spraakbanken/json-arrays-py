@@ -17,7 +17,7 @@ permissions:
 
 env:
   MINIMUM_PYTHON_VERSION: "3.10"
-  UV_VERSION: "0.9.1"
+  UV_VERSION: "0.11.7"
 
 jobs:
   build:
@@ -102,7 +102,8 @@ jobs:
       - run: rm -r <INSERT PROJECT SRC>
       - run: pip install typing-extensions
       - run: pip install -r tests/requirements-testing.lock
-      - run: pip install <INSERT PROJECT NAME> --no-index --no-deps --find-links dist --force-reinstall
+      - run: pip install <INSERT PROJECT NAME> --no-index --no-deps --find-links dist
+          --force-reinstall
       - run: pytest
 
   # https://github.com/marketplace/actions/alls-green#why used for branch protection checks

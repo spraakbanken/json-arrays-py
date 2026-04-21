@@ -16,7 +16,7 @@ permissions:
 
 env:
   MINIMUM_PYTHON_VERSION: "3.10"
-  UV_VERSION: "0.9.1"
+  UV_VERSION: "0.11.7"
 
 jobs:
   coverage:
@@ -80,7 +80,9 @@ jobs:
           verbose: true
       - name: Install codescene coverage tool
         if: ${{ env.CS_ACCESS_TOKEN != '' }}
-        run: curl https://downloads.codescene.io/enterprise/cli/install-cs-coverage-tool.sh | bash -s -- -y
+        run: curl
+          https://downloads.codescene.io/enterprise/cli/install-cs-coverage-tool.sh
+          | bash -s -- -y
       - name: Upload coverage data to CodeScene
         if: ${{ env.CS_ACCESS_TOKEN != '' }}
         run: cs-coverage upload --format "lcov" --metric "line-coverage" coverage.lcov
@@ -145,7 +147,9 @@ jobs:
           TESTTYPE: doctest
       - name: Install codescene coverage tool
         if: ${{ env.CS_ACCESS_TOKEN != '' }}
-        run: curl https://downloads.codescene.io/enterprise/cli/install-cs-coverage-tool.sh | bash -s -- -y
+        run: curl
+          https://downloads.codescene.io/enterprise/cli/install-cs-coverage-tool.sh
+          | bash -s -- -y
       - name: Upload coverage data to CodeScene
         if: ${{ env.CS_ACCESS_TOKEN != '' }}
         run: cs-coverage upload --format "lcov" --metric "line-coverage" coverage.lcov
