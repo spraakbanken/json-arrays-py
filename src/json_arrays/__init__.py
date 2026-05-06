@@ -1,3 +1,4 @@
+# ruff: noqa: RUF067
 """Handle JSON or JSON_LINES lazily."""
 
 import sys
@@ -91,9 +92,9 @@ def load_from_file(
         yield from iter_.load_from_file(file_name, file_mode=file_mode, **kwargs)
     elif use_stdin_as_default:
         if json_format == JsonFormat.JSON:
-            yield from json_iter.load(sys.stdin.buffer, **kwargs)
+            yield from json_iter.load(sys.stdin.buffer, **kwargs)  # ty:ignore[invalid-argument-type]
         else:
-            yield from jsonl_iter.load(sys.stdin.buffer, **kwargs)
+            yield from jsonl_iter.load(sys.stdin.buffer, **kwargs)  # ty:ignore[invalid-argument-type]
     else:
         raise ValueError("You must give a FILENAME or USE_STDIN_AS_DEFAULT=`True`")
 
@@ -164,20 +165,25 @@ def dump_to_file(
     elif use_stdout_as_default or use_stderr_as_default:
         buffer = sys.stdout.buffer if use_stdout_as_default else sys.stderr.buffer
         if json_format == JsonFormat.JSON:
-            json_iter.dump(in_iter_, buffer, **kwargs)
+            json_iter.dump(in_iter_, buffer, **kwargs)  # ty:ignore[invalid-argument-type]
         else:
-            jsonl_iter.dump(in_iter_, buffer, **kwargs)
+            jsonl_iter.dump(in_iter_, buffer, **kwargs)  # ty:ignore[invalid-argument-type]
     else:
         raise ValueError(
-            "You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`"  # noqa: E501
+            "You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`"
         )
 
 
-def sink(fp: _types.FileWrite, *, json_format: utility.JsonFormat | None = None) -> _types.SinkP:
+def sink(
+    fp: _types.Writer[bytes], *, json_format: utility.JsonFormat | None = None
+) -> _types.SinkP:
     """Create a sink for this file."""
-    iter_ = _choose_iter(utility.get_name_of_file(fp), json_format)
+    iter_ = _choose_iter(
+        utility.get_name_of_file(fp),  # ty:ignore[invalid-argument-type]
+        json_format,
+    )
 
-    return iter_.sink(fp)
+    return iter_.sink(fp)  # ty:ignore[invalid-argument-type]
 
 
 def sink_from_file(
@@ -202,16 +208,16 @@ def sink_from_file(
         use_stderr_as_default : bool, optional, default=False
             use stderr if file_name is empty.
     """
-    if not file_name:
+    if file_name is None:
         if use_stdout_as_default or use_stderr_as_default:
             buffer = sys.stdout.buffer if use_stdout_as_default else sys.stderr.buffer
             return (
-                json_iter.sink(buffer)
+                json_iter.sink(buffer)  # ty:ignore[invalid-argument-type]
                 if json_format == JsonFormat.JSON
-                else jsonl_iter.sink(buffer)
+                else jsonl_iter.sink(buffer)  # ty:ignore[invalid-argument-type]
             )
         raise ValueError(
-            "You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`"  # noqa: E501
+            "You must give a FILENAME or USE_STDOUT_AS_DEFAULT=`True` or USE_STDERR_AS_DEFAULT=`True`"
         )
 
     iter_ = _choose_iter(file_name, json_format)

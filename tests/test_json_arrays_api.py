@@ -42,7 +42,7 @@ def test_load_from_file(file_name: str, snapshot_json: SnapshotAssertion) -> Non
 )
 def test_load(file_name: str, snapshot_json: SnapshotAssertion) -> None:
     with Path(file_name).open(mode="rb") as fp:
-        data_loaded = list(json_arrays.load(fp))
+        data_loaded = list(json_arrays.load(fp))  # ty:ignore[invalid-argument-type]
 
     assert data_loaded == snapshot_json
 
@@ -77,7 +77,11 @@ def test_dump(
     json_format: json_arrays.JsonFormat, snapshot: SnapshotAssertion, array_of_dicts: list[dict]
 ) -> None:
     with tempfile.TemporaryFile() as fp:
-        json_arrays.dump(array_of_dicts, fp, json_format=json_format)
+        json_arrays.dump(
+            array_of_dicts,
+            fp,  # ty:ignore[invalid-argument-type]
+            json_format=json_format,
+        )
         fp.seek(0)
         data_written = fp.read()
 
@@ -91,7 +95,7 @@ def test_dump_dict(
     json_format: json_arrays.JsonFormat, snapshot: SnapshotAssertion, data_dict: dict
 ) -> None:
     with tempfile.TemporaryFile() as fp:
-        json_arrays.dump(data_dict, fp, json_format=json_format)
+        json_arrays.dump(data_dict, fp, json_format=json_format)  # ty:ignore[invalid-argument-type]
         fp.seek(0)
         data_written = fp.read()
 
@@ -103,7 +107,7 @@ def test_dump_dict(
 )
 def test_dump_int(json_format: json_arrays.JsonFormat, snapshot: SnapshotAssertion) -> None:
     with tempfile.TemporaryFile() as fp:
-        json_arrays.dump(1234, fp, json_format=json_format)
+        json_arrays.dump(1234, fp, json_format=json_format)  # ty:ignore[invalid-argument-type]
         fp.seek(0)
         data_written = fp.read()
 
@@ -115,7 +119,7 @@ def test_dump_int(json_format: json_arrays.JsonFormat, snapshot: SnapshotAsserti
 )
 def test_dump_str(json_format: json_arrays.JsonFormat, snapshot: SnapshotAssertion) -> None:
     with tempfile.TemporaryFile() as fp:
-        json_arrays.dump("just an ordinary\n string", fp, json_format=json_format)
+        json_arrays.dump("just an ordinary\n string", fp, json_format=json_format)  # ty:ignore[invalid-argument-type]
         fp.seek(0)
         data_written = fp.read()
 
@@ -287,9 +291,9 @@ def test_json_gzip_dump_fp(array_of_dicts: list[dict], snapshot_json: SnapshotAs
     filename = Path("tests/data/gen/json_gzip_dump_fp.json.gz")
 
     with Path(filename).open("wb") as fp:
-        json_arrays.dump(array_of_dicts, fp)
+        json_arrays.dump(array_of_dicts, fp)  # ty:ignore[invalid-argument-type]
 
-    with gzip.open(filename) as fp:  # type: ignore
+    with gzip.open(filename) as fp:
         loaded_entries = json.load(fp)
 
     assert loaded_entries == snapshot_json
@@ -301,7 +305,7 @@ def test_json_gzip_load_fp(array_of_dicts: list[dict], snapshot_json: SnapshotAs
     with gzip.open(filename, "wt") as fp:
         json.dump(array_of_dicts, fp)
 
-    with Path(filename).open("rb") as fp:  # type: ignore
+    with Path(filename).open("rb") as fp:
         loaded_entries = list(json_arrays.load(fp))  # type: ignore
 
     assert loaded_entries == snapshot_json
@@ -313,9 +317,9 @@ def test_json_bzip2_dump_fp(
     filename = Path("tests/data/gen/json_bzip2_dump_fp.json.bz2")
 
     with Path(filename).open("wb") as fp:
-        json_arrays.dump(array_of_dicts, fp)
+        json_arrays.dump(array_of_dicts, fp)  # ty:ignore[invalid-argument-type]
 
-    with bz2.open(filename) as fp:  # type: ignore
+    with bz2.open(filename) as fp:
         loaded_entries = json.load(fp)
 
     assert loaded_entries == snapshot_json
@@ -329,7 +333,7 @@ def test_json_bzip2_load_fp(
     with bz2.open(filename, "wt") as fp:
         json.dump(array_of_dicts, fp)
 
-    with Path(filename).open("rb") as fp:  # type: ignore
+    with Path(filename).open("rb") as fp:
         loaded_entries = list(json_arrays.load(fp))  # type: ignore
 
     assert loaded_entries == snapshot_json
@@ -343,7 +347,7 @@ def test_json_bzip2_load_fileobj(
     with bz2.open(filename, "wt") as fp:
         json.dump(array_of_dicts, fp)
 
-    fp = bz2.BZ2File(filename, "rb")  # type: ignore
+    fp = bz2.BZ2File(filename, "rb")
     loaded_entries = list(json_arrays.load(fp))  # type: ignore
 
     assert loaded_entries == snapshot_json

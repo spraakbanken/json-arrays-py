@@ -8,7 +8,13 @@ import typing as t
 from json_arrays import _types, utility
 
 
-def open_file(file_name: _types.Pathlike, mode: str = "rb") -> _types.File:  # type: ignore [type-var]
+@t.overload
+def open_file(
+    file_name: _types.Pathlike, mode: t.Literal["wb", "ab", "xb"] = ...
+) -> _types.FileWrite: ...
+@t.overload
+def open_file(file_name: _types.Pathlike, mode: t.Literal["rb"] = ...) -> _types.FileRead: ...
+def open_file(file_name: _types.Pathlike, mode: str = "rb") -> _types.File:
     """Open a file based on extension.
 
     Supports ordinary files, gzip-files and bzip2-files.
@@ -41,7 +47,7 @@ class BinaryFile:
         self._needs_closing = False
         if fileobj is None:
             if filename is not None:
-                self._file: _types.File = open_file(filename, mode)  # type: ignore
+                self._file: _types.File = open_file(filename, mode)  # ty:ignore[no-matching-overload]
             else:
                 raise ValueError("Must give at least one of 'filename' and 'fileobj'")
 
@@ -49,15 +55,17 @@ class BinaryFile:
             fileobj_name = utility.get_name_of_file(fileobj)
             if utility.is_gzip(fileobj_name):
                 if isinstance(fileobj, gzip.GzipFile):
-                    self._file = fileobj  # type: ignore
+                    self._file = fileobj
                 else:
                     self._file = gzip.GzipFile(  # type: ignore
                         filename=filename, fileobj=fileobj, mode=mode
                     )
                     self._needs_closing = True
-            elif utility.is_bzip2(fileobj_name) or (filename and utility.is_bzip2(filename)):
+            elif utility.is_bzip2(fileobj_name) or (
+                filename is not None and utility.is_bzip2(filename)
+            ):
                 if isinstance(fileobj, bz2.BZ2File):
-                    self._file = fileobj  # type: ignore
+                    self._file = fileobj
                 else:
                     fileobj_or_filename = fileobj or filename
                     self._file = bz2.BZ2File(  # type: ignore
@@ -65,12 +73,12 @@ class BinaryFile:
                     )
                     self._needs_closing = True
             else:
-                self._file = fileobj  # type: ignore
+                self._file = fileobj
 
     @property
     def file(self) -> t.Any:
         """Return the underlying file."""
-        return self._file  # type: ignore
+        return self._file
 
     @property
     def needs_closing(self) -> bool:
@@ -93,7 +101,7 @@ class BinaryFileRead(BinaryFile):
     def __init__(
         self,
         filename: _types.Pathlike | None = None,
-        fileobj: _types.File | None = None,
+        fileobj: _types.FileRead | None = None,
     ) -> None:
         """Create a readable binary file."""
         super().__init__("rb", filename=filename, fileobj=fileobj)
@@ -105,7 +113,7 @@ class BinaryFileWrite(BinaryFile):
     def __init__(
         self,
         filename: _types.Pathlike | None = None,
-        fileobj: _types.File | None = None,
+        fileobj: _types.FileWrite | None = None,
         mode: str | None = None,
     ) -> None:
         """Create a writeable binary file."""

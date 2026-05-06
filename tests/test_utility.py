@@ -67,4 +67,4 @@ def test_filename_is_not_bzip2(filename: str) -> None:
 
 @pytest.mark.parametrize("fp, expected", [(None, "")])
 def test_get_name_of_file(fp: _types.File | None, expected: str) -> None:
-    assert get_name_of_file(fp) == expected  # type: ignore[type-var]
+    assert get_name_of_file(fp) == expected

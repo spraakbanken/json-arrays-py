@@ -1,4 +1,5 @@
 import os
+import sys
 import typing as t
 from collections.abc import Generator, Iterable
 
@@ -6,25 +7,34 @@ Pathlike = t.TypeVar("Pathlike", str, bytes, os.PathLike[str], os.PathLike[bytes
 
 # File = t.TypeVar("File", t.BinaryIO, gzip.GzipFile, bz2.BZ2File)
 
+if sys.version_info >= (3, 14):
+    from io import Reader, Writer
+else:
+    from typing_extensions import Reader, Writer
 
-class FileRead(t.Protocol):
+
+class FileRead(Reader[bytes], t.Protocol):
     """Protocol for readable file."""
 
-    def read(self) -> bytes: ...
+    # def read(self) -> bytes: ...
     def __enter__(self) -> t.Any: ...
-    def __exit__(self, exc_type: t.Any, exc_value: t.Any, exc_traceback: t.Any) -> None: ...
+    def __exit__(self, *args) -> None: ...  # noqa: ANN002
 
 
-class FileWrite(t.Protocol):
+AnyBytes_contra = t.TypeVar("AnyBytes_contra", bytes, bytearray, contravariant=True)
+
+
+# class FileWrite(t.Protocol):
+class FileWrite(Writer[bytes], t.Protocol):
     """Protocol for writable file."""
 
-    def write(self, data: bytes | bytearray) -> int: ...
+    # def write(self, data: AnyBytes_contra) -> int: ...
     def __enter__(self) -> t.Any: ...
-    def __exit__(self, exc_type: t.Any, exc_value: t.Any, exc_traceback: t.Any) -> None: ...
+    def __exit__(self, *args) -> None: ...  # noqa: ANN002
     def close(self) -> None: ...
 
 
-File = FileRead | FileWrite
+File = FileWrite | FileRead
 
 
 class SinkP(t.Protocol):
@@ -105,7 +115,9 @@ class HasSinkFromFile(t.Protocol):
     ) -> SinkP: ...
 
 
-class IterModule(HasDump, HasDumpToFile, HasLoad, HasLoadFromFile, HasSink, HasSinkFromFile):
+class IterModule(
+    HasDump, HasDumpToFile, HasLoad, HasLoadFromFile, HasSink, HasSinkFromFile, t.Protocol
+):
     """Protocol for iter module."""
 
 

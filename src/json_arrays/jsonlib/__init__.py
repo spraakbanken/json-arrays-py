@@ -1,3 +1,4 @@
+# ruff: noqa: RUF067
 """Utility library to load the underlying json library.
 
 Imports `orjson` if it is present, otherwise it imports `json` from
@@ -44,7 +45,7 @@ def load_from_file(file_name: _types.Pathlike, file_mode: str = "rb", **kwargs: 
     Returns:
         the loaded JSON file.
     """
-    with files.open_file(file_name, file_mode) as fp:
+    with files.open_file(file_name, file_mode) as fp:  # ty:ignore[no-matching-overload]
         return loads(fp.read(), **kwargs)
 
 
@@ -62,5 +63,5 @@ def dump_to_file(
     Returns:
         anything returned from the backend.
     """
-    with files.open_file(file_name, file_mode) as fp:
+    with files.open_file(file_name, file_mode) as fp:  # ty:ignore[no-matching-overload]
         return fp.write(dumps(obj, **kwargs))

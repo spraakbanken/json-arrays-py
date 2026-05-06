@@ -14,5 +14,5 @@ def test_open_bzip2_file_from_bz2file() -> None:
     filename = "tests/data/array.json.bz2"
 
     with bz2.BZ2File(filename) as fileobj:
-        fp = BinaryFileRead(filename, fileobj=fileobj)
+        fp = BinaryFileRead(filename, fileobj=fileobj)  # ty:ignore[invalid-argument-type]
         assert isinstance(fp.file, bz2.BZ2File)
