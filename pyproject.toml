@@ -61,6 +61,7 @@ build-backend = "uv_build"
 
 [tool.uv]
 package = true
+exclude-newer = "7 days"
 
 [tool.uv.build-backend]
 module-name = "json_arrays"
