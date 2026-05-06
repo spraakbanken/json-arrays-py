@@ -2,66 +2,66 @@
 name = "json-arrays"
 version = "0.15.0"
 description = "Stream JSON and JSON-Lines lazily."
-authors = [
-    { name = "Språkbanken Text", email = "sb-info@svenska.gu.se" },
-]
-license = { text = "MIT" }
-dependencies = [
-    "ijson>=3.2.3",
-]
 readme = "README.md"
 requires-python = ">= 3.10"
+license = "MIT"
+authors = [
+  { name = "Språkbanken Text", email = "sb-info@svenska.gu.se" },
+]
 classifiers = [
-    "Development Status :: 4 - Beta",
-    # "Development Status :: 5 - Production/Stable",
-    "Intended Audience :: Developers",
-    "License :: OSI Approved :: MIT License",
-    "Operating System :: Unix",
-    "Operating System :: POSIX",
-    # "Operating System :: Microsoft :: Windows",
-    "Programming Language :: Python :: 3.10",
-    "Programming Language :: Python :: 3.11",
-    "Programming Language :: Python :: 3.12",
-    "Programming Language :: Python :: 3.13",
-    "Programming Language :: Python :: 3.14",
-    "Programming Language :: Python :: Implementation :: CPython",
-    # "uncomment if you test on these interpreters:",
-    # "Programming Language :: Python :: Implementation :: IronPython",
-    # "Programming Language :: Python :: Implementation :: Jython",
-    # "Programming Language :: Python :: Implementation :: Stackless",
-    "Topic :: Utilities",
+  "Development Status :: 4 - Beta",
+  # "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: POSIX",
+  "Operating System :: Unix",
+  # "Operating System :: Microsoft :: Windows",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Programming Language :: Python :: 3.14",
+  "Programming Language :: Python :: Implementation :: CPython",
+  # "uncomment if you test on these interpreters:",
+  # "Programming Language :: Python :: Implementation :: IronPython",
+  # "Programming Language :: Python :: Implementation :: Jython",
+  # "Programming Language :: Python :: Implementation :: Stackless",
+  "Topic :: Utilities",
+]
+dependencies = [
+  "ijson>=3.2.3",
+  "typing-extensions>=4.15.0",
 ]
 
 [project.urls]
-Homepage = "https://spraakbanken.gu.se"
-Repository = "https://github.com/spraakbanken/json-arrays-py"
-Issues = "https://github.com/spraakbanken/json-arrays-py/issues"
 Changelog = "https://github.com/spraakbanken/json-arrays-py/blob/main/CHANGELOG.md"
+Homepage = "https://spraakbanken.gu.se"
+Issues = "https://github.com/spraakbanken/json-arrays-py/issues"
+Repository = "https://github.com/spraakbanken/json-arrays-py"
 
 [project.optional-dependencies]
 orjson = [
-    "orjson>=3.9.13",
+  "orjson>=3.9.13",
 ]
 
 [dependency-groups]
 dev = [
-    "pytest>=8.0.0",
-    "pytest-cov>=4.1.0",
-    "types-orjson>=3.6.2",
-    "ruff>=0.2.1",
-    "syrupy>=4.6.1",
-    "pytest-benchmark>=5.1.0",
-    "ty>=0.0.18",
+  "pytest>=8.0.0",
+  "pytest-benchmark>=5.1.0",
+  "pytest-cov>=4.1.0",
+  "ruff>=0.15.12",
+  "syrupy>=4.6.1",
+  "ty>=0.0.26",
+  "types-orjson>=3.6.2",
 ]
 
 [build-system]
-requires = ["uv_build>=0.9.6,<0.10.0"]
+requires = ["uv_build>=0.9.6,<0.12.0"]
 build-backend = "uv_build"
 
+[tool.uv]
+package = true
 
 [tool.uv.build-backend]
 module-name = "json_arrays"
 source-exclude = ["/.github", "/docs"]
-
-[tool.uv]
-package = true

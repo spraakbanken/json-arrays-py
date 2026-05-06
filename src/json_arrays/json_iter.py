@@ -3,7 +3,7 @@
 import typing as t
 from collections.abc import Generator, Iterable
 
-import ijson  # type: ignore
+import ijson
 
 from json_arrays import _types, files, jsonlib, shared, utility
 
@@ -40,31 +40,37 @@ def load(fileobj: _types.FileRead, *, use_float: bool = True, **kwargs: t.Any) -
 
 
 def load_from_file(
-    file_name: _types.Pathlike, *, file_mode: str = "rb", **kwargs: t.Any
+    file_name: _types.Pathlike, *, file_mode: t.Literal["rb"] = "rb", **kwargs: t.Any
 ) -> Iterable:
     """Load an array from a filename as an iterator."""
     with files.open_file(file_name, file_mode) as fp:
-        yield from load(fp, **kwargs)  # type: ignore
+        yield from load(fp, **kwargs)
 
 
 def dump_to_file(
-    gen: Iterable, file_name: _types.Pathlike, *, file_mode: str = "wb", **kwargs: t.Any
+    gen: Iterable,
+    file_name: _types.Pathlike,
+    *,
+    file_mode: t.Literal["wb", "ab", "xb"] = "wb",
+    **kwargs: t.Any,
 ) -> None:
     """Dump an `Iterable` to filename."""
     with files.open_file(file_name, file_mode) as fp:
-        return dump(gen, fp, **kwargs)  # type: ignore
+        return dump(gen, fp, **kwargs)
 
 
 def sink(fileobj: _types.FileWrite) -> utility.Sink:
     """Create a writable sink to write a JSON file as a co-routine."""
-    fp = files.BinaryFileWrite(fileobj=fileobj)
-    return utility.Sink(json_sink(fp, close_file=fp.needs_closing))  # type: ignore
+    fp = t.cast(_types.FileWrite, files.BinaryFileWrite(fileobj=fileobj))
+    return utility.Sink(json_sink(fp, close_file=False))
 
 
-def sink_from_file(file_name: _types.Pathlike, *, file_mode: str = "wb") -> utility.Sink:
+def sink_from_file(
+    file_name: _types.Pathlike, *, file_mode: t.Literal["wb", "ab", "xb"] = "wb"
+) -> utility.Sink:
     """Create a file and create a co-routine to write JSON to."""
-    fp = files.open_file(file_name, file_mode)
-    return utility.Sink(json_sink(fp, close_file=True))  # type: ignore
+    fp = t.cast(_types.FileWrite, files.open_file(file_name, file_mode))
+    return utility.Sink(json_sink(fp, close_file=True))
 
 
 def json_sink(fp: _types.FileWrite, *, close_file: bool = False) -> Generator[None, t.Any, None]:

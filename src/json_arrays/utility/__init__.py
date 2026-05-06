@@ -1,3 +1,4 @@
+# ruff: noqa: RUF067
 """Util functions."""
 
 import os
