@@ -149,9 +149,10 @@ snapshot-update:
 	${INVENV} pytest --snapshot-update
 
 ### === project targets below this line ===
-# setup development environment (with orjson)
-install-dev-orjson: install-pre-commit
+## setup development environment (with orjson)
+install-dev-orjson:
 	uv sync --dev --extra orjson
 
+## run benchmarks
 run-benchmarks:
 	${INVENV} pytest --benchmark-only benchmarks

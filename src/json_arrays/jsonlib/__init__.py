@@ -31,6 +31,7 @@ del _default_backend
 
 dumps = backend.dumps
 loads = backend.loads
+JSONDecodeError = backend.JSONDecodeError
 
 
 def load_from_file(file_name: _types.Pathlike, file_mode: str = "rb", **kwargs: t.Any) -> t.Any:
