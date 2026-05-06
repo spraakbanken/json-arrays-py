@@ -58,4 +58,5 @@ convention = "google"
 # "src/json_arrays/jsonlib/__init__.py" = ["RUF067"]
 # "src/json_arrays/utility/__init__.py" = ["RUF067"]
 "tests/*" = ["D", "ARG002", "E501"]
+"benchmarks/*" = ["ANN", "D"]
 "examples/*" = ["T201"]
